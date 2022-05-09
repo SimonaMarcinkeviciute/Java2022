@@ -1,0 +1,32 @@
+{
+  "1" : {
+    "examName" : "Egzaminas",
+    "type" : "TEST",
+    "questionsAndAnswers" : {
+      "2. Kike bus 2*2?" : [ "1. 2", "2. 1", "3. 7", "4. 8" ],
+      "3. Kiek bus 5+1?" : [ "1. 7", "2. 6", "3. 3", "4. 8", "5. 3", "6. 4" ],
+      "1. Kiek bus 2+2?" : [ "1. 8", "2. 6", "3. 4" ]
+    },
+    "questionsAndCorrectAnswers" : {
+      "2. Kike bus 2*2?" : "4. 8",
+      "3. Kiek bus 5+1?" : "2. 6",
+      "1. Kiek bus 2+2?" : "3. 4"
+    }
+  },
+  "2" : {
+    "examName" : "Antras egzaminas",
+    "type" : "TEST",
+    "questionsAndAnswers" : {
+      "4. Kiek bus 2+5?" : [ "1. 8", "2. 9", "3. 7", "4. 4", "5. 15", "6. 89", "7. 63" ],
+      "1. Kiek bus 2+2?" : [ "1. 4", "2. 5", "3. 6" ],
+      "2. Kiek bus 3+2?" : [ "1. 4", "2. 5", "3. 6" ],
+      "3. Kiek bus 1+?" : [ "1. 4", "2. 5", "3. 6" ]
+    },
+    "questionsAndCorrectAnswers" : {
+      "4. Kiek bus 2+5?" : "3. 7",
+      "1. Kiek bus 2+2?" : "1. 4",
+      "2. Kiek bus 3+2?" : "2. 5",
+      "3. Kiek bus 1+?" : "3. 6"
+    }
+  }
+}

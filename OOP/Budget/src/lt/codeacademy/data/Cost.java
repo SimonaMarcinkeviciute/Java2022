@@ -1,22 +1,27 @@
 package lt.codeacademy.data;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-public class Cost extends Irasas {
+public class Cost extends Entry {
+    private static int counter = 0;
 
-    private final CostTypes costType;
+    private final CostType costType;
     private final CostCategory costCategory;
 
+    public Cost(BigDecimal sum, LocalDateTime date, TransferStatus transferStatus,
+                CostType costType, CostCategory costCategory) {
+        this(sum, date, null, transferStatus, costType, costCategory);
+    }
 
-    public Cost(BigDecimal sum, LocalDate date, Person person, TransferStatus transferStatus, CostTypes costType, CostCategory costCategory) {
-        super(sum, date, person, transferStatus);
+    public Cost(BigDecimal sum, LocalDateTime date, Person person, TransferStatus transferStatus, CostType costType,
+                CostCategory costCategory) {
+        super(counter++, sum, date, person, transferStatus);
         this.costType = costType;
         this.costCategory = costCategory;
     }
 
-    public CostTypes getCostType() {
+    public CostType getCostType() {
         return costType;
     }
 
@@ -24,4 +29,12 @@ public class Cost extends Irasas {
         return costCategory;
     }
 
+    @Override
+    public String toString() {
+        return "Cost{" +
+                "costType=" + costType +
+                ", costCategory=" + costCategory +
+                super.toString() +
+                '}';
+    }
 }

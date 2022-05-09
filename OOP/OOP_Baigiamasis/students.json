@@ -1,0 +1,18 @@
+{
+  "1" : {
+    "name" : "Simona",
+    "surname" : "Marcinkeviciute",
+    "accountPassword" : "a9ed03131ba7e6b66309897bcbe146eb326a14a1cca7d54d0aa043c2c869c886e5c0d2ef53402eed57b20a8cac50274d493e12f4921df16d58ac471053d98350",
+    "passedExams" : {
+      "1" : {
+        "examName" : "Egzaminas",
+        "type" : "TEST",
+        "grade" : "3",
+        "studentAnswers" : [ [ "2. Kike bus 2*2?", "1. 2" ], [ "3. Kiek bus 5+1?", "5. 3" ], [ "1. Kiek bus 2+2?", "3. 4" ] ],
+        "examStatus" : "FALED",
+        "dateOfTheExamination" : "2022 05 09 12:03"
+      }
+    },
+    "theAverageOfGrade" : "3"
+  }
+}
