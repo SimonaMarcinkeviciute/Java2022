@@ -100,7 +100,7 @@ public class UserRepository extends AbstractRepository {
 
     public List<String> getUsersEmails() {
 
-        return getResult(session -> session.createQuery("SELECT email FROM User", String.class).list());
+        return getResult(session -> session.createQuery("SELECT email FROM User ", String.class).list());
 
         /*try (Session session = sessionFactory.openSession()) {
             return  session.createQuery("SELECT email FROM User", String.class).list();
