@@ -20,17 +20,46 @@ public class UserInterfaceController {
         userService = new UserService();
     }
     private void showStudentsExamsStatistic() {
-        List<ExamGrade> examGrades = examinationService.getExamGrade();
-        List<User> students = examinationService.getStudents();
+        Long allCorrectAswers = Long.valueOf(examinationService.getCorrectStudentAnswersSum());
+        Long allAnswers = examinationService.getAllAnswersSum();
 
-        System.out.printf("Visi egzaminai buvo spresti: %s.\n", examGrades.size());
+        System.out.println("STATISTIKA");
+        System.out.printf("Visi egzaminai buvo spresti kartu: %s.\n", examinationService.getExamSum());
+        System.out.printf("Is viso teisingu atsakymu skaicius: %s teisingi atsakymai is %s.\n"
+                , allCorrectAswers, allAnswers);
+        System.out.printf("Teisingai atsakytu klausimu vidurkis visuose klausimynuose: %s\n"
+                , getAvgCorrectAnswer(allAnswers, allCorrectAswers));
+        System.out.printf("A varianta visuose egzaminuose pasirinko kartu: %s\n", examinationService.getFirstAnswerSum());
+        System.out.printf("B varianta visuose egzaminuose pasirinko kartu: %s\n", examinationService.getSecondAnswerSum());
+        System.out.printf("C varianta visuose egzaminuose pasirinko kartu: %s\n", examinationService.getThirdAnswerSum());
+        System.out.println("Ar noresite perziureti atskiru egzaminu statistika? TAIP/NE");
 
-        List<Long> examGrade = examinationService.getExamGradeSum();
-       for (Long examGrade1 : examGrade) {
-           System.out.println(examGrade1);
-       }
+        if(doYouWantCreateQuestion()){
+            showOneExamStatistic();
+        }
+    }
 
+    private void showOneExamStatistic() {
+        List<Exam> exams = examinationService.getExam();
+        System.out.println("Pasirinkite egzamina, kurio statistika noresite apziureti:");
+        Exam exam = getExam(exams);
 
+        String correctAnswerSum = examinationService.getCorrectStudentAnswersSumByExam(exam);
+        String allAnswer = examinationService.getAllAnswersByExamSum(exam);
+        String a = examinationService.getFirstAnswerSumByExam(exam);
+        String b = examinationService.getSecondAnswerSumByExam(exam);
+        String c = examinationService.getThirdAnswerSumByExam(exam);
+
+        System.out.printf("Egzamine \"%s\" teisingu atsakymu skaicius: %s teisingi atsakymai is %s.\n"
+                , exam.getName(), correctAnswerSum, allAnswer);
+        System.out.printf("Egzamine \"%s\" teisingu A atsakymu skaicius: %s.\n",exam.getName(), a);
+        System.out.printf("Egzamine \"%s\" teisingu A atsakymu skaicius: %s.\n",exam.getName(), b);
+        System.out.printf("Egzamine \"%s\" teisingu A atsakymu skaicius: %s.\n",exam.getName(), c);
+    }
+
+    private Long getAvgCorrectAnswer(Long allAnswers, Long correctAnswers) {
+
+        return (allAnswers + correctAnswers) / 2;
     }
 
     private void showStudentExamsStatistic(User user) {

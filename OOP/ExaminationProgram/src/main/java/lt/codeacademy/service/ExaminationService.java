@@ -48,9 +48,53 @@ public class ExaminationService {
         return examRepository.getStudents();
     }
 
-    public List<Long> getExamGradeSum() {
-        return  examRepository.getExamGradeSum();
+    public String getExamGradeAvg(Exam exam) {
+        return  examRepository.getExamGradeAvg(exam);
 
+    }
+
+    public Long getExamSum() {
+        return examRepository.getExamSum();
+    }
+
+    public String getCorrectStudentAnswersSum(){
+        return examRepository.getCorrectStudentAnswersSum();
+    }
+
+    public String getCorrectStudentAnswersSumByExam(Exam exam) {
+        return examRepository.getCorrectStudentAnswersSumByExam(exam);
+    }
+
+    public Long getAllAnswersSum() {
+        return examRepository.getAllAnswersSum();
+    }
+
+    public String getFirstAnswerSumByExam(Exam exam) {
+        return examRepository.getFirstAnswerSumByExam(exam);
+    }
+
+    public String getAllAnswersByExamSum(Exam exam) {
+        return examRepository.getAllAnswersByExamSum(exam);
+    }
+
+    public String getFirstAnswerSum() {
+        return examRepository.getFirstAnswerSum();
+    }
+
+    public String getSecondAnswerSum() {
+        return examRepository.getSecondAnswerSum();
+    }
+
+    public String getThirdAnswerSum() {
+        return examRepository.getThirdAnswerSum();
+    }
+
+    public String getSecondAnswerSumByExam(Exam exam) {
+        return examRepository.getSecondAnswerSumByExam(exam);
+    }
+
+    public String getThirdAnswerSumByExam(Exam exam) {
+        return examRepository.getThirdAnswerSumByExam(exam);
     }
 
 
