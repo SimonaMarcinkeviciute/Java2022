@@ -31,19 +31,6 @@ public class ExamQuestion {
         this.thirdAnswer = thirdAnswer;
         this.correctAnswer = correctAnswer;
     }
-
-    @Override
-    public String toString() {
-        return "ExamQuestion{" +
-                "questionId=" + questionId +
-                ", question='" + question + '\'' +
-                ", firstAnswer='" + firstAnswer + '\'' +
-                ", secondAnswer='" + secondAnswer + '\'' +
-                ", thirdAnswer='" + thirdAnswer + '\'' +
-                ", correctAnswer='" + correctAnswer + '\'' +
-                ", exam=" + exam +
-                '}';
-    }
 }
 
 

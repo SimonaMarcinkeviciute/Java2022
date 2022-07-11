@@ -16,14 +16,15 @@ import java.util.List;
 
 public class ExamRepository extends AbstractRepository {
 
-    public void createExamName(Exam exam) {
+    public Exam createExamName(Exam exam) {
         modifyEntity(session -> session.persist(exam));
+
+        return exam;
     }
 
     public List<Exam> getExam() {
 
         return getValue(session -> session.createQuery("FROM Exam", Exam.class).list());
-
     }
 
     public void createExamQuestion(ExamQuestion examQuestion) {
@@ -43,8 +44,7 @@ public class ExamRepository extends AbstractRepository {
         });
     }
 
-    public void updateExamQuestion(ExamQuestion examQuestion)
-    {
+    public void updateExamQuestion(ExamQuestion examQuestion) {
         modifyEntity(session -> session.update(examQuestion));
     }
 
@@ -52,49 +52,23 @@ public class ExamRepository extends AbstractRepository {
         modifyEntity(session -> session.delete(examQuestion));
     }
 
-    public List<ExamGrade> getExamGrade(){
-        return getValue(session -> session.createQuery("FROM ExamGrade", ExamGrade.class).list());
-    }
-
-    public List<User> getStudents() {
-
-        return getValue(session -> {
-            HibernateCriteriaBuilder builder = session.getCriteriaBuilder();
-            JpaCriteriaQuery<User> query = builder.createQuery(User.class);
-            Root<User> root = query.from(User.class);
-
-            query.select(root).where(builder.equal(root.get("userStatus"), UserStatus.STUDENTAS));
-
-            return session.createQuery(query).list();
-        });
-    }
-
-    public String getExamGradeAvg(Exam exam) {
-        //sugalvoti kazka cia
-
-      return getValue(session -> {
-          Query query = session.createQuery("SELECT AVG(studenteExamGrade) FROM ExamGrade WHERE exam=:Exam");
-          query.setParameter("Exam", exam);
-
-          return query.getSingleResult().toString();
-      });
-    }
-
     public Long getExamSum() {
+
         return getValue(session -> session.createQuery("FROM ExamGrade", ExamGrade.class).stream().count());
     }
 
-    public String getCorrectStudentAnswersSum() {
+    public Long getCorrectStudentAnswersSum() {
 
         return getValue(session -> session.createQuery(
-                "SELECT COUNT(ua.studentAnswer) FROM ExamQuestion eq, UserAnswer ua WHERE eq.correctAnswer = ua.studentAnswer")
-                .getSingleResult().toString());
+                        "SELECT COUNT(ua.studentAnswer) FROM ExamQuestion eq, UserAnswer ua WHERE eq.correctAnswer = ua.studentAnswer", Long.class)
+                .getSingleResult());
     }
 
     public String getCorrectStudentAnswersSumByExam(Exam exam) {
+
         return getValue(session -> {
             Query query = session.createQuery(
-                            "SELECT COUNT(ua.studentAnswer) FROM ExamQuestion eq, UserAnswer ua WHERE eq.correctAnswer = ua.studentAnswer AND eq.questionId =:Exam");
+                    "SELECT COUNT(ua.studentAnswer) FROM ExamQuestion eq, UserAnswer ua WHERE eq.correctAnswer = ua.studentAnswer AND eq.questionId =:Exam");
             query.setParameter("Exam", exam.getExamId());
 
             return query.getSingleResult().toString();
@@ -102,10 +76,12 @@ public class ExamRepository extends AbstractRepository {
     }
 
     public Long getAllAnswersSum() {
+
         return getValue(session -> session.createQuery("FROM UserAnswer", UserAnswer.class).stream().count());
     }
 
     public String getFirstAnswerSumByExam(Exam exam) {
+
         return getValue(session -> {
             Query query = session.createQuery(
                     "SELECT COUNT(ua.studentAnswer) FROM ExamQuestion eq, UserAnswer ua WHERE eq.firstAnswer = ua.studentAnswer AND eq.questionId =:Exam");
@@ -116,6 +92,7 @@ public class ExamRepository extends AbstractRepository {
     }
 
     public String getAllAnswersByExamSum(Exam exam) {
+
         return getValue(session -> {
             Query query = session.createQuery(
                     "SELECT COUNT(ua.studentAnswer) FROM UserAnswer ua WHERE exam=:Exam");
@@ -126,6 +103,7 @@ public class ExamRepository extends AbstractRepository {
     }
 
     public String getFirstAnswerSum() {
+
         return getValue(session -> {
             Query query = session.createQuery(
                     "SELECT COUNT(ua.studentAnswer) FROM ExamQuestion eq, UserAnswer ua WHERE eq.firstAnswer = ua.studentAnswer");
@@ -135,6 +113,7 @@ public class ExamRepository extends AbstractRepository {
     }
 
     public String getSecondAnswerSum() {
+
         return getValue(session -> {
             Query query = session.createQuery(
                     "SELECT COUNT(ua.studentAnswer) FROM ExamQuestion eq, UserAnswer ua WHERE eq.secondAnswer = ua.studentAnswer");
@@ -144,6 +123,7 @@ public class ExamRepository extends AbstractRepository {
     }
 
     public String getThirdAnswerSum() {
+
         return getValue(session -> {
             Query query = session.createQuery(
                     "SELECT COUNT(ua.studentAnswer) FROM ExamQuestion eq, UserAnswer ua WHERE eq.thirdAnswer = ua.studentAnswer");
@@ -153,6 +133,7 @@ public class ExamRepository extends AbstractRepository {
     }
 
     public String getSecondAnswerSumByExam(Exam exam) {
+
         return getValue(session -> {
             Query query = session.createQuery(
                     "SELECT COUNT(ua.studentAnswer) FROM ExamQuestion eq, UserAnswer ua WHERE eq.secondAnswer = ua.studentAnswer AND eq.questionId =:Exam");
@@ -163,6 +144,7 @@ public class ExamRepository extends AbstractRepository {
     }
 
     public String getThirdAnswerSumByExam(Exam exam) {
+
         return getValue(session -> {
             Query query = session.createQuery(
                     "SELECT COUNT(ua.studentAnswer) FROM ExamQuestion eq, UserAnswer ua WHERE eq.thirdAnswer = ua.studentAnswer AND eq.questionId =:Exam");
@@ -172,9 +154,12 @@ public class ExamRepository extends AbstractRepository {
         });
     }
 
+    public Double getCorrectStudentAnswersAVG() {
 
-
-
+        return getValue(session -> session.createQuery(
+                        "SELECT AVG(eg.studenteExamGrade) FROM ExamQuestion eq, UserAnswer ua, ExamGrade eg WHERE eq.correctAnswer = ua.studentAnswer", Double.class)
+                .getSingleResult());
+    }
 
 }
 

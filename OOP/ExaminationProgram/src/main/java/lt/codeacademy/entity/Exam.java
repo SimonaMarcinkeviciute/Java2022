@@ -18,5 +18,4 @@ public class Exam {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long examId;
     private String name;
-
 }

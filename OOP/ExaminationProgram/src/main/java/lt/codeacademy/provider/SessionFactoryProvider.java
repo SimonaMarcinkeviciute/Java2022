@@ -46,7 +46,7 @@ public class SessionFactoryProvider {
         p.put(URL, "jdbc:postgresql://localhost/examination_program");
         p.put(USER, "postgres");
         p.put(PASS, "simona");
-        p.put(SHOW_SQL, "true");
+        p.put(SHOW_SQL, "false");
         p.put(HBM2DDL_AUTO, "update");
 
         return p;

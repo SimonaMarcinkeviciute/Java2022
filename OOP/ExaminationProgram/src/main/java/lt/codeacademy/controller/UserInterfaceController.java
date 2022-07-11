@@ -19,8 +19,9 @@ public class UserInterfaceController {
         examinationService = new ExaminationService();
         userService = new UserService();
     }
+
     private void showStudentsExamsStatistic() {
-        Long allCorrectAswers = Long.valueOf(examinationService.getCorrectStudentAnswersSum());
+        Long allCorrectAswers = examinationService.getCorrectStudentAnswersSum();
         Long allAnswers = examinationService.getAllAnswersSum();
 
         System.out.println("STATISTIKA");
@@ -28,13 +29,14 @@ public class UserInterfaceController {
         System.out.printf("Is viso teisingu atsakymu skaicius: %s teisingi atsakymai is %s.\n"
                 , allCorrectAswers, allAnswers);
         System.out.printf("Teisingai atsakytu klausimu vidurkis visuose klausimynuose: %s\n"
-                , getAvgCorrectAnswer(allAnswers, allCorrectAswers));
+                , Math.round(examinationService.getCorrectStudentAnswersAVG()));
         System.out.printf("A varianta visuose egzaminuose pasirinko kartu: %s\n", examinationService.getFirstAnswerSum());
         System.out.printf("B varianta visuose egzaminuose pasirinko kartu: %s\n", examinationService.getSecondAnswerSum());
         System.out.printf("C varianta visuose egzaminuose pasirinko kartu: %s\n", examinationService.getThirdAnswerSum());
+
         System.out.println("Ar noresite perziureti atskiru egzaminu statistika? TAIP/NE");
 
-        if(doYouWantCreateQuestion()){
+        if (isYes()) {
             showOneExamStatistic();
         }
     }
@@ -42,6 +44,11 @@ public class UserInterfaceController {
     private void showOneExamStatistic() {
         List<Exam> exams = examinationService.getExam();
         System.out.println("Pasirinkite egzamina, kurio statistika noresite apziureti:");
+
+        for (Exam exam : exams) {
+            System.out.printf("Id: %s pavadinimas: \"%s\".\n", exam.getExamId(), exam.getName());
+        }
+
         Exam exam = getExam(exams);
 
         String correctAnswerSum = examinationService.getCorrectStudentAnswersSumByExam(exam);
@@ -52,35 +59,27 @@ public class UserInterfaceController {
 
         System.out.printf("Egzamine \"%s\" teisingu atsakymu skaicius: %s teisingi atsakymai is %s.\n"
                 , exam.getName(), correctAnswerSum, allAnswer);
-        System.out.printf("Egzamine \"%s\" teisingu A atsakymu skaicius: %s.\n",exam.getName(), a);
-        System.out.printf("Egzamine \"%s\" teisingu A atsakymu skaicius: %s.\n",exam.getName(), b);
-        System.out.printf("Egzamine \"%s\" teisingu A atsakymu skaicius: %s.\n",exam.getName(), c);
-    }
-
-    private Long getAvgCorrectAnswer(Long allAnswers, Long correctAnswers) {
-
-        return (allAnswers + correctAnswers) / 2;
+        System.out.printf("Egzamine \"%s\" teisingu A atsakymu skaicius: %s.\n", exam.getName(), a);
+        System.out.printf("Egzamine \"%s\" teisingu B atsakymu skaicius: %s.\n", exam.getName(), b);
+        System.out.printf("Egzamine \"%s\" teisingu C atsakymu skaicius: %s.\n", exam.getName(), c);
     }
 
     private void showStudentExamsStatistic(User user) {
         List<ExamGrade> examGrades = userService.getAllUserGrade(user);
-
         System.out.println("Egzaminu pazymiai: ");
 
-        for(ExamGrade examGrade : examGrades) {
-            System.out.printf("Egzaminas: %s. %s. Ivertinimas - %s", examGrade.getExam().getExamId()
+        for (ExamGrade examGrade : examGrades) {
+            System.out.printf("Egzaminas: %s. %s. Ivertinimas - %s.\n", examGrade.getExam().getExamId()
                     , examGrade.getExam().getName(), examGrade.getStudenteExamGrade());
         }
-
     }
 
-    public void reTakeExam(User user) {
+    private void reTakeExam(User user) {
         List<Exam> passedExams = userService.getPassedExamsByUser(user).stream().toList();
-
-        System.out.println("Pagal ID, pasirinkite egzamina kuri laikysite");
+        System.out.println("Pagal ID, pasirinkite egzamina kuri laikysite:");
 
         for (Exam exam : passedExams) {
-            System.out.printf("ID %s. %s\n", exam.getExamId(), exam.getName());
+            System.out.printf("ID %s. \"%s\".\n", exam.getExamId(), exam.getName());
         }
 
         Exam exam = getExam(passedExams);
@@ -88,7 +87,6 @@ public class UserInterfaceController {
     }
 
     private void getUserExamAnswers(User user, Exam exam) {
-
         List<UserAnswer> userAnswers = userService.getUserAnswers(user, exam);
         List<ExamQuestion> examQuestions = examinationService.getExamQuestionByExam(exam);
 
@@ -97,12 +95,11 @@ public class UserInterfaceController {
 
         for (ExamQuestion examQuestion : examQuestions) {
             System.out.printf("%s. %s\n", counter++, examQuestion.getQuestion());
-            System.out.printf("   1. %s\n", examQuestion.getFirstAnswer());
-            System.out.printf("   2. %s\n", examQuestion.getSecondAnswer());
-            System.out.printf("   3. %s\n", examQuestion.getThirdAnswer());
+            System.out.printf("   %s\n", examQuestion.getFirstAnswer());
+            System.out.printf("   %s\n", examQuestion.getSecondAnswer());
+            System.out.printf("   %s\n", examQuestion.getThirdAnswer());
 
             String studentAnswer = getAnswer(examQuestion);
-            System.out.println("gavau atsakyma");
 
             for (UserAnswer userAnswer : userAnswers) {
                 if (userAnswer.getExamQuestion().getQuestionId().equals(examQuestion.getQuestionId())) {
@@ -116,74 +113,67 @@ public class UserInterfaceController {
     }
 
     private void updateUserGrade(double grade, User user, Exam exam) {
-        //sutvarkuti kad nebutu listas
-        List<ExamGrade> examGrades = userService.getUserGrade(user, exam);
+        ExamGrade examGrade = userService.getUserGrade(user, exam);
 
         int number = (int) Math.round(grade);
 
-        for (ExamGrade examGrade : examGrades) {
-            examGrade.setStudenteExamGrade(number);
-            userService.updateUserGrade(examGrade);
-        }
-
+        examGrade.setStudenteExamGrade(number);
+        userService.updateUserGrade(examGrade);
     }
 
-
-    public void selectTheExam(User user) {
+    private void selectTheExam(User user) {
         Set<Exam> passedExams = userService.getPassedExamsByUser(user);
         List<Exam> exams = examinationService.getExam();
         List<Exam> haveNotTakenExams = new ArrayList<>();
 
-        System.out.println("Pagal ID, pasirinkite egzamina kuri laikysite");
+       if(passedExams.size() != exams.size()) {
+           System.out.println("Pagal ID, pasirinkite egzamina kuri laikysite:");
 
-        for (Exam exam : exams) {
-            int counter = 0;
-            for (Exam passedExam : passedExams) {
-                if (exam.getExamId().equals(passedExam.getExamId())) {
-                    counter++;
-                }
-            }
-            if (counter == 0) {
-                System.out.printf("ID %s. %s\n", exam.getExamId(), exam.getName());
-                haveNotTakenExams.add(exam);
-            }
-        }
+           for (Exam exam : exams) {
+               int counter = 0;
+               for (Exam passedExam : passedExams) {
+                   if (exam.getExamId().equals(passedExam.getExamId())) {
+                       counter++;
+                   }
+               }
+               if (counter == 0) {
+                   System.out.printf("ID %s. %s\n", exam.getExamId(), exam.getName());
+                   haveNotTakenExams.add(exam);
+               }
+           }
+       }else {
+           System.out.println("Nelaikytu egzaminu nera!");
+           return;
+       }
 
         Exam exam = getExam(haveNotTakenExams);
         List<ExamQuestion> examQuestions = examinationService.getExamQuestionByExam(exam);
         takeTheExam(examQuestions, exam, user, "take");
     }
 
-
     private void takeTheExam(List<ExamQuestion> examQuestions, Exam exam, User user, String status) {
         int counter = 1;
         System.out.println("EGZAMINAS PRASIDEJO!!");
 
         for (ExamQuestion examQuestion : examQuestions) {
-            System.out.printf("%s. %s\n", counter++, examQuestion.getQuestion());
-            System.out.printf("   1. %s\n", examQuestion.getFirstAnswer());
-            System.out.printf("   2. %s\n", examQuestion.getSecondAnswer());
-            System.out.printf("   3. %s\n", examQuestion.getThirdAnswer());
+            System.out.printf("%s. %s.\n", counter++, examQuestion.getQuestion());
+            System.out.printf("   %s.\n", examQuestion.getFirstAnswer());
+            System.out.printf("   %s.\n", examQuestion.getSecondAnswer());
+            System.out.printf("   %s.\n", examQuestion.getThirdAnswer());
 
             String studentAnswer = getAnswer(examQuestion);
-            System.out.println("gavau atsakyma");
             UserAnswer userAnswer = new UserAnswer(studentAnswer);
             userAnswer.setUser(user);
             userAnswer.setExam(exam);
             userAnswer.setExamQuestion(examQuestion);
 
-
             userService.createUserAnswer(userAnswer);
-
-
         }
-
 
         examResult(exam, user, examQuestions, status);
     }
 
     private void examResult(Exam exam, User user, List<ExamQuestion> examQuestions, String status) {
-
         List<UserAnswer> answers = userService.getUserAnswers(user, exam);
         int counter = 0;
 
@@ -198,46 +188,41 @@ public class UserInterfaceController {
         }
 
         double grade = (10.0 / answers.size()) * counter;
-        System.out.printf("Tavo pazimys %s\n", Math.round(grade));
-        if(status.equals("take")) {
+        System.out.printf("Egzamino pabaiga. Tavo pazimys: %s.\n", Math.round(grade));
+
+        if (status.equals("take")) {
             setGrade(grade, user, exam);
         }
-        if(status.equals("retake")) {
+        if (status.equals("retake")) {
             updateUserGrade(grade, user, exam);
         }
     }
-
-
 
     private void setGrade(double grade, User user, Exam exam) {
         ExamGrade examGrade = new ExamGrade((int) Math.round(grade));
         examGrade.setExam(exam);
         examGrade.setUser(user);
 
-
         userService.createUserGrate(examGrade);
-
-
     }
 
     private String getAnswer(ExamQuestion examQuestion) {
         System.out.println("Irasykite teisinga atsakyma: ");
 
         do {
-            String number = scanner.nextLine();
+            String letter = scanner.nextLine();
 
-            if ("1".equals(number)) {
+            if ("a".equals(letter)) {
                 return examQuestion.getFirstAnswer();
-            } else if ("2".equals(number)) {
+            } else if ("b".equals(letter)) {
                 return examQuestion.getSecondAnswer();
-            } else if ("3".equals(number)) {
+            } else if ("c".equals(letter)) {
                 return examQuestion.getThirdAnswer();
             } else {
                 System.out.println("Tokio pasirinkimo nera, bandykite dar karta!");
             }
         } while (true);
     }
-
 
     private void deleteQuestionFromExam(Exam exam) {
         List<ExamQuestion> examQuestions = examinationService.getExamQuestionByExam(exam);
@@ -249,82 +234,83 @@ public class UserInterfaceController {
 
         ExamQuestion examQuestion = selectExamQuestion(examQuestions);
         examinationService.deleteQuestion(examQuestion);
+        System.out.println("Klausimas istrintas!");
     }
 
     private void addNewQuestionToExam(Exam exam) {
         createQuestions(exam);
+        System.out.println("Egzaminas atnaujintas!");
     }
 
     private void modifyExamQuestion(Exam exam) {
-
         List<ExamQuestion> examQuestions = examinationService.getExamQuestionByExam(exam);
+
+        if (examQuestions.size() == 0) {
+            System.out.println("Egzaminas neturi klausimu, pasirinkite prideti klausima.\n");
+            return;
+        }
 
         System.out.println("Pagal ID pasirinkite kuri klausima noresite pakeisti:");
 
         for (ExamQuestion examQuestion : examQuestions) {
-            System.out.printf("%s.%s\n", examQuestion.getQuestionId(), examQuestion.getQuestion());
+            System.out.printf("Id %s. \"%s\".\n", examQuestion.getQuestionId(), examQuestion.getQuestion());
         }
 
         ExamQuestion examQuestion = selectExamQuestion(examQuestions);
-
-        System.out.printf("""
-                        Jusu pasirinkto klausimo Id: %s
-                        Klausimas: "%s"
-                        Pirmas atsakymo variantas: "%s"
-                        Antras atsakymo variantas: "%s"
-                        Trecias atsakymo variantas: "%s"
-                        Teisingas atsakymo variantas: "%s"
-                        """, examQuestion.getQuestionId(), examQuestion.getQuestion(), examQuestion.getFirstAnswer()
-                , examQuestion.getSecondAnswer(), examQuestion.getThirdAnswer(), examQuestion.getCorrectAnswer());
-
+        printExamQuestionInfo(examQuestion);
         ExamQuestion updateExamQuestion = getModifyQuestion(examQuestion);
         updateExamQuestion.setExam(exam);
-
         examinationService.updateExamQuestion(updateExamQuestion);
+        System.out.println("Egazamino klausimas modifikuotas!");
+    }
 
+    private void printExamQuestionInfo(ExamQuestion examQuestion) {
+        System.out.printf("""
+                        Jusu pasirinkto klausimo info:
+                        Id: %s.
+                        Pavadinimas: "%s".
+                        Atsakymo variantai:
+                        %s.
+                        %s.
+                        %s.
+                        Teisingas atsakymo variantas: "%s".
+                        \n""", examQuestion.getQuestionId(), examQuestion.getQuestion(), examQuestion.getFirstAnswer()
+                , examQuestion.getSecondAnswer(), examQuestion.getThirdAnswer(), examQuestion.getCorrectAnswer());
     }
 
     private ExamQuestion getModifyQuestion(ExamQuestion examQuestion) {
-        ExamQuestion updateExamQuestion = new ExamQuestion();
-
-        List<String> answers = new ArrayList<>();
-        answers.add(examQuestion.getFirstAnswer());
-        answers.add(examQuestion.getSecondAnswer());
-        answers.add(examQuestion.getThirdAnswer());
-
-        List<String> newAnswersAndQuestion = new ArrayList<>();
-        newAnswersAndQuestion.add(examQuestion.getQuestion());
-
-
-        for (String answer : answers) {
-            System.out.printf("Ar noresite modifikuoti atsakymo varianta \"%s\" TAIP/NE\n", answer);
-
-            if (doYouWantCreateQuestion()) {
-                System.out.println("Iveskite nauja atsakymo varianta");
-                newAnswersAndQuestion.add(scanner.nextLine());
-            } else {
-                newAnswersAndQuestion.add(answer);
-            }
+        if (doYouWantModify(examQuestion.getFirstAnswer())) {
+            examQuestion.setFirstAnswer("a. " + scanner.nextLine());
+        }
+        if (doYouWantModify(examQuestion.getSecondAnswer())) {
+            examQuestion.setSecondAnswer("b. " + scanner.nextLine());
+        }
+        if (doYouWantModify(examQuestion.getThirdAnswer())) {
+            examQuestion.setThirdAnswer("c. " + scanner.nextLine());
         }
 
-        System.out.println("Pasirinkite teisinga atsakymo varianta: ");
+        List<String> newAnswersAndQuestion = List.of(examQuestion.getFirstAnswer(), examQuestion.getSecondAnswer()
+                , examQuestion.getThirdAnswer());
         String correctAnswer = getCorrectAnswer(newAnswersAndQuestion);
+        examQuestion.setCorrectAnswer(correctAnswer);
 
-        updateExamQuestion.setQuestionId(examQuestion.getQuestionId());
-        updateExamQuestion.setQuestion(examQuestion.getQuestion());
-        updateExamQuestion.setFirstAnswer(newAnswersAndQuestion.get(1));
-        updateExamQuestion.setSecondAnswer(newAnswersAndQuestion.get(2));
-        updateExamQuestion.setThirdAnswer(newAnswersAndQuestion.get(3));
-        updateExamQuestion.setCorrectAnswer(correctAnswer);
-
-        return updateExamQuestion;
-
+        return examQuestion;
     }
 
+    private boolean doYouWantModify(String answer) {
+        System.out.printf("Ar noresite modifikuoti atsakymo varianta \"%s\"   TAIP/NE.\n", answer);
+
+        if (isYes()) {
+            System.out.println("Iveskite nauja atsakymo varianta:");
+            return true;
+        }
+
+        return false;
+    }
 
     private ExamQuestion selectExamQuestion(List<ExamQuestion> examQuestions) {
-
         ExamQuestion examQuestion;
+
         do {
             Long questionId = getCorrectNumber();
             examQuestion = examQuestions.stream().filter(e -> e.getQuestionId().equals(questionId)).findFirst().orElse(null);
@@ -339,7 +325,7 @@ public class UserInterfaceController {
     public void startExamModification(Exam exam) {
         String action;
         do {
-            showExamModificationMenu();
+            showExamModificationMenu(exam);
             action = scanner.nextLine();
             selectExamModification(action, exam);
         } while (!action.equals("4"));
@@ -350,26 +336,28 @@ public class UserInterfaceController {
             case "1" -> modifyExamQuestion(exam);
             case "2" -> addNewQuestionToExam(exam);
             case "3" -> deleteQuestionFromExam(exam);
-            case "4" -> System.out.println("Programa uzdaryta");
-            default -> System.out.println("Blogas ivedimas");
+            case "4" -> System.out.println("Grizote i destotojo menu.");
+            default -> System.out.println("Blogas ivedimas! Bandykite dar karta!\n");
         }
     }
 
-    private void showExamModificationMenu() {
-        System.out.println("""
-                [1]. Pakeisti jau esama egzamino klausima
-                [2]. Prideti papildoma klausima egzaminui
-                [3]. Istrinti klausima is egzamino
-                [4]. Grizti i pradzios menu
-                """);
+    private void showExamModificationMenu(Exam exam) {
+        System.out.printf("""
+                Jusu pasirinktas egzaminas Id. %s "%s".
+                PASIRINKITE!
+                [1]. Pakeisti jau esama egzamino klausima.
+                [2]. Prideti papildoma klausima egzaminui.
+                [3]. Istrinti klausima is egzamino.
+                [4]. Grizti i destytojo menu.
+                """, exam.getExamId(), exam.getName());
     }
 
     private void modifyExam() {
-        List<Exam> exams = getExams();
-        System.out.println("Pagal id pasirinkite kuri egzamina noresite modifikuoti");
+        List<Exam> exams = examinationService.getExam();
+        System.out.println("Pagal id pasirinkite kuri egzamina noresite modifikuoti: ");
 
         for (Exam exam : exams) {
-            System.out.printf("Id: %s pavadinimas: %s\n", exam.getExamId(), exam.getName());
+            System.out.printf("Id: %s pavadinimas: \"%s\".\n", exam.getExamId(), exam.getName());
         }
 
         Exam exam = getExam(exams);
@@ -377,109 +365,79 @@ public class UserInterfaceController {
     }
 
     private void createQuestions(Exam exam) {
-
         do {
             System.out.println("Ar norite prideti klausima? TAIP/NE");
-            boolean createQuestion = doYouWantCreateQuestion();
-            if (createQuestion) {
+            if (isYes()) {
                 List<String> questionAndAnswers = createOneQuestion();
-                System.out.println("Gavo lista su kl ir ats");
-                ExamQuestion examQuestion = new ExamQuestion(questionAndAnswers.get(0), questionAndAnswers.get(1)
-                        , questionAndAnswers.get(2), questionAndAnswers.get(3), questionAndAnswers.get(4));
+                ExamQuestion examQuestion = new ExamQuestion(questionAndAnswers.get(4), questionAndAnswers.get(0)
+                        , questionAndAnswers.get(1), questionAndAnswers.get(2), questionAndAnswers.get(3));
                 examQuestion.setExam(exam);
-                System.out.println("Sukure klausi,a");
-                System.out.println(examQuestion);
-                //kazkas cia negerai
                 examinationService.createExamQuestion(examQuestion);
             } else {
                 return;
             }
         } while (true);
-
     }
 
     private List<String> createOneQuestion() {
-        List<String> questionAntAnswers = new ArrayList<>();
+        List<String> questionAndAnswers = new ArrayList<>();
+
         System.out.println("Iveskite klausima:");
         String question = scanner.nextLine();
         System.out.println("Iveskite pirma atsakymo varianta");
-        String firstAnswer = scanner.nextLine();
+        String firstAnswer = "a. " + scanner.nextLine();
         System.out.println("Iveskite antra atsakymo varianta");
-        String secondAnswer = scanner.nextLine();
+        String secondAnswer = "b. " + scanner.nextLine();
         System.out.println("Iveskite trecia atsakymo varianta");
-        String thirdAnswer = scanner.nextLine();
-        questionAntAnswers.add(question);
-        questionAntAnswers.add(firstAnswer);
-        questionAntAnswers.add(secondAnswer);
-        questionAntAnswers.add(thirdAnswer);
+        String thirdAnswer = "c. " + scanner.nextLine();
 
-        System.out.println("Pasirinkite teisinga atsakymo varianta");
-        String correctAnswer = getCorrectAnswer(questionAntAnswers);
-        questionAntAnswers.add(correctAnswer);
+        questionAndAnswers.add(firstAnswer);
+        questionAndAnswers.add(secondAnswer);
+        questionAndAnswers.add(thirdAnswer);
+        questionAndAnswers.add(getCorrectAnswer(questionAndAnswers));
+        questionAndAnswers.add(question);
 
-        for (String s : questionAntAnswers) {
-            System.out.println(s);
-        }
-
-        return questionAntAnswers;
+        return questionAndAnswers;
     }
 
     private String getCorrectAnswer(List<String> questionAndAnswers) {
-        int counter = 1;
+        System.out.println("Pasirinkite teisinga atsakymo varianta:");
         for (String q : questionAndAnswers) {
-            if (questionAndAnswers.indexOf(q) != 0) {
-                System.out.printf("%s. %s\n", counter++, q);
-            }
+            System.out.printf("%s\n", q);
         }
 
-        String correctAnswer = scanner.nextLine();
-
         do {
-            switch (correctAnswer) {
-                case "1" -> {
+            String correctAnswer = scanner.nextLine();
+            switch (correctAnswer.toLowerCase()) {
+                case "a" -> {
+                    return questionAndAnswers.get(0);
+                }
+                case "b" -> {
                     return questionAndAnswers.get(1);
                 }
-                case "2" -> {
+                case "c" -> {
                     return questionAndAnswers.get(2);
                 }
-                case "3" -> {
-                    return questionAndAnswers.get(3);
-                }
-                default -> System.out.println("Tokio pasirinkimo nera, bandykite dar karta");
+                default -> System.out.println("Tokio pasirinkimo nera, bandykite dar karta!");
             }
         } while (true);
-
     }
 
-    private boolean doYouWantCreateQuestion() {
+    private boolean isYes() {
         String answer;
 
         do {
             answer = scanner.nextLine();
-            System.out.println("nusiskanavau");
             if (answer.equalsIgnoreCase("TAIP")) {
                 return true;
-            }
-            if (answer.equalsIgnoreCase("NE")) {
+            } else if (answer.equalsIgnoreCase("NE")) {
                 return false;
+            } else {
+                System.out.println("Blogas ivedimas, pakartokite!");
             }
-            System.out.println("gavau boolean");
         } while (!answer.equalsIgnoreCase("TAIP") && !answer.equalsIgnoreCase("NE"));
 
         return false;
-    }
-
-
-    private void selectExam(List<Exam> exams) {
-        for (Exam exam : exams) {
-            System.out.printf("Id: %s pavadinimas: %s\n", exam.getExamId(), exam.getName());
-        }
-
-        // pataisyti kazkaip sita dali
-
-        System.out.println("Pagal id, patvirtinkite kuriam egzaminui norite prideti klausimus");
-        Exam exam = getExam(exams);
-        createQuestions(exam);
     }
 
     private Exam getExam(List<Exam> exams) {
@@ -488,7 +446,7 @@ public class UserInterfaceController {
             Long examId = getCorrectNumber();
             exam = exams.stream().filter(e -> e.getExamId().equals(examId)).findFirst().orElse(null);
             if (exam == null) {
-                System.out.println("Toks id neegzistuoja, pakartokite ivedima");
+                System.out.println("Toks id neegzistuoja, pakartokite ivedima!");
             }
         } while (exam == null);
 
@@ -500,40 +458,18 @@ public class UserInterfaceController {
             try {
                 return Long.valueOf(scanner.nextLine());
             } catch (Exception e) {
-                System.out.println("Blogas ivedimas, bandykite dar karta");
+                System.out.println("Blogas ivedimas, bandykite dar karta!");
             }
         }
-    }
-
-    private void showExams(String examName) {
-        List<Exam> exams = getExams();
-        List<Exam> examsWithTheSameName = new ArrayList<>();
-
-        for (Exam exam : exams) {
-            if (exam.getName().equals(examName)) {
-                examsWithTheSameName.add(exam);
-            }
-        }
-
-        if (examsWithTheSameName.size() == 1) {
-            Exam exam = examsWithTheSameName.get(0);
-            createQuestions(exam);
-        } else {
-            System.out.println("Egzaminai tokiu paciu pavadinimu: ");
-            selectExam(examsWithTheSameName);
-        }
-    }
-
-    private List<Exam> getExams() {
-        return examinationService.getExam();
     }
 
     private void createExam() {
-        System.out.println("Iveskite egzamino pavadinima");
+        System.out.println("Iveskite egzamino pavadinima: ");
         String examName = scanner.nextLine();
         Exam exam = new Exam(null, examName);
-        examinationService.createExamName(exam);
-        showExams(examName);
+        exam = examinationService.createExamName(exam);
+        createQuestions(exam);
+        System.out.println("Egzaminas sukurtas! Grizote i destytojo meniu!\n");
     }
 
     public void startTeacherApplication() {
@@ -550,21 +486,22 @@ public class UserInterfaceController {
             case "1" -> createExam();
             case "2" -> modifyExam();
             case "3" -> showStudentsExamsStatistic();
-            case "4" -> System.out.println("Programa uzdaryta");
-            default -> System.out.println("Blogas ivedimas");
+            case "4" -> System.out.println("Grizote i pradziot menu.");
+            default -> System.out.println("Blogas ivedimas! Pakartokite!");
         }
     }
 
     private void showTeacherMenu() {
         System.out.println("""
-                [1]. Sukurti egzamina
-                [2]. Redaguoti egzamina
-                [3]. Perziureti egzaminu statistika
-                [4]. Grizti i pradios menu
+                PASIRINKITE:
+                [1]. Sukurti egzamina.
+                [2]. Redaguoti egzamina.
+                [3]. Perziureti egzaminu statistika.
+                [4]. Grizti i pradzios menu.
                 """);
     }
 
-    public void startStudentApplication(User user) {
+    private void startStudentApplication(User user) {
         String action;
         do {
             showStudentMenu();
@@ -578,33 +515,34 @@ public class UserInterfaceController {
             case "1" -> selectTheExam(user);
             case "2" -> reTakeExam(user);
             case "3" -> showStudentExamsStatistic(user);
-            case "4" -> System.out.println("Programa uzdaryta");
-            default -> System.out.println("Blogas ivedimas");
+            case "4" -> System.out.println("Grizote i pradzios menu.");
+            default -> System.out.println("Blogas ivedimas!");
         }
     }
 
     private void showStudentMenu() {
         System.out.println("""
-                [1]. Laikyti egzamina
-                [2]. Perlaikyti egzamina
-                [3]. Perziureti egzaminu statistika
-                [4]. Grizti i pradios menu
+                PASIRINKITE:
+                [1]. Laikyti egzamina.
+                [2]. Perlaikyti egzamina.
+                [3]. Perziureti egzaminu statistika.
+                [4]. Grizti i pradios menu.
                 """);
     }
 
-    private boolean isUserExist(List<User> users, String password, String surname) {
+    private boolean isUserExist(User user) {
         boolean isUserExist = false;
 
-        for (User user : users) {
-            if (user.getUserSurname().equals(surname) && user.getPassword().equals(DigestUtils.sha512Hex(password))) {
-                if (user.getUserStatus() == UserStatus.STUDENTAS) {
-                    isUserExist = true;
-                    startStudentApplication(user);
-                }
-                if (user.getUserStatus() == UserStatus.DESTYTOJAS) {
-                    isUserExist = true;
-                    startTeacherApplication();
-                }
+        if (user != null) {
+            if (user.getUserStatus() == UserStatus.STUDENTAS) {
+                isUserExist = true;
+                System.out.println("Sveikinu prisijungus!\n");
+                startStudentApplication(user);
+            }
+            if (user.getUserStatus() == UserStatus.DESTYTOJAS) {
+                isUserExist = true;
+                System.out.println("Sveikinu prisijungus!\n");
+                startTeacherApplication();
             }
         }
 
@@ -612,21 +550,21 @@ public class UserInterfaceController {
     }
 
     private void logIn() {
-        System.out.println("Iveskite pavarde prisijungimui");
+        System.out.println("Iveskite pavarde prisijungimui:");
         String surname = scanner.nextLine();
-        System.out.println("Iveskite slaptazodi");
+        System.out.println("Iveskite slaptazodi:");
         String password = scanner.nextLine();
+        String sifruotas = DigestUtils.sha512Hex(password);
+        User user = userService.getUserBySurnamePassword(surname, sifruotas);
 
-        List<User> users = userService.getUser();
-
-        while (isUserExist(users, password, surname)) {
-            System.out.println("Blogas prisijungimo vardas arba slaptazodis");
+        if (!isUserExist(user)) {
+            System.out.println("Blogas prisijungimo vardas arba slaptazodis! Bandykite dar karta!");
+            logIn();
         }
-
-        //nera jokio pranesimo jei nepavyksta prisijungti
     }
 
     private void registration() {
+        UserStatus status = null;
 
         System.out.println("Iveskite savo varda");
         String name = scanner.nextLine();
@@ -640,23 +578,20 @@ public class UserInterfaceController {
             return;
         }
 
-        UserStatus status = null;
-
         while (status == null) {
             status = getUserStatus();
         }
 
         User user = new User(null, name, surname, DigestUtils.sha512Hex(password), status);
-
         userService.createUser(user);
-
+        System.out.println("Registracija baigta");
     }
 
     private UserStatus getUserStatus() {
         System.out.println("""
                 Pasirinkite vartotojo statusa: 
-                [1] Destytojas
-                [2] Studentas 
+                [1] Destytojas.
+                [2] Studentas.
                 """);
 
         String status = scanner.nextLine();
@@ -680,8 +615,10 @@ public class UserInterfaceController {
                 System.out.println("Slaptazodziai nesutampa");
                 continue;
             }
+
             return true;
         }
+
         return false;
     }
 
@@ -696,9 +633,10 @@ public class UserInterfaceController {
 
     private void showMenu() {
         System.out.println("""
-                [1]. Registracija
-                [2]. Prisijungimas
-                [3]. Iseiti is programos
+                PASIRINKITE!
+                [1]. Registracija.
+                [2]. Prisijungimas.
+                [3]. Iseiti is programos.
                 """);
     }
 
@@ -707,7 +645,7 @@ public class UserInterfaceController {
             case "1" -> registration();
             case "2" -> logIn();
             case "3" -> System.out.println("Programa uzdaryta");
-            default -> System.out.println("Blogas ivedimas");
+            default -> System.out.println("Blogas ivedimas!");
         }
     }
 }
