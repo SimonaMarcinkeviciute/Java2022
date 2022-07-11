@@ -3,7 +3,6 @@ package lt.codeacademy.service;
 import lt.codeacademy.entity.*;
 import lt.codeacademy.repository.UserRepository;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;

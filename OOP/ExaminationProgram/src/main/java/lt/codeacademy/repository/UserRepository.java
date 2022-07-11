@@ -15,11 +15,6 @@ public class UserRepository extends AbstractRepository {
         modifyEntity(session -> session.persist(user));
     }
 
-    public List<User> getUsers() {
-
-        return getValue(session -> session.createQuery("FROM User", User.class).list());
-    }
-
     public void createUserAnswer(UserAnswer userAnswer) {
         modifyEntity(session -> session.persist(userAnswer));
     }
