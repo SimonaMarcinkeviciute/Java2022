@@ -2,23 +2,23 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title th:if="${product ne null}" th:text="${'Product ' + product.name + ' Details'}">Product Details</title>
+    <title th:if="${article ne null}" th:text="${'Product ' + article.name + ' Details'}">Product Details</title>
 </head>
 <body>
-<div th:if="${product ne null}">
-    <div>Name: <span th:text="${product.name}"></span></div>
-    <div>Category: <span th:text="${product.category}"></span></div>
-    <div>Description: <span th:text="${product.description}"></span></div>
-    <div>Quantity: <span th:text="${product.quantity}"></span></div>
-    <div>Price: <span th:text="${product.price}"></span></div>
+<div th:if="${article ne null}">
+    <div>Name: <span th:text="${article.name}"></span></div>
+    <div>Category: <span th:text="${article.category}"></span></div>
+    <div>Description: <span th:text="${article.description}"></span></div>
+    <div>Quantity: <span th:text="${article.quantity}"></span></div>
+    <div>Price: <span th:text="${article.price}"></span></div>
     <div>
-        <a th:href="@{/products/{id}/update(id=${product.id})}">Update Product</a>
+        <a th:href="@{/products/{id}/update(id=${article.id})}">Update Product</a>
     </div>
     <div>
-        <a th:href="@{/products/{id}/delete(id=${product.id})}">Delete Product</a>
+        <a th:href="@{/products/{id}/delete(id=${article.id})}">Delete Product</a>
     </div>
 </div>
-<div th:if="${product eq null}">
+<div th:if="${article eq null}">
     Product does not exist
 </div>
 </body>

@@ -1,6 +1,6 @@
 package lt.codeacademy.eshop.controller;
 
-import lt.codeacademy.eshop.dto.Product;
+import lt.codeacademy.eshop.dto.Article;
 import lt.codeacademy.eshop.service.MessageService;
 import lt.codeacademy.eshop.service.ProductService;
 import org.springframework.data.domain.Pageable;
@@ -45,17 +45,17 @@ public class ProductController {
 
     @GetMapping("/save")
     public String openCreateProduct(Model model, String message) {
-        model.addAttribute("product", new Product());
+        model.addAttribute("article", new Article());
         model.addAttribute("message", messageService.getMessage(message));
 
         return "form/product";
     }
 
     @PostMapping("/save")
-    public String createProduct(Product product) {
+    public String createProduct(Article article) {
 
-        String message = "lt.codeacademy.eshop.product.create.message.success";
-        productService.createProduct(product);
+        String message = "lt.codeacademy.eshop.article.create.message.success";
+        productService.createProduct(article);
 
         return "redirect:/products/save?message=" + message;
     }
@@ -85,20 +85,20 @@ public class ProductController {
 
     @GetMapping("/{id}")
     public String openDetailPage(@PathVariable UUID id, Model model) {
-        model.addAttribute("product", productService.getProduct(id));
+        model.addAttribute("article", productService.getProduct(id));
 
         return "productDetails";
     }
 
     @GetMapping("/{id}/update")
     public String showUpdateForm(@PathVariable UUID id, Model model) {
-        model.addAttribute("product", productService.getProduct(id));
+        model.addAttribute("article", productService.getProduct(id));
         return "form/product";
     }
 
     @PostMapping("/{id}/update")
-    public String updateProduct(Product product) {
-        productService.updateProduct(product);
+    public String updateProduct(Article article) {
+        productService.updateProduct(article);
 
         return "redirect:/products";
     }

@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lt.codeacademy.eshop.dto.Product;
+import lt.codeacademy.eshop.dto.Article;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.Column;
@@ -21,26 +21,24 @@ import java.util.UUID;
 @AllArgsConstructor
 @Entity
 @Table(name = "products")
-public class ProductEntity {
+public class ArticleEntity {
     @Id
     @GeneratedValue
     @Column(columnDefinition = "VARCHAR(36)", updatable = false)
     @Type(type = "uuid-char")
     private UUID id;
-    private String name;
-    private String description;
-    private String category;
-    private Integer quantity;
-    private BigDecimal price;
+    private String title;
+    private String content;
+    private String date;
+    private String author;
 
-    public static ProductEntity convert(Product p) {
-        return new ProductEntity(
-                p.getId(),
-                p.getName(),
-                p.getDescription(),
-                p.getCategory(),
-                p.getQuantity(),
-                p.getPrice()
+    public static ArticleEntity convert(Article article) {
+        return new ArticleEntity(
+                article.getId(),
+                article.getTitle(),
+                article.getContent(),
+                article.getDate(),
+                article.getAuthor()
         );
     }
 }

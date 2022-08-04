@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <html lang="en"
       xmlns:th="http://www.thymeleaf.org"
-      th:with="productExist=${product.name ne null}">
+      th:with="productExist=${article.name ne null}">
 <head>
     <meta charset="UTF-8">
-    <title th:text="${productExist ? 'Update product' : 'Create product'}"></title>
+    <title th:text="${productExist ? 'Update article' : 'Create article'}"></title>
 </head>
 <body>
-<h3 th:text="${productExist ? 'Update product:' : 'Create product:'}"></h3>
-<form method="post" th:object="${product}">
+<h3 th:text="${productExist ? 'Update article:' : 'Create article:'}"></h3>
+<form method="post" th:object="${article}">
     <div>
         <label>Product name:</label>
         <input type="text" placeholder="Product name" th:field="*{name}">
@@ -30,7 +30,7 @@
         <input type="text" placeholder="Product price" th:field="*{price}">
     </div>
 
-    <button type="submit" th:text="${productExist ? 'Update product' : 'Create product'}"></button>
+    <button type="submit" th:text="${productExist ? 'Update article' : 'Create article'}"></button>
 </form>
 <div th:if="${message}" th:text="${message}"></div>
 </body>

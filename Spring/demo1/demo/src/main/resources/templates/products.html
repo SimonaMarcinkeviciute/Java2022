@@ -80,16 +80,16 @@
             </tr>
             </thead>
             <tbody>
-            <tr th:each="product : ${productsByPage.content}">
+            <tr th:each="article : ${productsByPage.content}">
                 <td>
-                    <a th:href="@{/products/{id}(id=${product.id})}" th:text="${product.name}"></a>
+                    <a th:href="@{/products/{id}(id=${article.id})}" th:text="${article.name}"></a>
                 </td>
-                <td th:text="${product.category}"></td>
-                <td th:text="${product.description}"></td>
-                <td th:text="${product.quantity}"></td>
-                <td th:text="${product.price}"></td>
+                <td th:text="${article.category}"></td>
+                <td th:text="${article.description}"></td>
+                <td th:text="${article.quantity}"></td>
+                <td th:text="${article.price}"></td>
                 <td>
-                    <a th:href="@{/products/{id}/delete(id=${product.id})}" class="text-danger">
+                    <a th:href="@{/products/{id}/delete(id=${article.id})}" class="text-danger">
                         <i class="bi bi-trash"></i>
                     </a>
                 </td>

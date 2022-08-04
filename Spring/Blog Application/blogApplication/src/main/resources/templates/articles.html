@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Articles</title>
+</head>
+<body>
+<div th:if="${#lists.isEmpty(articles)}">Sorry, articles does not exist :(</div>
+<div th:unless="${#lists.isEmpty(articles)}">
+  <table>
+    <thead>
+    <tr>
+      <th>Article title</th>
+      <th>Article content</th>
+      <th>Article author</th>
+      <th>Article date</th>
+      <th></th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="article : ${articles}">
+      <td>
+        <a th:href="@{/articles/{id}(id=${article.id})}" th:text="${article.title}"></a>
+      </td>
+      <td th:text="${article.content}"></td>
+      <td th:text="${article.author}"></td>
+      <td th:text="${article.date}"></td>
+      <td><a th:href="@{/articles/{id}/delete(id=${article.id})}">Delete</a></td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+</body>
+</html>

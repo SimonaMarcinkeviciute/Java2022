@@ -1,7 +1,7 @@
 package lt.codeacademy.eshop.service;
 
-import lt.codeacademy.eshop.dto.Product;
-import lt.codeacademy.eshop.entity.ProductEntity;
+import lt.codeacademy.eshop.dto.Article;
+import lt.codeacademy.eshop.entity.ArticleEntity;
 import lt.codeacademy.eshop.exception.ProductNotExistException;
 import lt.codeacademy.eshop.repository.ProductRepository;
 import org.springframework.data.domain.Page;
@@ -21,38 +21,38 @@ public class ProductService {
         this.productRepository = productRepository;
     }
 
-    public void createProduct(Product product) {
-        productRepository.save(ProductEntity.convert(product));
+    public void createProduct(Article article) {
+        productRepository.save(ArticleEntity.convert(article));
     }
 
-    public Page<Product> getProducts(Pageable pageable) {
+    public Page<Article> getProducts(Pageable pageable) {
         return productRepository.findAll(pageable)
-                .map(Product::convert);
+                .map(Article::convert);
     }
 
-    public Product getProduct(UUID id) {
+    public Article getProduct(UUID id) {
         return productRepository.findById(id)
-                .map(Product::convert)
+                .map(Article::convert)
                 .orElseThrow(() -> new ProductNotExistException(id));
     }
 
-    public void updateProduct(Product product) {
-        productRepository.save(ProductEntity.convert(product));
+    public void updateProduct(Article article) {
+        productRepository.save(ArticleEntity.convert(article));
     }
 
     public void delete(UUID id) {
         productRepository.deleteById(id);
     }
 
-    public List<Product> getProductsByCategory(String category) {
+    public List<Article> getProductsByCategory(String category) {
         return productRepository.findAllByCategory(category).stream()
-                .map(Product::convert)
+                .map(Article::convert)
                 .toList();
     }
 
-    public List<Product> getProductsByCategoryAndPrice(String category, BigDecimal price) {
+    public List<Article> getProductsByCategoryAndPrice(String category, BigDecimal price) {
         return productRepository.getProductsByCategoryAndPrice(category, price).stream()
-                .map(Product::convert)
+                .map(Article::convert)
                 .toList();
     }
 
