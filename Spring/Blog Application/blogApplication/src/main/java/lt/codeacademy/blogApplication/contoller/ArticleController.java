@@ -36,8 +36,12 @@ public class ArticleController {
     }
 
     @GetMapping
-    public String showArticles(Model model) {
-        model.addAttribute("articles", articleService.getArticles());
+    public String showArticles(Model model, @RequestParam(required = false) String author) {
+        if(author != null && !author.isBlank()){
+            model.addAttribute("articles", articleService.getArticlesByCategory(author));
+        }else {
+            model.addAttribute("articles", articleService.getArticles());
+        }
 
         return "articles";
     }
