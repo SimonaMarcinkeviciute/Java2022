@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
+    <meta charset="UTF-8">
+    <title>Products</title>
+</head>
+<body>
+<div class="container">
+    <div th:if="${not productsByPage.hasContent()}"
+         class="alert alert-info"
+         role="alert">
+        Product list is empty!
+    </div>
+    <div th:if="${productsByPage.hasContent()}">
+        <table class="table table-striped table-hover">
+            <thead class="table-dark">
+            <tr>
+                <th class="col-2">
+                    <a th:with="direction=${productsByPage.sort.getOrderFor('name')?.direction}"
+                       th:href="@{/products(sort='name,' + ${direction?.name() eq 'ASC' ? 'DESC' : 'ASC'})}">
+                        Name
+                        <i class="bi"
+                           th:classappend="${direction?.name() eq 'ASC' ? 'bi-sort-down-alt' : 'bi-sort-down'}"
+                           th:if="${direction ne null}"></i>
+                    </a>
+                </th>
+                <th class="col-1">
+                    <a th:with="direction=${productsByPage.sort.getOrderFor('category')?.direction}"
+                       th:href="@{/products(sort='category,' + ${direction?.name() eq 'ASC' ? 'DESC' : 'ASC'})}">
+                        Category
+                        <i class="bi"
+                           th:classappend="${direction?.name() eq 'ASC' ? 'bi-sort-down-alt' : 'bi-sort-down'}"
+                           th:if="${direction ne null}"></i>
+                    </a>
+                </th>
+                <th class="col-7">
+                    <a th:with="direction=${productsByPage.sort.getOrderFor('description')?.direction}"
+                       th:href="@{/products(sort='description,' + ${direction?.name() eq 'ASC' ? 'DESC' : 'ASC'})}">
+                        Description
+                        <i class="bi"
+                           th:classappend="${direction?.name() eq 'ASC' ? 'bi-sort-down-alt' : 'bi-sort-down'}"
+                           th:if="${direction ne null}"></i>
+                    </a>
+                </th>
+                <th class="col-1">
+                    <a th:with="direction=${productsByPage.sort.getOrderFor('quantity')?.direction}"
+                       th:href="@{/products(sort='quantity,' + ${direction?.name() eq 'ASC' ? 'DESC' : 'ASC'})}">
+                        Quantity
+                        <i class="bi"
+                           th:classappend="${direction?.name() eq 'ASC' ? 'bi-sort-numeric-down' : 'bi-sort-numeric-down-alt'}"
+                           th:if="${direction ne null}"></i>
+                    </a>
+                </th>
+                <th class="col-1">
+                    <a th:with="direction=${productsByPage.sort.getOrderFor('price')?.direction}"
+                       th:href="@{/products(sort='price,' + ${direction?.name() eq 'ASC' ? 'DESC' : 'ASC'})}">
+                        Price
+                        <i class="bi"
+                           th:classappend="${direction?.name() eq 'ASC' ? 'bi-sort-numeric-down' : 'bi-sort-numeric-down-alt'}"
+                           th:if="${direction ne null}"></i>
+                    </a>
+                </th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="product : ${productsByPage.content}">
+                <td>
+                    <a th:href="@{/products/{id}(id=${product.id})}" th:text="${product.name}"></a>
+                </td>
+                <td th:text="${product.category}"></td>
+                <td th:text="${product.description}"></td>
+                <td th:text="${product.quantity}"></td>
+                <td th:text="${product.price}"></td>
+                <td>
+                    <a th:href="@{/products/{id}/delete(id=${product.id})}" class="text-danger">
+                        <i class="bi bi-trash"></i>
+                    </a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        <div class="row">
+            <div class="col-2"></div>
+            <div class="col-8">
+                <nav aria-label="Page navigation example">
+
+
+                    <ul class="pagination justify-content-center"
+                        th:with="${productsByPage.sort.}">
+
+
+                        <li class="page-item"
+                            th:classappend="${productsByPage.number eq 0 ? 'disabled' : ''}">
+                            <a class="page-link"
+                               th:href="@{/products(page=${productsByPage.number} - 1)}">Previous</a>
+                        </li>
+                        <li class="page-item"
+                            th:each="productPage: ${#numbers.sequence(0, productsByPage.totalPages - 1)}"
+                            th:classappend="${productPage eq productsByPage.number ? 'active': ''}">
+                            <a class="page-link"
+                               th:href="@{/products(page=${productPage})}"
+                               th:text="${productPage} + 1"></a>
+                        </li>
+                        <li class="page-item"
+                            th:classappend="${productsByPage.number eq productsByPage.totalPages - 1 ? 'disabled' : ''}">
+                            <a class="page-link"
+                               th:href="@{/products(page=${productsByPage.number} + 1)}">Next</a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+            <div class="col-2 text-end">
+                <span th:text="'Total products: ' + ${productsByPage.totalElements}"/>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2" crossorigin="anonymous"></script>
+</body>
+</html>

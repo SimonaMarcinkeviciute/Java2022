@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Article details</title>
+</head>
+<body>
+   <div th:if="${article ne null}">
+      <div>Article title: <span th:text="${article.title}"></span></div>
+      <div>Content: <span th:text="${article.content}"></span></div>
+      <div>Date: <span th:text="${article.date}"></span></div>
+      <div>Author: <span th:text="${article.author}"></span></div>
+       <div>
+           <a th:href="@{/articles/{id}/update(id=${article.id})}">Update Product</a>
+       </div>
+       <div>
+           <a th:href="@{/articles/{id}/delete(id=${article.id})}">Delete Product</a>
+       </div>
+   </div>
+   <div th:if="${article eq null}">Article does not exist</div>
+</body>
+</html>
