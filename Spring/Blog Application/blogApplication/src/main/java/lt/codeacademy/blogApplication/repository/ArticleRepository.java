@@ -1,6 +1,8 @@
 package lt.codeacademy.blogApplication.repository;
 
 import lt.codeacademy.blogApplication.dto.Article;
+import lt.codeacademy.blogApplication.mapper.ArticleMapper;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
@@ -13,10 +15,10 @@ import java.util.*;
 public class ArticleRepository {
 
     private final Map<UUID, Article> articles;
-    private final DataSource dataSource;
+    private final JdbcTemplate jdbcTemplate;
 
-    public ArticleRepository(DataSource dataSource) {
-        this.dataSource = dataSource;
+    public ArticleRepository(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
         articles = new HashMap<>();
     }
 
@@ -27,9 +29,7 @@ public class ArticleRepository {
     }
 
     public List<Article> getArticles() {
-        return articles.values()
-                .stream()
-                .toList();
+        return jdbcTemplate.query("select * from ARTICLES", new ArticleMapper());
     }
 
     public Article getArticle(UUID id) {
@@ -38,29 +38,6 @@ public class ArticleRepository {
 
     public void delete(UUID id) {
         articles.remove(id);
-    }
-
-    public List<Article> getDataSourceProducts() {
-        List<Article> articles = new ArrayList<>();
-
-        try {
-            Connection connection = dataSource.getConnection();
-            Statement statement = connection.createStatement();
-            ResultSet resultSet = statement.executeQuery("select * from ARTICLES");
-            while(resultSet.next()) {
-                articles.add(new Article(
-                        UUID.fromString(resultSet.getString("id")),
-                        resultSet.getString("title"),
-                        resultSet.getString("content"),
-                        resultSet.getString("author"),
-                        resultSet.getString("date")
-                ));
-            }
-        }catch(Exception e) {
-            System.out.println(e);
-        }
-
-        return articles;
     }
 }
 
