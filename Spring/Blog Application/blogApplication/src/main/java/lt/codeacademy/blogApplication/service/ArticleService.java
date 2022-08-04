@@ -24,7 +24,8 @@ public class ArticleService {
     }
 
     public List<Article> getArticles() {
-        return articleRepository.getArticles();
+       // return articleRepository.getArticles();
+        return articleRepository.getDataSourceProducts();
     }
 
     public Article getArticle(UUID id) {
