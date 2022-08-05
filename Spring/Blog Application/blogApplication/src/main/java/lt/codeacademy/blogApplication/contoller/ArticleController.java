@@ -4,6 +4,7 @@ import lt.codeacademy.blogApplication.dto.Article;
 import lt.codeacademy.blogApplication.service.ArticleService;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.data.web.SortDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -23,19 +24,18 @@ public class ArticleController {
     }
 
     @GetMapping("/save")
-    public String openCreateArticle(Model model) {
+    public String openCreateArticle(Model model, String message) {
         model.addAttribute("article", new Article());
+        model.addAttribute("message", message);
         return "form/article";
     }
 
     @PostMapping("/save")
-    public String createProduct(Article article, Model model) {
-        model.addAttribute("article", new Article());
-        model.addAttribute("message", "Article created successfully");
-
+    public String createProduct(Article article) {
+        String message = "Article created succesfully";
         articleService.createArticle(article);
 
-        return "form/article";
+        return "redirect:/articles/save?message=" + message;
     }
 
     @GetMapping("/search")
@@ -55,7 +55,7 @@ public class ArticleController {
     }
 
     @GetMapping
-    public String showProducts(Model model, @PageableDefault(size = 4, sort = {"title"}) Pageable pageable) {
+    public String showProducts(Model model, @SortDefault(sort = {"title"}, caseSensitive = false) Pageable pageable) {
         model.addAttribute("articlesByPage", articleService.getArticles(pageable));
 
         return "articles";
@@ -75,19 +75,17 @@ public class ArticleController {
     }
 
     @PostMapping("/{id}/update")
-    public String updateArticle(Article article, Model model) {
+    public String updateArticle(Article article) {
         articleService.updateArticle(article);
-        //model.addAttribute("articles", articleService.getArticles());
 
-        return "articles";
+        return "redirect:/articles";
     }
 
     @GetMapping("/{id}/delete")
-    public String deleteArticle(@PathVariable UUID id, Model model) {
+    public String deleteArticle(@PathVariable UUID id) {
         articleService.delete(id);
-        //model.addAttribute("articles", articleService.getArticles());
 
-        return "articles";
+        return "redirect:/articles";
     }
 }
 
