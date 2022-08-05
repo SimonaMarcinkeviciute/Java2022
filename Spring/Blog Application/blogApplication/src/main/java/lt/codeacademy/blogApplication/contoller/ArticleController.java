@@ -2,10 +2,13 @@ package lt.codeacademy.blogApplication.contoller;
 
 import lt.codeacademy.blogApplication.dto.Article;
 import lt.codeacademy.blogApplication.service.ArticleService;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.util.UUID;
 
 
@@ -35,13 +38,25 @@ public class ArticleController {
         return "form/article";
     }
 
-    @GetMapping
-    public String showArticles(Model model, @RequestParam(required = false) String author) {
-        if(author != null && !author.isBlank()){
-            model.addAttribute("articles", articleService.getArticlesByCategory(author));
-        }else {
-            model.addAttribute("articles", articleService.getArticles());
+    @GetMapping("/search")
+    public String search(Model model,
+                               @RequestParam(required = false) String author,
+                               @RequestParam(required = false) String date) {
+
+        if(author != null && !author.isBlank()) {
+            if(date != null && !date.isBlank()) {
+                model.addAttribute("articles", articleService.getArticlesByAuthorAndDate(author, date));
+            } else {
+                model.addAttribute("articles", articleService.getArticlesByAuthor(author));
+            }
         }
+
+        return "articles";
+    }
+
+    @GetMapping
+    public String showProducts(Model model, @PageableDefault(size = 4, sort = {"title"}) Pageable pageable) {
+        model.addAttribute("articlesByPage", articleService.getArticles(pageable));
 
         return "articles";
     }
@@ -62,7 +77,7 @@ public class ArticleController {
     @PostMapping("/{id}/update")
     public String updateArticle(Article article, Model model) {
         articleService.updateArticle(article);
-        model.addAttribute("articles", articleService.getArticles());
+        //model.addAttribute("articles", articleService.getArticles());
 
         return "articles";
     }
@@ -70,7 +85,7 @@ public class ArticleController {
     @GetMapping("/{id}/delete")
     public String deleteArticle(@PathVariable UUID id, Model model) {
         articleService.delete(id);
-        model.addAttribute("articles", articleService.getArticles());
+        //model.addAttribute("articles", articleService.getArticles());
 
         return "articles";
     }

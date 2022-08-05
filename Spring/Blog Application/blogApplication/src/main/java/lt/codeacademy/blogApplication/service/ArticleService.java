@@ -4,8 +4,12 @@ import lt.codeacademy.blogApplication.dto.Article;
 import lt.codeacademy.blogApplication.entity.ArticleEntity;
 import lt.codeacademy.blogApplication.exeption.ArticleNotExistExeption;
 import lt.codeacademy.blogApplication.repository.ArticleRepository;
+import org.springframework.boot.autoconfigure.data.web.SpringDataWebProperties;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.UUID;
 
@@ -24,8 +28,8 @@ public class ArticleService {
 
     }
 
-    public List<Article> getArticles() {
-       return articleRepository.findAll().stream().map(Article::convert).toList();
+    public Page<Article> getArticles(Pageable pageable) {
+       return articleRepository.findAll(pageable).map(Article::convert);
 
     }
 
@@ -41,8 +45,14 @@ public class ArticleService {
         articleRepository.deleteById(id);
     }
 
-    public List<Article> getArticlesByCategory(String author) {
+    public List<Article> getArticlesByAuthor(String author) {
         return articleRepository.findAllByAuthor(author).stream()
+                .map(Article::convert)
+                .toList();
+    }
+
+    public List<Article> getArticlesByAuthorAndDate(String author, String date) {
+        return articleRepository.getArticlesByAuthorAndDate(author, date).stream()
                 .map(Article::convert)
                 .toList();
     }
