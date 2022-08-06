@@ -2,6 +2,7 @@ package lt.codeacademy.blogApplication.contoller;
 
 import lt.codeacademy.blogApplication.dto.Article;
 import lt.codeacademy.blogApplication.service.ArticleService;
+import lt.codeacademy.blogApplication.service.MessageService;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.data.web.SortDefault;
@@ -18,21 +19,23 @@ import java.util.UUID;
 public class ArticleController {
 
     private final ArticleService articleService;
+    private final MessageService messageService;
 
-    public ArticleController(ArticleService articleService) {
+    public ArticleController(ArticleService articleService, MessageService messageService) {
         this.articleService = articleService;
+        this.messageService = messageService;
     }
 
     @GetMapping("/save")
     public String openCreateArticle(Model model, String message) {
         model.addAttribute("article", new Article());
-        model.addAttribute("message", message);
+        model.addAttribute("message", messageService.getMessage(message));
         return "form/article";
     }
 
     @PostMapping("/save")
     public String createProduct(Article article) {
-        String message = "Article created succesfully";
+        String message = "lt.codeacademy.blogApplication.create.message.success";
         articleService.createArticle(article);
 
         return "redirect:/articles/save?message=" + message;
