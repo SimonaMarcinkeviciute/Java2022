@@ -1,33 +1,89 @@
 <!DOCTYPE html>
 <html lang="en"
       xmlns:th="http://www.thymeleaf.org"
-      th:with="articleExist=${article.title ne null}">
+      th:with="articleExist=${article.id ne null}">
 <head>
     <meta charset="UTF-8">
-    <title th:text="${articleExist ? 'Update article' : 'Create article'}"></title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
+    <title th:if="${articleExist}" th:text="#{lt.codeacademy.blogApplication.article.form.update.pageTitle}"></title>
+    <title th:if="${not articleExist}" th:text="#{lt.codeacademy.blogApplication.article.form.create.pageTitle}"></title>
 </head>
 <body>
-<h3 th:text="${articleExist ? 'Update article:' : 'Create article:'}"></h3>
-<form method="post" th:object="${article}">
-    <div>
-        <label>Article title:</label>
-        <input type="text" placeholder="Article title" th:field="*{title}">
-    </div>
-    <div>
-        <label>Article content:</label>
-        <textarea th:field="*{content}"></textarea>
-    </div>
-    <div>
-        <label>Article author:</label>
-        <input type="text" placeholder="Article author" th:field="*{author}">
-    </div>
-    <div>
-        <label>Article date:</label>
-        <input type="text" placeholder="Article date" th:field="*{date}">
-    </div>
+<div class="container">
+    <h3 th:text="${articleExist ? 'Update article:' : 'Create article:'}"></h3>
 
-    <button type="submit" th:text="${articleExist ? 'Update article' : 'Create article'}"></button>
-</form>
-<div th:if="${message}" th:text="${message}"></div>
+    <form method="post" th:object="${article}">
+
+        <div class="form-floating mb-3">
+            <input type="text"
+                   class="form-control"
+                   id="floatingInputTitle"
+                   th:field="*{title}"
+                   th:placeholder="#{lt.codeacademy.blogApplication.article.form.title}"
+                   th:classappend="${#fields.hasErrors('title')} ? 'is-invalid': (${article.title ne null} ? 'is-valid' : '')">
+            <label for="floatingInputTitle"
+                   th:text="#{lt.codeacademy.blogApplication.article.form.title}"></label>
+            <div class="invalid-feedback"
+                 th:if="${#fields.hasErrors('title')}"
+                 th:errors="*{title}">
+            </div>
+        </div>
+
+        <div class="form-floating mb-3">
+            <input type="text"
+                   class="form-control"
+                   id="floatingInputContent"
+                   th:field="*{content}"
+                   th:placeholder="#{lt.codeacademy.blogApplication.article.form.content}"
+                   th:classappend="${#fields.hasErrors('content')} ? 'is-invalid': (${article.content ne null} ? 'is-valid' : '')">
+            <label for="floatingInputContent"
+                   th:text="#{lt.codeacademy.blogApplication.article.form.content}"></label>
+            <div class="invalid-feedback"
+                 th:if="${#fields.hasErrors('content')}"
+                 th:errors="*{content}">
+            </div>
+        </div>
+
+
+        <div class="form-floating mb-3">
+            <input type="text"
+                   class="form-control"
+                   id="floatingInputAuthor"
+                   th:field="*{author}"
+                   th:placeholder="#{lt.codeacademy.blogApplication.article.form.author}"
+                   th:classappend="${#fields.hasErrors('author')} ? 'is-invalid': (${article.author ne null} ? 'is-valid' : '')">
+            <label for="floatingInputAuthor"
+                   th:text="#{lt.codeacademy.blogApplication.article.form.author}"></label>
+            <div class="invalid-feedback"
+                 th:if="${#fields.hasErrors('author')}"
+                 th:errors="*{author}">
+            </div>
+        </div>
+
+        <div class="form-floating mb-3">
+            <input type="text"
+                   class="form-control"
+                   id="floatingInputDate"
+                   th:field="*{date}"
+                   th:placeholder="#{lt.codeacademy.blogApplication.article.form.date}"
+                   th:classappend="${#fields.hasErrors('date')} ? 'is-invalid': (${article.date ne null} ? 'is-valid' : '')">
+            <label for="floatingInputDate"
+                   th:text="#{lt.codeacademy.blogApplication.article.form.date}"></label>
+            <div class="invalid-feedback"
+                 th:if="${#fields.hasErrors('date')}"
+                 th:errors="*{date}">
+            </div>
+        </div>
+
+
+
+        <button type="submit" class="btn btn-outline-primary" th:text="${articleExist ? 'Update article' : 'Create article'}"></button>
+    </form>
+    <div th:if="${message}" th:text="${message}"></div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2" crossorigin="anonymous"></script>
+
 </body>
 </html>

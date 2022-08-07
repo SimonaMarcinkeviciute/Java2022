@@ -6,6 +6,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lt.codeacademy.blogApplication.entity.ArticleEntity;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 import java.math.BigDecimal;
 import java.util.UUID;
 
@@ -15,9 +17,15 @@ import java.util.UUID;
 @NoArgsConstructor
 public class Article {
     private UUID id;
+    @NotBlank
+    @Size(min = 5, max = 50, message = "{validation.article.size}")
     private String title;
+    @Size(max = 500)
+    @NotBlank
     private String content;
+    @NotBlank
     private String author;
+    @NotBlank
     private String date;
 
     public static Article convert(ArticleEntity entity) {

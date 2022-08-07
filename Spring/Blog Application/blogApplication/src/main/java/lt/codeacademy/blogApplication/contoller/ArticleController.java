@@ -9,8 +9,10 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.data.web.SortDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.math.BigDecimal;
 import java.util.UUID;
 
@@ -35,7 +37,12 @@ public class ArticleController {
     }
 
     @PostMapping("/save")
-    public String createProduct(Article article) {
+    public String createArticle(@Valid Article article, BindingResult bindingResult) {
+
+        if(bindingResult.hasErrors()) {
+            return "form/article";
+        }
+
         String message = "lt.codeacademy.blogApplication.create.message.success";
         articleService.createArticle(article);
 
@@ -79,7 +86,10 @@ public class ArticleController {
     }
 
     @PostMapping("/{id}/update")
-    public String updateArticle(Article article) {
+    public String updateArticle(@Valid Article article, BindingResult bindingResult) {
+        if(bindingResult.hasErrors()) {
+            return "form/article";
+        }
         articleService.updateArticle(article);
 
         return "redirect:/articles";
