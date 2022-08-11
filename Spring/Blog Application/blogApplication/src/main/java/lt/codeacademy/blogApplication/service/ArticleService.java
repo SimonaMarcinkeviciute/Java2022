@@ -45,14 +45,14 @@ public class ArticleService {
         articleRepository.deleteById(id);
     }
 
-    public List<Article> getArticlesByAuthor(String author) {
-        return articleRepository.findAllByAuthor(author).stream()
+    public List<Article> getArticlesByTitle(String title) {
+        return articleRepository.findAllByTitle(title).stream()
                 .map(Article::convert)
                 .toList();
     }
 
-    public List<Article> getArticlesByAuthorAndDate(String author, String date) {
-        return articleRepository.getArticlesByAuthorAndDate(author, date).stream()
+    public List<Article> getArticlesByTitleAndDate(String title, String date) {
+        return articleRepository.getArticlesByTitleAndDate(title, date).stream()
                 .map(Article::convert)
                 .toList();
     }

@@ -8,8 +8,8 @@
 <body>
    <div th:if="${article ne null}">
      <div>Title: <span th:text="${article.title}"></span></div>
-     <div>Content: <span th:text="${article.content}"></span></div>
-     <div>Author: <span th:text="${article.author}"></span></div>
+     <div>Content: <span th:text="${article.image}"></span></div>
+     <div>Author: <span th:text="${article.content}"></span></div>
      <div>Date: <span th:text="${article.date}"></span></div>
        <div>
            <a th:href="@{/articles/{id}/update(id=${article.id})}">Update Article</a>

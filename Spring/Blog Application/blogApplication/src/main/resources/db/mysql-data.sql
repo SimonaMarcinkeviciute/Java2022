@@ -1,4 +1,4 @@
-INSERT INTO articles(id, title, content, author, date)
+INSERT INTO articles(id, title, image, content, date)
 VALUES ('48a95af7-8b83-4a08-8001-0f865db8ea26', 'Iphone 13', 'Very cheap phone', 'Phone', '50'),
        ('15a95af7-8b83-4a08-8001-0f865db8ea27', 'Samsung Z3', 'Cheap samsung phone','Phone', '50'),
        ('ebdee4f9-5763-4afc-85ed-98b2fdefb35f', 'SmartTV', 'LG smart tv','TV', '10'),

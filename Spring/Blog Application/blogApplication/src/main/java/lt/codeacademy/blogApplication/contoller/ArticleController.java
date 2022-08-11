@@ -5,6 +5,7 @@ import lt.codeacademy.blogApplication.exeption.ArticleNotExistExeption;
 import lt.codeacademy.blogApplication.service.ArticleService;
 import lt.codeacademy.blogApplication.service.MessageService;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.data.web.SortDefault;
 import org.springframework.stereotype.Controller;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.UUID;
 
 
@@ -42,6 +44,7 @@ public class ArticleController {
         if(bindingResult.hasErrors()) {
             return "form/article";
         }
+        article.setDate(LocalDate.now());
 
         String message = "lt.codeacademy.blogApplication.create.message.success";
         articleService.createArticle(article);
@@ -51,14 +54,14 @@ public class ArticleController {
 
     @GetMapping("/search")
     public String search(Model model,
-                               @RequestParam(required = false) String author,
+                               @RequestParam(required = false) String title,
                                @RequestParam(required = false) String date) {
 
-        if(author != null && !author.isBlank()) {
+        if(title != null && !title.isBlank()) {
             if(date != null && !date.isBlank()) {
-                model.addAttribute("articles", articleService.getArticlesByAuthorAndDate(author, date));
+                model.addAttribute("articles", articleService.getArticlesByTitleAndDate(title, date));
             } else {
-                model.addAttribute("articles", articleService.getArticlesByAuthor(author));
+                model.addAttribute("articles", articleService.getArticlesByTitle(title));
             }
         }
 
@@ -66,10 +69,12 @@ public class ArticleController {
     }
 
     @GetMapping
-    public String showProducts(Model model, @SortDefault(sort = {"title"}, caseSensitive = false) Pageable pageable) {
+    public String showProducts(Model model, @SortDefault(sort = {"date"}, direction = Sort.Direction.DESC, caseSensitive = false) Pageable pageable) {
         model.addAttribute("articlesByPage", articleService.getArticles(pageable));
+        model.addAttribute("url", "https://www.houseplantjournal.com/wp-content/uploads/2020/06/logo.svg");
+        model.addAttribute("fotter", "https://plnts.com/_next/image?url=https%3A%2F%2Fwebshop.plnts.com%2Fmedia%2Fwysiwyg%2Fbanners%2FHomepage_banner_PLNTS_SS22.jpg&w=1920&q=75");
 
-        return "articles";
+        return "mano";
     }
 
     @GetMapping("/{id}")

@@ -8,6 +8,8 @@ import lt.codeacademy.blogApplication.dto.Article;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
+import java.time.LocalDate;
+import java.util.Date;
 import java.util.UUID;
 
 @Setter
@@ -24,15 +26,22 @@ public class ArticleEntity {
     @Type(type = "uuid-char")
     private UUID id;
     private String title;
+    private String image;
     private String content;
-    private String author;
-    private String date;
+    private LocalDate date;
 
     public static ArticleEntity convert(Article article) {
         return new ArticleEntity(article.getId(),
                 article.getTitle(),
+                article.getImage(),
                 article.getContent(),
-                article.getAuthor(),
                 article.getDate());
+    }
+
+    public ArticleEntity(UUID id, String title, String image, String content) {
+        this.id = id;
+        this.title = title;
+        this.image = image;
+        this.content = content;
     }
 }

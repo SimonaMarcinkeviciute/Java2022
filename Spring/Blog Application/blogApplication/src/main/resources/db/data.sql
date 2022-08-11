@@ -1,10 +1,13 @@
-INSERT INTO ARTICLES(id, title, content, author, date)
-VALUES ('48a95af7-8b83-4a08-8001-0f865db8ea26', 'Iphone 13', 'Very cheap phone', 'Phone', '50'),
-       ('15a95af7-8b83-4a08-8001-0f865db8ea27', 'Samsung Z3', 'Cheap samsung phone','Phone', '50'),
-       ('ebdee4f9-5763-4afc-85ed-98b2fdefb35f', 'SmartTV', 'LG smart tv','TV', '10'),
-       ('d06cb831-9427-41ee-adcc-271f7b02d626', 'Samsung  20', 'Very large phone','Phone',  '5'),
-       ('ef90aee5-5337-4ebf-899f-e2823271f8c5', 'iPhone 13', 'iPhone 13. The most advanced dual-camera system ever on iPhone.','Phone', '29'),
-       ('0e706d6b-31f1-4349-a49b-9aea3400db6a', 'SAMSUNG Galaxy S22', 'The Samsung Galaxy S22 sets a new epic standard with 8K video capture.','Phone',  '25'),
-       ('bb2db642-6681-4e96-bff9-d226d6384efb', 'apple iPhone 13 mini', 'iPhone 13 mini.','Phone',  '99'),
-       ('d96e1892-3019-4304-bd5a-1ef750be3aca', 'APPLE iPhone SE (3rd gen)', 'Lightning-fast A15 Bionic chip and fast 5G.1','Phone',  '89'),
-       ('abdee4f9-5763-4afc-85ed-98b2fdefb35d', 'Snaige', 'Kazkoks Snaige Firdge, jis dar prekyboje?','Fridge', '1');
+INSERT INTO ARTICLES(id, title, image, content, date)
+VALUES ('48a95af7-8b83-4a08-8001-0f865db8ea26', 'Top 10 big houseplants that will make your interior shine!', 'https://plnts.com/_next/image?url=https%3A%2F%2Fplnts-api.ams3.digitaloceanspaces.com%2Fmain%2F65eede4bcdf497f9c677efcbbbd06d39.jpg&w=1920&q=75', 'Simona', '2022-08-09'),
+('48a95af7-8b83-4a08-8001-0f865db8ea27', 'Summer plant care - tips and tools to take care of your indoor plants!', 'https://plnts.com/_next/image?url=https%3A%2F%2Fplnts-api.ams3.digitaloceanspaces.com%2Fmain%2Fee7ca481eacd88241765ed87c1ecefef.jpg&w=1920&q=75', 'Simona', '2012-11-19'),
+('48a95af7-8b83-4a08-8001-0f865db8ea28', 'Best time to repot your little baby plants', 'https://plnts.com/_next/image?url=https%3A%2F%2Fplnts-api.ams3.digitaloceanspaces.com%2Fmain%2F4394b5df760eaeccacddcdc4557538e1.jpg&w=1920&q=75', 'Simona', '2011-01-09'),
+('48a95af7-8b83-4a08-8001-0f865db8ea29', 'Summer Proof Homes', 'https://plnts.com/_next/image?url=https%3A%2F%2Fplnts-api.ams3.digitaloceanspaces.com%2Fmain%2F1d0113c9ffa32c2967184ffee4b4f122.jpg&w=1920&q=75', 'Simona', '2022-04-03'),
+('48a95af7-8b83-4a08-8001-0f865db8ea25', 'This is how to get rid of Fungus Gnats in your houseplants!', 'https://plnts.com/_next/image?url=https%3A%2F%2Fplnts-api.ams3.digitaloceanspaces.com%2Fmain%2F5721b770fbc03d52377e6329ceb3b22d.jpg&w=1920&q=75', 'Simona', '2021-03-30'),
+('48a95af7-8b83-4a08-8001-0f865db8ea24', 'How to style big houseplants!', 'https://plnts.com/_next/image?url=https%3A%2F%2Fplnts-api.ams3.digitaloceanspaces.com%2Fmain%2F16b4a1803fc737f2af25fd6af33902b0.jpg&w=1920&q=75', 'Simona', '2022-06-17'),
+('48a95af7-8b83-4a08-8001-0f865db8ea23', 'Which natural and biological pest control against which pest?', 'https://plnts.com/_next/image?url=https%3A%2F%2Fplnts-api.ams3.digitaloceanspaces.com%2Fmain%2F4a642f93bcaf4579aa7aa326538473a7.jpg&w=1920&q=75', 'Simona', '2021-04-09'),
+('48a95af7-8b83-4a08-8001-0f865db8ea22', 'The best plants to grow in a terrarium!', 'https://plnts.com/_next/image?url=https%3A%2F%2Fplnts-api.ams3.digitaloceanspaces.com%2Fmain%2F84bda13f59e54bd44cd86e0ba19708c6.jpg&w=1920&q=75', 'Simona', '2021-04-08'),
+('48a95af7-8b83-4a08-8001-0f865db8ea21', 'How to propagate your plants: four easy ways to make more houseplants!', 'https://plnts.com/_next/image?url=https%3A%2F%2Fplnts-api.ams3.digitaloceanspaces.com%2Fmain%2F7203b2ce89109c1aef146931f76979bc.jpg&w=1920&q=75', 'Simona', '2020-04-09'),
+('48a95af7-8b83-4a08-8001-0f865db8ea20', 'Air-purifying plants that are ideal for the bedroom!', 'https://plnts.com/_next/image?url=https%3A%2F%2Fplnts-api.ams3.digitaloceanspaces.com%2Fmain%2F3849f722a1a4b41143f2c96c2ec589d6.jpg&w=1920&q=75', 'Simona', '2021-09-07'),
+('48a95af7-8b83-4a08-8001-0f865db8ea13', 'The perfect potting soil mix for your houseplants!', 'https://plnts.com/_next/image?url=https%3A%2F%2Fplnts-api.ams3.digitaloceanspaces.com%2Fmain%2F987122abf3276258eea812f3b922f41b.webp&w=1920&q=75', 'Simona', '2021-10-18'),
+('48a95af7-8b83-4a08-8001-0f865db8ea12', '15 essential tools for every plant parent', 'https://plnts.com/_next/image?url=https%3A%2F%2Fplnts-api.ams3.digitaloceanspaces.com%2Fmain%2F42347e42df587246a94ceaed991c01fc.jpg%2526w%253D1920%2526q%253D75&w=1920&q=75', 'Simona', '2019-04-09');

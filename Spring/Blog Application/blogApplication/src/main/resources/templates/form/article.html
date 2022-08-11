@@ -33,6 +33,22 @@
         <div class="form-floating mb-3">
             <input type="text"
                    class="form-control"
+                   id="floatingInputImage"
+                   th:field="*{image}"
+                   th:placeholder="#{lt.codeacademy.blogApplication.article.form.image}"
+                   th:classappend="${#fields.hasErrors('image')} ? 'is-invalid': (${article.image ne null} ? 'is-valid' : '')">
+            <label for="floatingInputImage"
+                   th:text="#{lt.codeacademy.blogApplication.article.form.image}"></label>
+            <div class="invalid-feedback"
+                 th:if="${#fields.hasErrors('image')}"
+                 th:errors="*{image}">
+            </div>
+        </div>
+
+
+        <div class="form-floating mb-3">
+            <input type="text"
+                   class="form-control"
                    id="floatingInputContent"
                    th:field="*{content}"
                    th:placeholder="#{lt.codeacademy.blogApplication.article.form.content}"
@@ -46,35 +62,6 @@
         </div>
 
 
-        <div class="form-floating mb-3">
-            <input type="text"
-                   class="form-control"
-                   id="floatingInputAuthor"
-                   th:field="*{author}"
-                   th:placeholder="#{lt.codeacademy.blogApplication.article.form.author}"
-                   th:classappend="${#fields.hasErrors('author')} ? 'is-invalid': (${article.author ne null} ? 'is-valid' : '')">
-            <label for="floatingInputAuthor"
-                   th:text="#{lt.codeacademy.blogApplication.article.form.author}"></label>
-            <div class="invalid-feedback"
-                 th:if="${#fields.hasErrors('author')}"
-                 th:errors="*{author}">
-            </div>
-        </div>
-
-        <div class="form-floating mb-3">
-            <input type="text"
-                   class="form-control"
-                   id="floatingInputDate"
-                   th:field="*{date}"
-                   th:placeholder="#{lt.codeacademy.blogApplication.article.form.date}"
-                   th:classappend="${#fields.hasErrors('date')} ? 'is-invalid': (${article.date ne null} ? 'is-valid' : '')">
-            <label for="floatingInputDate"
-                   th:text="#{lt.codeacademy.blogApplication.article.form.date}"></label>
-            <div class="invalid-feedback"
-                 th:if="${#fields.hasErrors('date')}"
-                 th:errors="*{date}">
-            </div>
-        </div>
 
 
 

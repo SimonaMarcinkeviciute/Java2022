@@ -1,6 +1,8 @@
 package lt.codeacademy.blogApplication.contoller;
 
 import lt.codeacademy.blogApplication.dto.User;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.SortDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -30,4 +32,5 @@ public class UserController {
 
         return "redirect:/users/save";
     }
+
 }

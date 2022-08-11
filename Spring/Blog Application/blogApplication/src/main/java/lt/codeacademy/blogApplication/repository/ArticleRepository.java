@@ -10,8 +10,8 @@ import java.util.List;
 import java.util.UUID;
 
 public interface ArticleRepository extends JpaRepository<ArticleEntity, UUID> {
-    List<ArticleEntity> findAllByAuthor(String author);
+    List<ArticleEntity> findAllByTitle(String title);
 
-    @Query("SELECT a FROM ArticleEntity a WHERE a.author = :author AND a.date = :date")
-    List<ArticleEntity> getArticlesByAuthorAndDate(@Param("author") String author, @Param("date") String date);
+    @Query("SELECT a FROM ArticleEntity a WHERE a.title = :title AND a.date = :date")
+    List<ArticleEntity> getArticlesByTitleAndDate(@Param("title") String title, @Param("date") String date);
 }
