@@ -1,6 +1,7 @@
 package lt.codeacademy.blogApplication.contoller;
 
 import lt.codeacademy.blogApplication.dto.User;
+import lt.codeacademy.blogApplication.validator.UserValidator;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.SortDefault;
 import org.springframework.stereotype.Controller;
@@ -16,6 +17,12 @@ import javax.validation.Valid;
 @RequestMapping("/users")
 public class UserController {
 
+    private final UserValidator userValidator;
+
+    public UserController(UserValidator userValidator) {
+        this.userValidator = userValidator;
+    }
+
     @GetMapping("/save")
     public String openUserRegistrationForm(Model model) {
         model.addAttribute("user", new User());
@@ -25,6 +32,7 @@ public class UserController {
 
     @PostMapping("/save")
     public String createUser(@Valid User user, BindingResult bindingResult) {
+        userValidator.validate(user, bindingResult);
         if(bindingResult.hasErrors()){
             return "form/user";
         }

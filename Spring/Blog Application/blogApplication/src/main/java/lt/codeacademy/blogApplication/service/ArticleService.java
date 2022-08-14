@@ -1,7 +1,9 @@
 package lt.codeacademy.blogApplication.service;
 
 import lt.codeacademy.blogApplication.dto.Article;
+import lt.codeacademy.blogApplication.dto.Comment;
 import lt.codeacademy.blogApplication.entity.ArticleEntity;
+import lt.codeacademy.blogApplication.entity.CommentEntity;
 import lt.codeacademy.blogApplication.exeption.ArticleNotExistExeption;
 import lt.codeacademy.blogApplication.repository.ArticleRepository;
 import org.springframework.boot.autoconfigure.data.web.SpringDataWebProperties;

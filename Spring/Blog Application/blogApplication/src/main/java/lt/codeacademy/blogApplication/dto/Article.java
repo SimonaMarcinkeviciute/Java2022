@@ -5,12 +5,16 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lt.codeacademy.blogApplication.entity.ArticleEntity;
+import lt.codeacademy.blogApplication.entity.CommentEntity;
 
+import javax.validation.constraints.Max;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 @Getter
@@ -26,10 +30,12 @@ public class Article {
     @NotBlank
     private String image;
     @NotBlank
+    @Size(min=1, max = 2000, message = "{validation.article.size}")
     private String content;
     private LocalDate date;
 
     public static Article convert(ArticleEntity entity) {
+
         return new Article(entity.getId(),
                 entity.getTitle(),
                 entity.getImage(),
@@ -37,10 +43,5 @@ public class Article {
                 entity.getDate());
     }
 
-    public Article(UUID id, String title, String image, String content) {
-        this.id = id;
-        this.title = title;
-        this.image = image;
-        this.content = content;
-    }
+
 }

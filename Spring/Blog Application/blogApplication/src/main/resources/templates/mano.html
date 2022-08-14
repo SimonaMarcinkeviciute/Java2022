@@ -16,7 +16,12 @@
 <body>
 <nav class="navbar navbar-light " style="background-color: #f0faf1;"  id="la" >
     <div class="container-fluid">
-        <img th:src="${url}" class="navImg">
+        <a th:href="@{/articles}">
+            <img th:src="${url}" class="navImg" th:href="@{/articles}">
+
+        </a>
+        <a th:href="@{/articles/save}"> save</a>
+
         <div class="w-15">
             <select id="language-switcher"
                     class="form-select"
@@ -31,6 +36,10 @@
 
     </div>
 </nav>
+
+
+
+
 
 <div class="articles">ARTICLES</div>
 <div class="total" th:text="#{lt.codeacademy.blogApplication.articles.paginator.total.articles(${articlesByPage.totalElements})}"></div>

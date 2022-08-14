@@ -1,8 +1,10 @@
 package lt.codeacademy.blogApplication.contoller;
 
 import lt.codeacademy.blogApplication.dto.Article;
+import lt.codeacademy.blogApplication.dto.Comment;
 import lt.codeacademy.blogApplication.exeption.ArticleNotExistExeption;
 import lt.codeacademy.blogApplication.service.ArticleService;
+import lt.codeacademy.blogApplication.service.CommentService;
 import lt.codeacademy.blogApplication.service.MessageService;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -16,6 +18,8 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 
@@ -29,6 +33,7 @@ public class ArticleController {
     public ArticleController(ArticleService articleService, MessageService messageService) {
         this.articleService = articleService;
         this.messageService = messageService;
+
     }
 
     @GetMapping("/save")
@@ -45,6 +50,9 @@ public class ArticleController {
             return "form/article";
         }
         article.setDate(LocalDate.now());
+
+
+
 
         String message = "lt.codeacademy.blogApplication.create.message.success";
         articleService.createArticle(article);
@@ -77,9 +85,13 @@ public class ArticleController {
         return "mano";
     }
 
+
+
     @GetMapping("/{id}")
     public String openDetailPage(@PathVariable UUID id, Model model) {
         model.addAttribute("article", articleService.getArticle(id));
+        model.addAttribute("url", "https://www.houseplantjournal.com/wp-content/uploads/2020/06/logo.svg");
+        model.addAttribute("fotter", "https://plnts.com/_next/image?url=https%3A%2F%2Fwebshop.plnts.com%2Fmedia%2Fwysiwyg%2Fbanners%2FHomepage_banner_PLNTS_SS22.jpg&w=1920&q=75");
 
         return "articleDetails";
     }
@@ -95,6 +107,7 @@ public class ArticleController {
         if(bindingResult.hasErrors()) {
             return "form/article";
         }
+        article.setDate(LocalDate.now());
         articleService.updateArticle(article);
 
         return "redirect:/articles";

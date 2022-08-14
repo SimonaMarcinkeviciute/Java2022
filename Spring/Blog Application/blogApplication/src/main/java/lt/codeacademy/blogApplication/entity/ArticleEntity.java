@@ -5,11 +5,14 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lt.codeacademy.blogApplication.dto.Article;
+import lt.codeacademy.blogApplication.dto.Comment;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 @Setter
@@ -27,8 +30,10 @@ public class ArticleEntity {
     private UUID id;
     private String title;
     private String image;
+    @Column(columnDefinition = "VARCHAR(5000)", updatable = false)
     private String content;
     private LocalDate date;
+
 
     public static ArticleEntity convert(Article article) {
         return new ArticleEntity(article.getId(),
@@ -44,4 +49,7 @@ public class ArticleEntity {
         this.image = image;
         this.content = content;
     }
+
+
+
 }

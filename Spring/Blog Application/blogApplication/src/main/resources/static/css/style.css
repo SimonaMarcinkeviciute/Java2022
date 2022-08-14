@@ -67,3 +67,35 @@ ul.pagination .page-link {
     margin-top: 5px;
 }
 
+.articleImg{
+
+        height: 350px;
+
+}
+
+.articleImgChild{
+
+        height: 350px;
+            object-fit: cover;
+            width: 600px;
+
+}
+
+.content{
+        font-family: 'EB Garamond', serif;
+        font-size: 20px;
+        width: 600px;
+        text-align: justify;
+}
+
+.contentParent{
+
+        flex-direction: column;
+            display: flex;
+            margin-top: 60px;
+            margin-bottom: 140px;
+            align-items: center;
+            gap: 55px;
+
+}
+

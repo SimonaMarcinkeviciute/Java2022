@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Gantari&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=EB+Garamond&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Oswald&display=swap" rel="stylesheet">
+    <meta charset="UTF-8">
+  <title th:if="${article ne null}" th:text="${'Article ' + article.title + ' Details'}">Article Details</title>
+
+</head>
+<body>
+
+<nav class="navbar navbar-light " style="background-color: #f0faf1;"  id="la" >
+    <div class="container-fluid">
+        <a th:href="@{/articles}">
+            <img th:src="${url}" class="navImg" th:href="@{/articles}">
+
+        </a>
+
+        <div>
+            <a th:href="@{/articles/{id}/update(id=${article.id})}">Update Article</a>
+        </div>
+        <div>
+            <a th:href="@{/articles/{id}/delete(id=${article.id})}">Delete Article</a>
+        </div>
+
+
+
+        <div class="w-15">
+            <select id="language-switcher"
+                    class="form-select"
+                    aria-label="Default select example">
+                <option value="" selected th:text="#{lt.codeacademy.blogApplication.language.switcher.select}"></option>
+                <option value="EN" th:text="#{lt.codeacademy.blogApplication.language.switcher.en}"></option>
+                <option value="LT" th:text="#{lt.codeacademy.blogApplication.language.switcher.lt}"></option>
+                <option value="DE" th:text="#{lt.codeacademy.blogApplication.language.switcher.de}"></option>
+                <option value="FR" th:text="#{lt.codeacademy.blogApplication.language.switcher.fr}"></option>
+            </select>
+        </div>
+
+    </div>
+</nav>
+
+
+   <div th:if="${article ne null}">
+
+       <div class="articles" th:text="${article.title}"></div>
+       <div class="total" th:text="${article.date}"></div>
+
+       <div class="contentParent">
+           <img class="articleImgChild" th:src="${article.image}" >
+           <div class="content" th:text="${article.content}"></div>
+       </div>
+
+
+
+
+
+
+
+
+       <nav class="navbar navbar-light" >
+           <div class="container-fluid">
+               <img th:src="${fotter}" style="width: -webkit-fill-available;">
+           </div>
+       </nav>
+
+
+
+   </div>
+   <div th:if="${article eq null}">
+     Article does not exist
+   </div>
+
+
+
+
+
+
+   </div>
+</body>
+</html>
