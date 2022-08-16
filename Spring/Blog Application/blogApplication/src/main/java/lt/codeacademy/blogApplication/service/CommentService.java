@@ -9,6 +9,7 @@ import lt.codeacademy.blogApplication.repository.ArticleRepository;
 import lt.codeacademy.blogApplication.repository.CommentRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -28,10 +29,17 @@ public class CommentService {
 
     }
 
-    public Page<Comment> getComments(Pageable pageable) {
-        return commentRepository.findAll(pageable).map(Comment::convert);
+    public Page<Comment> find(Article article, Pageable pageable) {
+        ArticleEntity articleEntity = ArticleEntity.convert(article);
 
+        return commentRepository.findByArticleEntity(articleEntity, pageable).map(Comment::convert);
     }
+
+
+
+
+
+
 
 
 }

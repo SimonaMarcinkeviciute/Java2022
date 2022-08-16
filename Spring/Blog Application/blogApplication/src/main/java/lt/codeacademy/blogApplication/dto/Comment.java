@@ -19,13 +19,17 @@ public class Comment {
     private UUID id;
     @NotBlank
     private String text;
+    Article article;
 
 
 
     public static Comment convert(CommentEntity entity) {
         return new Comment(entity.getId(),
-                entity.getText());
+                entity.getText(), Article.convert(entity.getArticleEntity()));
     }
 
-
+    public Comment(UUID id, String text) {
+        this.id = id;
+        this.text = text;
+    }
 }

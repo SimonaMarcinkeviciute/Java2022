@@ -11,12 +11,12 @@
     <link href="https://fonts.googleapis.com/css2?family=EB+Garamond&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Oswald&display=swap" rel="stylesheet">
     <meta charset="UTF-8">
-  <title th:if="${article ne null}" th:text="${'Article ' + article.title + ' Details'}">Article Details</title>
+    <title th:if="${article ne null}" th:text="${'Article ' + article.title + ' Details'}">Article Details</title>
 
 </head>
 <body>
 
-<nav class="navbar navbar-light " style="background-color: #f0faf1;"  id="la" >
+<nav class="navbar navbar-light " style="background-color: #f0faf1;" id="la">
     <div class="container-fluid">
         <a th:href="@{/articles}">
             <img th:src="${url}" class="navImg" th:href="@{/articles}">
@@ -29,7 +29,6 @@
         <div>
             <a th:href="@{/articles/{id}/delete(id=${article.id})}">Delete Article</a>
         </div>
-
 
 
         <div class="w-15">
@@ -48,41 +47,93 @@
 </nav>
 
 
-   <div th:if="${article ne null}">
+<div th:if="${article ne null}">
 
-       <div class="articles" th:text="${article.title}"></div>
-       <div class="total" th:text="${article.date}"></div>
+    <div class="articles" th:text="${article.title}"></div>
+    <div class="total" th:text="${article.date}"></div>
 
-       <div class="contentParent">
-           <img class="articleImgChild" th:src="${article.image}" >
-           <div class="content" th:text="${article.content}"></div>
-       </div>
-
-
+    <div class="contentParent">
+        <img class="articleImgChild" th:src="${article.image}">
+        <div class="content" th:text="${article.content}"></div>
+    </div>
 
 
+    <div>
+        <a th:href="@{/comments/{id}/save(id=${article.id})}"> save</a>
+    </div>
+
+    <div th:if="${not commentsss.hasContent()}"
+         role="alert"
+         th:text="#{lt.codeacademy.blogApplication.articles.message.empty.articles}">
+
+    </div>
+    <div th:if="${commentsss.hasContent()}">
+
+        <div th:each="comment : ${commentsss.content}">
+
+            <div th:text="${comment.text}"></div>
+            <div th:text="${comment.id}"></div>
+
+        </div>
 
 
+        <div>
+            <div class="col-2"></div>
+            <div class="col-8">
+                <nav aria-label="Page navigation example">
+                    <ul class="pagination justify-content-center"
+
+                        th:with="pageSort=${commentsss.sort.toList().get(0)},
+							sort=${pageSort.property + ','+ pageSort.direction + ',ignorecase'}">
+
+                        <li class="page-item"
+                            th:classappend="${commentsss.number eq 0 ? 'disabled' : ''}">
+                            <a class="page-link "
+                               th:href="@{/articles/{id}(id=${article.id}, page=${commentsss.number} - 1, sort=${sort})}"
+                               th:text="#{lt.codeacademy.blogApplication.articles.paginator.previous}"></a>
+                        </li>
+                        <li class="page-item"
+                            th:each="commentPage: ${#numbers.sequence(0, commentsss.totalPages - 1)}"
+                            th:classappend="${commentPage eq commentsss.number ? 'active': ''}">
+                            <a class="page-link"
+                               th:href="@{/articles/{id}(id=${article.id}, page=${commentPage},sort=${sort})}"
+                               th:text="${commentPage} + 1"></a>
+                        </li>
+                        <li class="page-item"
+                            th:classappend="${commentsss.number eq commentsss.totalPages - 1 ? 'disabled' : ''}">
+                            <a class="page-link"
+                               th:href="@{/articles/{id}(id=${article.id}, page=${commentsss.number} + 1, sort=${sort})}"
+                               th:text="#{lt.codeacademy.blogApplication.articles.paginator.next}"></a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+
+        </div>
+
+        http://localhost:8080/articles?page=0&sort=date,DESC,ignorecase
 
 
-       <nav class="navbar navbar-light" >
-           <div class="container-fluid">
-               <img th:src="${fotter}" style="width: -webkit-fill-available;">
-           </div>
-       </nav>
+    </div>
 
 
-
-   </div>
-   <div th:if="${article eq null}">
-     Article does not exist
-   </div>
-
-
+    <nav class="navbar navbar-light">
+        <div class="container-fluid">
+            <img th:src="${fotter}" style="width: -webkit-fill-available;">
+        </div>
+    </nav>
 
 
+</div>
+<div th:if="${article eq null}">
+    Article does not exist
+</div>
 
 
-   </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2"
+        crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </body>
 </html>

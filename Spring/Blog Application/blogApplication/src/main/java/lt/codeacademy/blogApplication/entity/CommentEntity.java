@@ -25,13 +25,20 @@ public class CommentEntity {
     @Type(type = "uuid-char")
     private UUID id;
     private String text;
+
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name="article_id")
+    private ArticleEntity articleEntity;
 
 
     public static CommentEntity convert(Comment comment) {
         return new CommentEntity(comment.getId(),
-                comment.getText());
+                comment.getText(),
+                ArticleEntity.convert(comment.getArticle()));
     }
 
+    public CommentEntity(UUID id, String text) {
+        this.id = id;
+        this.text = text;
+    }
 }

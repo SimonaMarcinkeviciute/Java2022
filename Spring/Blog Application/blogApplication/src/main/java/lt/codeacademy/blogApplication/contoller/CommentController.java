@@ -1,6 +1,7 @@
 package lt.codeacademy.blogApplication.contoller;
 
 
+import lt.codeacademy.blogApplication.dto.Article;
 import lt.codeacademy.blogApplication.dto.Comment;
 import lt.codeacademy.blogApplication.dto.User;
 import lt.codeacademy.blogApplication.service.ArticleService;
@@ -27,36 +28,34 @@ public class CommentController {
     private final MessageService messageService;
     private  final CommentService commentService;
 
-    public CommentController(MessageService messageService, CommentService commentService) {
+    private final ArticleService articleService;
+
+    public CommentController(MessageService messageService, CommentService commentService, ArticleService articleService) {
         this.messageService = messageService;
         this.commentService = commentService;
+        this.articleService = articleService;
     }
 
-    @GetMapping("/save")
+    @GetMapping("/{id}/save")
     public String openCommentForm(Model model) {
+
         model.addAttribute("comment", new Comment());
 
         return "form/comment";
     }
 
-    @PostMapping("/save")
-    public String createComment(@Valid Comment comment, BindingResult bindingResult) {
+
+    @PostMapping("/{id}/save")
+    public String createComment(@Valid Comment comment, BindingResult bindingResult,@PathVariable UUID id) {
         if(bindingResult.hasErrors()){
             return "form/comment";
         }
         String message = "lt.codeacademy.blogApplication.create.message.success";
+        Article article = articleService.getArticle(id);
+        comment.setArticle(article);
         commentService.createComment(comment);
 
-        return "redirect:/comments/save?message=" + message;
+        return "redirect:/articles/{id}";
     }
-
-    @GetMapping
-    public String showComments(Model model, @SortDefault(sort = {"text"}, direction = Sort.Direction.DESC, caseSensitive = false) Pageable pageable) {
-        model.addAttribute("commentsByPage", commentService.getComments(pageable));
-
-
-        return "comments";
-    }
-
 
 }

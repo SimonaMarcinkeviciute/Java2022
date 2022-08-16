@@ -29,10 +29,12 @@ public class ArticleController {
 
     private final ArticleService articleService;
     private final MessageService messageService;
+    private final CommentService commentService;
 
-    public ArticleController(ArticleService articleService, MessageService messageService) {
+    public ArticleController(ArticleService articleService, MessageService messageService, CommentService commentService) {
         this.articleService = articleService;
         this.messageService = messageService;
+        this.commentService = commentService;
 
     }
 
@@ -88,13 +90,17 @@ public class ArticleController {
 
 
     @GetMapping("/{id}")
-    public String openDetailPage(@PathVariable UUID id, Model model) {
+    public String openDetailPage(@PathVariable UUID id, Model model, @SortDefault(sort = {"text"}, direction = Sort.Direction.DESC, caseSensitive = false) Pageable pageable) {
+        Article article = articleService.getArticle(id);
         model.addAttribute("article", articleService.getArticle(id));
         model.addAttribute("url", "https://www.houseplantjournal.com/wp-content/uploads/2020/06/logo.svg");
         model.addAttribute("fotter", "https://plnts.com/_next/image?url=https%3A%2F%2Fwebshop.plnts.com%2Fmedia%2Fwysiwyg%2Fbanners%2FHomepage_banner_PLNTS_SS22.jpg&w=1920&q=75");
+        model.addAttribute("commentsss", commentService.find(article, pageable));
 
         return "articleDetails";
     }
+
+
 
     @GetMapping("/{id}/update")
     public String showUpdateForm(@PathVariable UUID id, Model model) {
