@@ -56,62 +56,76 @@
         <img class="articleImgChild" th:src="${article.image}">
         <div class="content" th:text="${article.content}"></div>
     </div>
+    <div id="comment">
 
-
-    <div>
-        <a th:href="@{/comments/{id}/save(id=${article.id})}"> save</a>
-    </div>
-
-    <div th:if="${not commentsss.hasContent()}"
-         role="alert"
-         th:text="#{lt.codeacademy.blogApplication.articles.message.empty.articles}">
-
-    </div>
-    <div th:if="${commentsss.hasContent()}">
-
-        <div th:each="comment : ${commentsss.content}">
-
-            <div th:text="${comment.text}"></div>
-            <div th:text="${comment.id}"></div>
-
+        <div th:if="${not commentsss.hasContent()}" style="font-family: 'EB Garamond', serif;">
+            <div style="font-size: 15px;">No comments yet</div>
+            <div style="font-size: 18px;">Be the first to comment</div>
         </div>
 
+        <div th:if="${commentsss.hasContent()}" class="userComment">
 
-        <div>
-            <div class="col-2"></div>
-            <div class="col-8">
-                <nav aria-label="Page navigation example">
-                    <ul class="pagination justify-content-center"
+            <div>
+                <div style="font-size: 30px; font-family: 'Oswald', sans-serif; margin-bottom: 5px;">Comments:</div>
+                <div  th:text="#{lt.codeacademy.blogApplication.comments.paginator.total.comments(${commentsss.totalElements})}"
+                      style="font-size: 13px; font-family: 'EB Garamond', serif;"></div>
+            </div>
 
-                        th:with="pageSort=${commentsss.sort.toList().get(0)},
+
+            <div th:each="comment : ${commentsss.content}" class="commentInfo">
+
+                <div class="userInfo">
+                    <div th:text="${comment.user.name}"></div>
+                    <div th:text="${comment.date}"></div>
+                </div>
+
+                <div th:text="${comment.text}" class="commentText"></div>
+
+
+            </div>
+
+
+            <div>
+
+                <div th:if="${commentsss.totalElements > 6}">
+                    <nav aria-label="Page navigation example">
+                        <ul class="pagination justify-content-center"
+
+                            th:with="pageSort=${commentsss.sort.toList().get(0)},
 							sort=${pageSort.property + ','+ pageSort.direction + ',ignorecase'}">
 
-                        <li class="page-item"
-                            th:classappend="${commentsss.number eq 0 ? 'disabled' : ''}">
-                            <a class="page-link "
-                               th:href="@{/articles/{id}(id=${article.id}, page=${commentsss.number} - 1, sort=${sort})}"
-                               th:text="#{lt.codeacademy.blogApplication.articles.paginator.previous}"></a>
-                        </li>
-                        <li class="page-item"
-                            th:each="commentPage: ${#numbers.sequence(0, commentsss.totalPages - 1)}"
-                            th:classappend="${commentPage eq commentsss.number ? 'active': ''}">
-                            <a class="page-link"
-                               th:href="@{/articles/{id}(id=${article.id}, page=${commentPage},sort=${sort})}"
-                               th:text="${commentPage} + 1"></a>
-                        </li>
-                        <li class="page-item"
-                            th:classappend="${commentsss.number eq commentsss.totalPages - 1 ? 'disabled' : ''}">
-                            <a class="page-link"
-                               th:href="@{/articles/{id}(id=${article.id}, page=${commentsss.number} + 1, sort=${sort})}"
-                               th:text="#{lt.codeacademy.blogApplication.articles.paginator.next}"></a>
-                        </li>
-                    </ul>
-                </nav>
+                            <li class="page-item"
+                                th:classappend="${commentsss.number eq 0 ? 'disabled' : ''}">
+                                <a class="page-link "
+                                   th:href="@{/articles/{id}(id=${article.id}, page=${commentsss.number} - 1, sort=${sort})}"
+                                   th:text="#{lt.codeacademy.blogApplication.articles.paginator.previous}"></a>
+                            </li>
+                            <li class="page-item"
+                                th:each="commentPage: ${#numbers.sequence(0, commentsss.totalPages - 1)}"
+                                th:classappend="${commentPage eq commentsss.number ? 'active': ''}">
+                                <a class="page-link"
+                                   th:href="@{/articles/{id}(id=${article.id}, page=${commentPage},sort=${sort})}"
+                                   th:text="${commentPage} + 1"></a>
+                            </li>
+                            <li class="page-item"
+                                th:classappend="${commentsss.number eq commentsss.totalPages - 1 ? 'disabled' : ''}">
+                                <a class="page-link"
+                                   th:href="@{/articles/{id}(id=${article.id}, page=${commentsss.number} + 1, sort=${sort})}"
+                                   th:text="#{lt.codeacademy.blogApplication.articles.paginator.next}"></a>
+                            </li>
+                        </ul>
+                    </nav>
+
+                </div>
+
             </div>
 
         </div>
 
-        http://localhost:8080/articles?page=0&sort=date,DESC,ignorecase
+        <div class="commentBorder">
+            <a th:href="@{/comments/{id}/save(id=${article.id})}" class="text-decoration-none" id="textComment"> Write a comment</a>
+        </div>
+
 
 
     </div>

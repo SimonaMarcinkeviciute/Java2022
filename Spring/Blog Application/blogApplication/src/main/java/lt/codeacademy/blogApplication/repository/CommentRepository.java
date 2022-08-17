@@ -8,18 +8,11 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
 
 import java.util.UUID;
-
+@Repository
 public interface CommentRepository extends JpaRepository<CommentEntity, UUID> {
-
-//@Query(value = "SELECT * FROM commentEntity WHERE articleEntity = :articleEntity")
-//Page<CommentEntity> (@Param("articleEntity")ArticleEntity articleEntity, Pageable pageable);
-
-    //Page<Comment> findAllByArticleEntity(ArticleEntity articleEntity, Pageable pageable);
-
-    //Page<CommentEntity> findByCommentEntityByArticleEntity(ArticleEntity article, Pageable pageable);
-
     Page<CommentEntity> findByArticleEntity(ArticleEntity articleEntity, Pageable pageable);
 
 

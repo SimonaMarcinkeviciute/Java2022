@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.validation.Valid;
+import java.time.LocalDate;
 import java.util.UUID;
 
 @Controller
@@ -37,9 +38,10 @@ public class CommentController {
     }
 
     @GetMapping("/{id}/save")
-    public String openCommentForm(Model model) {
+    public String openCommentForm(Model model, String message) {
 
         model.addAttribute("comment", new Comment());
+        model.addAttribute("message", messageService.getMessage(message));
 
         return "form/comment";
     }
@@ -53,9 +55,10 @@ public class CommentController {
         String message = "lt.codeacademy.blogApplication.create.message.success";
         Article article = articleService.getArticle(id);
         comment.setArticle(article);
+        comment.setDate(LocalDate.now());
         commentService.createComment(comment);
 
-        return "redirect:/articles/{id}";
+        return "redirect:/articles/{id}?message=" + message;
     }
 
 }

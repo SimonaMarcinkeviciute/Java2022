@@ -8,6 +8,7 @@ import lt.codeacademy.blogApplication.entity.ArticleEntity;
 import lt.codeacademy.blogApplication.entity.CommentEntity;
 
 import javax.validation.constraints.NotBlank;
+import java.time.LocalDate;
 import java.util.UUID;
 
 @Getter
@@ -19,13 +20,19 @@ public class Comment {
     private UUID id;
     @NotBlank
     private String text;
+    private LocalDate date;
     Article article;
+    User user;
+
 
 
 
     public static Comment convert(CommentEntity entity) {
         return new Comment(entity.getId(),
-                entity.getText(), Article.convert(entity.getArticleEntity()));
+                entity.getText(),
+                entity.getDate(),
+                Article.convert(entity.getArticleEntity()),
+                User.convert(entity.getUserEntity()));
     }
 
     public Comment(UUID id, String text) {

@@ -99,3 +99,54 @@ ul.pagination .page-link {
 
 }
 
+#comment{
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    gap: 20px;
+}
+
+#textComment{
+    font-size: 35px;
+    color: black;
+
+}
+
+.commentBorder{
+    border-top-color: #f0faf1;
+    border-block-width: 2px;
+    border-top-style: solid;
+    font-family: 'Oswald', sans-serif;
+}
+
+.commentInfo{
+    width: 600px;
+    border-color: #f0faf1;
+        border-block-width: 2px;
+        border-top-style: solid;
+        border-bottom-style: solid;
+
+}
+
+.userComment{
+display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 40px;
+}
+
+.userInfo{
+font-family: 'EB Garamond', serif;
+    display: flex;
+    justify-content: space-between;
+    margin: 10px;
+}
+
+.commentText{
+font-family: 'Oswald', sans-serif;
+    font-size: 23px;
+    margin-bottom: 10px;
+    text-align: start;
+    margin-left: 20px;
+    margin-right: 20px;
+}

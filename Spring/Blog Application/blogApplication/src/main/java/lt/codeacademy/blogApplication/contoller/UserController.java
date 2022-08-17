@@ -1,6 +1,8 @@
 package lt.codeacademy.blogApplication.contoller;
 
 import lt.codeacademy.blogApplication.dto.User;
+import lt.codeacademy.blogApplication.service.MessageService;
+import lt.codeacademy.blogApplication.service.UserService;
 import lt.codeacademy.blogApplication.validator.UserValidator;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.SortDefault;
@@ -18,14 +20,19 @@ import javax.validation.Valid;
 public class UserController {
 
     private final UserValidator userValidator;
+    private final UserService userService;
+    private final MessageService messageService;
 
-    public UserController(UserValidator userValidator) {
+    public UserController(UserValidator userValidator, UserService userService, MessageService messageService) {
         this.userValidator = userValidator;
+        this.userService = userService;
+        this.messageService = messageService;
     }
 
     @GetMapping("/save")
-    public String openUserRegistrationForm(Model model) {
+    public String openUserRegistrationForm(Model model, String message) {
         model.addAttribute("user", new User());
+        model.addAttribute("message", messageService.getMessage(message));
 
         return "form/user";
     }
@@ -36,9 +43,12 @@ public class UserController {
         if(bindingResult.hasErrors()){
             return "form/user";
         }
-        //TODO call service!!! latter!!!!
 
-        return "redirect:/users/save";
+        String message = "lt.codeacademy.blogApplication.create.message.success";
+
+        userService.createUser(user);
+
+        return "redirect:/users/save?message=" + message;
     }
 
 }

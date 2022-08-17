@@ -68,76 +68,6 @@
             </div>
         </div>
         <div class="form-floating mb-3">
-            <input type="text"
-                   class="form-control"
-                   id="floatingInputCountry"
-                   th:field="*{country}"
-                   th:placeholder="#{lt.codeacademy.blogApplication.user.form.country}"
-                   th:classappend="${#fields.hasErrors('country')} ? 'is-invalid': (${user.country ne null} ? 'is-valid' : '')">
-            <label for="floatingInputCountry"
-                   th:text="#{lt.codeacademy.blogApplication.user.form.country}"></label>
-            <div class="invalid-feedback"
-                 th:if="${#fields.hasErrors('country')}"
-                 th:errors="*{country}">
-            </div>
-        </div>
-        <div class="form-floating mb-3">
-            <input type="text"
-                   class="form-control"
-                   id="floatingInputCity"
-                   th:field="*{city}"
-                   th:placeholder="#{lt.codeacademy.blogApplication.user.form.city}"
-                   th:classappend="${#fields.hasErrors('city')} ? 'is-invalid': (${user.city ne null} ? 'is-valid' : '')">
-            <label for="floatingInputCity"
-                   th:text="#{lt.codeacademy.blogApplication.user.form.city}"></label>
-            <div class="invalid-feedback"
-                 th:if="${#fields.hasErrors('city')}"
-                 th:errors="*{city}">
-            </div>
-        </div>
-        <div class="form-floating mb-3">
-            <input type="text"
-                   class="form-control"
-                   id="floatingInputStreet"
-                   th:field="*{street}"
-                   th:placeholder="#{lt.codeacademy.blogApplication.user.form.street}"
-                   th:classappend="${#fields.hasErrors('street')} ? 'is-invalid': (${user.street ne null} ? 'is-valid' : '')">
-            <label for="floatingInputStreet"
-                   th:text="#{lt.codeacademy.blogApplication.user.form.street}"></label>
-            <div class="invalid-feedback"
-                 th:if="${#fields.hasErrors('street')}"
-                 th:errors="*{street}">
-            </div>
-        </div>
-        <div class="form-floating mb-3">
-            <input type="text"
-                   class="form-control"
-                   id="floatingInputPostCode"
-                   th:field="*{postCode}"
-                   th:placeholder="#{lt.codeacademy.blogApplication.user.form.postCode}"
-                   th:classappend="${#fields.hasErrors('postCode')} ? 'is-invalid': (${user.postCode ne null} ? 'is-valid' : '')">
-            <label for="floatingInputPostCode"
-                   th:text="#{lt.codeacademy.blogApplication.user.form.postCode}"></label>
-            <div class="invalid-feedback"
-                 th:if="${#fields.hasErrors('postCode')}"
-                 th:errors="*{postCode}">
-            </div>
-        </div>
-        <div class="form-floating mb-3">
-            <input type="text"
-                   class="form-control"
-                   id="floatingInputPhone"
-                   th:field="*{phone}"
-                   th:placeholder="#{lt.codeacademy.blogApplication.user.form.phone}"
-                   th:classappend="${#fields.hasErrors('phone')} ? 'is-invalid': (${user.phone ne null} ? 'is-valid' : '')">
-            <label for="floatingInputPhone"
-                   th:text="#{lt.codeacademy.blogApplication.user.form.phone}"></label>
-            <div class="invalid-feedback"
-                 th:if="${#fields.hasErrors('phone')}"
-                 th:errors="*{phone}">
-            </div>
-        </div>
-        <div class="form-floating mb-3">
             <input type="password"
                    class="form-control"
                    id="floatingInputPassword"
@@ -177,6 +107,8 @@
                 class="btn btn-outline-primary"
                 th:text="#{lt.codeacademy.blogApplication.user.form.button}"></button>
     </form>
+
+    <div th:if="${message}" th:text="${message}"></div>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2" crossorigin="anonymous"></script>
 </body>

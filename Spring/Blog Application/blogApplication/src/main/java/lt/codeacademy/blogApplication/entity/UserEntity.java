@@ -31,16 +31,6 @@ public class UserEntity {
     @Column(nullable = false)
     private String email;
     @Column(nullable = false)
-    private String country;
-    @Column(nullable = false)
-    private String city;
-    @Column(nullable = false)
-    private String street;
-    @Column(nullable = false)
-    private String postCode;
-    @Column(nullable = false)
-    private String phone;
-    @Column(nullable = false)
     private String password;
 
     public static UserEntity convert(User user) {
@@ -49,11 +39,6 @@ public class UserEntity {
                 user.getSurname(),
                 user.getUsername(),
                 user.getEmail(),
-                user.getCountry(),
-                user.getCity(),
-                user.getStreet(),
-                user.getPostCode(),
-                user.getPhone(),
                 user.getPassword());
     }
 }

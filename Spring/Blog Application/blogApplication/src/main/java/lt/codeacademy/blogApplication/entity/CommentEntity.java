@@ -10,6 +10,7 @@ import org.hibernate.annotations.Type;
 import org.springframework.web.bind.annotation.Mapping;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.UUID;
 
 @Setter
@@ -25,16 +26,22 @@ public class CommentEntity {
     @Type(type = "uuid-char")
     private UUID id;
     private String text;
+    private LocalDate date;
 
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name="article_id")
     private ArticleEntity articleEntity;
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinColumn(name="user_id")
+    private UserEntity userEntity;
 
 
     public static CommentEntity convert(Comment comment) {
         return new CommentEntity(comment.getId(),
                 comment.getText(),
-                ArticleEntity.convert(comment.getArticle()));
+                comment.getDate(),
+                ArticleEntity.convert(comment.getArticle()),
+                UserEntity.convert(comment.getUser()));
     }
 
     public CommentEntity(UUID id, String text) {
