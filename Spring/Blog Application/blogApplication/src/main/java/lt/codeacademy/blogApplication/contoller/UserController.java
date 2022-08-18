@@ -4,8 +4,9 @@ import lt.codeacademy.blogApplication.dto.User;
 import lt.codeacademy.blogApplication.service.MessageService;
 import lt.codeacademy.blogApplication.service.UserService;
 import lt.codeacademy.blogApplication.validator.UserValidator;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.web.SortDefault;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -15,9 +16,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.validation.Valid;
 
+
 @Controller
 @RequestMapping("/users")
 public class UserController {
+
+    private final Logger log = LoggerFactory.getLogger(UserController.class);
 
     private final UserValidator userValidator;
     private final UserService userService;
@@ -41,6 +45,7 @@ public class UserController {
     public String createUser(@Valid User user, BindingResult bindingResult) {
         userValidator.validate(user, bindingResult);
         if(bindingResult.hasErrors()){
+            log.debug("Cannot create user, has errors: {}", bindingResult.hasErrors());
             return "form/user";
         }
 

@@ -23,7 +23,7 @@ import java.time.LocalDate;
 import java.util.UUID;
 
 @Controller
-@RequestMapping("/comments")
+
 public class CommentController {
 
     private final MessageService messageService;
@@ -37,7 +37,7 @@ public class CommentController {
         this.articleService = articleService;
     }
 
-    @GetMapping("/{id}/save")
+    @GetMapping("/public/comments/{id}/save")
     public String openCommentForm(Model model, String message) {
 
         model.addAttribute("comment", new Comment());
@@ -47,7 +47,7 @@ public class CommentController {
     }
 
 
-    @PostMapping("/{id}/save")
+    @PostMapping("/public/comments/{id}/save")
     public String createComment(@Valid Comment comment, BindingResult bindingResult,@PathVariable UUID id) {
         if(bindingResult.hasErrors()){
             return "form/comment";

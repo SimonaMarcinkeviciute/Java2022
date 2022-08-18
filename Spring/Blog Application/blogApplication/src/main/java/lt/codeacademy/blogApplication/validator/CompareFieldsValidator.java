@@ -28,7 +28,7 @@ public class CompareFieldsValidator implements ConstraintValidator<CompareFields
     private Object getFieldValue(Object o, String fieldName) {
         try {
             Class<?> objectClass = o.getClass();
-            Field field = objectClass.getField(fieldName);
+            Field field = objectClass.getDeclaredField(fieldName);
             field.setAccessible(true);
 
             return field.get(o);

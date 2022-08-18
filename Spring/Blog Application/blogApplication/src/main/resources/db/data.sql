@@ -13,8 +13,20 @@ VALUES ('48a95af7-8b83-4a08-8001-0f865db8ea26', 'Top 10 big houseplants that wil
 ('48a95af7-8b83-4a08-8001-0f865db8ea12', '15 essential tools for every plant parent', 'https://plnts.com/_next/image?url=https%3A%2F%2Fplnts-api.ams3.digitaloceanspaces.com%2Fmain%2F42347e42df587246a94ceaed991c01fc.jpg%2526w%253D1920%2526q%253D75&w=1920&q=75', 'Every parent wants what’s best for their children. Same goes for your plantbabies, of course. Besides a little bit of love, water and a cute pot, there are a few things that you should keep on hand when you are taking care of your beloved PLNTS. Whether you’re already an expert plant parent or you are just starting to create your own green jungle, there are some indoor plant tools that will help you give your plants the best care!', '2019-04-09');
 
 INSERT INTO USERS(id, name, surname, username, email, password)
-VALUES ('38a95af7-8b83-4a08-8001-0f865db8ea26', 'user', 'user', 'user', 'user@gmail.com', 'user');
+VALUES ('97591abe-5108-4bc2-afaa-6bc6a339619c', 'test_user', 'test_user', 'user', 'user@gmail.com', '{bcrypt}$2a$10$AsRCsrfh4423vjPr0xKpZeNpYixVcNtDpiGdM5xcIejUXOttH2jcu'), /*USER*/
+       ('1c6eb4cd-b644-4932-8d88-ec97b3ba0b7b', 'test_admin', 'test_admin', 'admin', 'admin@gmail.com', '{bcrypt}$2a$10$9Ox9WgR8X5SD04lLSdCwJ.AITH/cAZmcZ9tMkqJUFYSc0krItXT9W'); /*admin*/
+
+INSERT INTO ROLES(id, name)
+VALUES ('7f74bb02-9f14-43ce-8b28-8c0c889d1558', 'USER'),
+       ('25dde1c9-f740-46a7-a598-d62f37126950', 'ADMIN');
+
+INSERT INTO USERS_ROLES(user_id, role_id)
+VALUES ('97591abe-5108-4bc2-afaa-6bc6a339619c', '7f74bb02-9f14-43ce-8b28-8c0c889d1558'),
+       ('1c6eb4cd-b644-4932-8d88-ec97b3ba0b7b', '7f74bb02-9f14-43ce-8b28-8c0c889d1558'),
+       ('1c6eb4cd-b644-4932-8d88-ec97b3ba0b7b', '25dde1c9-f740-46a7-a598-d62f37126950');
+
+
 
 INSERT INTO COMMENTS (id, text, date, article_id ,user_id)
-VALUES ('18a95af7-8b83-4a08-8001-0f865db8ea26', 'Hello!!!!!', '2022-08-10', '48a95af7-8b83-4a08-8001-0f865db8ea26','38a95af7-8b83-4a08-8001-0f865db8ea26'),
-('12a95af7-8b83-4a08-8001-0f865db8ea26', ':)', '2022-08-11', '48a95af7-8b83-4a08-8001-0f865db8ea26','38a95af7-8b83-4a08-8001-0f865db8ea26');
+VALUES ('18a95af7-8b83-4a08-8001-0f865db8ea26', 'Hello!!!!!', '2022-08-10', '48a95af7-8b83-4a08-8001-0f865db8ea26','97591abe-5108-4bc2-afaa-6bc6a339619c'),
+('12a95af7-8b83-4a08-8001-0f865db8ea26', ':)', '2022-08-11', '48a95af7-8b83-4a08-8001-0f865db8ea26','97591abe-5108-4bc2-afaa-6bc6a339619c');
