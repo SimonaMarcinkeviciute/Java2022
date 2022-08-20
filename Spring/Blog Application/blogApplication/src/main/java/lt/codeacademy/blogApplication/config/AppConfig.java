@@ -51,7 +51,6 @@ public class AppConfig implements WebMvcConfigurer {
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
         registry.addViewController("/login").setViewName("form/login");
-        registry.addRedirectViewController("/", "/public/articles");
     }
 
 

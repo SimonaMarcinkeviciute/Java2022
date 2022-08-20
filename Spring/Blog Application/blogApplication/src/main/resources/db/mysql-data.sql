@@ -8,3 +8,7 @@ VALUES ('48a95af7-8b83-4a08-8001-0f865db8ea26', 'Iphone 13', 'Very cheap phone',
        ('bb2db642-6681-4e96-bff9-d226d6384efb', 'apple iPhone 13 mini', 'iPhone 13 mini.','Phone',  '99'),
        ('d96e1892-3019-4304-bd5a-1ef750be3aca', 'APPLE iPhone SE (3rd gen)', 'Lightning-fast A15 Bionic chip and fast 5G.1','Phone',  '89'),
        ('abdee4f9-5763-4afc-85ed-98b2fdefb35d', 'Snaige', 'Kazkoks Snaige Firdge, jis dar prekyboje?','Fridge', '1');
+
+INSERT INTO roles(id, name)
+VALUES ('7f74bb02-9f14-43ce-8b28-8c0c889d1558', 'USER'),
+       ('25dde1c9-f740-46a7-a598-d62f37126950', 'ADMIN');

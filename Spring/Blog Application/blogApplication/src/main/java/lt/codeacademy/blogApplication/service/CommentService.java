@@ -35,6 +35,14 @@ public class CommentService {
         return commentRepository.findByArticleEntity(articleEntity, pageable).map(Comment::convert);
     }
 
+    public void delete(UUID id) {
+        commentRepository.deleteById(id);
+    }
+
+    public Comment getComment(UUID id) {
+        return commentRepository.findById(id).map(Comment::convert).orElseThrow();
+    }
+
 
 
 

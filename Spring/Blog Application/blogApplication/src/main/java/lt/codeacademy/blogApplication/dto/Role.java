@@ -2,12 +2,14 @@ package lt.codeacademy.blogApplication.dto;
 
 
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lt.codeacademy.blogApplication.entity.RoleEntity;
 import org.springframework.security.core.GrantedAuthority;
 
 import java.util.UUID;
 
 @AllArgsConstructor
+@Getter
 public class Role implements GrantedAuthority {
     private static final String ROLE_PREFIX = "ROLE_";
 

@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en"
       xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
       th:with="articleExist=${comment.id ne null}">
 <head>
     <meta charset="UTF-8">
@@ -10,8 +11,7 @@
 <body>
 <div class="container">
 
-
-    <form method="post" th:object="${comment}">
+    <form method="post" th:object="${comment}" th:action="@{/comments/{id}/save(id=${article.id})}">
 
         <div class="form-floating mb-3">
             <input type="text"

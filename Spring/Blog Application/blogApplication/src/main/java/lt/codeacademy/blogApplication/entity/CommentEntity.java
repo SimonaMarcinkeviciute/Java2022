@@ -6,6 +6,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lt.codeacademy.blogApplication.dto.Article;
 import lt.codeacademy.blogApplication.dto.Comment;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 import org.hibernate.annotations.Type;
 import org.springframework.web.bind.annotation.Mapping;
 
@@ -27,11 +29,11 @@ public class CommentEntity {
     private UUID id;
     private String text;
     private LocalDate date;
-
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    @ManyToOne()
     @JoinColumn(name="article_id")
     private ArticleEntity articleEntity;
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToOne
     @JoinColumn(name="user_id")
     private UserEntity userEntity;
 

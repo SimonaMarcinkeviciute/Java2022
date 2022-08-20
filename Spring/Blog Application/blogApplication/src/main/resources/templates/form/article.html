@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en"
       xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
       th:with="articleExist=${article.id ne null}">
 <head>
     <meta charset="UTF-8">
@@ -13,7 +14,9 @@
 <div class="container">
     <h3 th:text="${articleExist ? 'Update article:' : 'Create article:'}"></h3>
 
-    <form method="post" th:object="${article}">
+
+    <form th:if="${!articleExist}" method="post" th:object="${article}" th:action="@{/articles/save}">
+        pirmas
 
         <div class="form-floating mb-3">
             <input type="text"
@@ -61,12 +64,71 @@
             </div>
         </div>
 
-
-
-
-
-        <button type="submit" class="btn btn-outline-primary" th:text="${articleExist ? 'Update article' : 'Create article'}"></button>
+        <button type="submit" class="btn btn-outline-primary" >Create</button>
     </form>
+    </div>
+
+
+    <div th:if="${articleExist}">
+
+
+        <form method="post" th:object="${article}" th:action="@{/articles/{id}/update(id=${article.id})}">
+
+            <div class="form-floating mb-3">
+                <input type="text"
+                       class="form-control"
+                       id="floatingInputTitl"
+                       th:field="*{title}"
+                       th:placeholder="#{lt.codeacademy.blogApplication.article.form.title}"
+                       th:classappend="${#fields.hasErrors('title')} ? 'is-invalid': (${article.title ne null} ? 'is-valid' : '')">
+                <label for="floatingInputTitle"
+                       th:text="#{lt.codeacademy.blogApplication.article.form.title}"></label>
+                <div class="invalid-feedback"
+                     th:if="${#fields.hasErrors('title')}"
+                     th:errors="*{title}">
+                </div>
+            </div>
+
+            <div class="form-floating mb-3">
+                <input type="text"
+                       class="form-control"
+                       id="floatingInputImag"
+                       th:field="*{image}"
+                       th:placeholder="#{lt.codeacademy.blogApplication.article.form.image}"
+                       th:classappend="${#fields.hasErrors('image')} ? 'is-invalid': (${article.image ne null} ? 'is-valid' : '')">
+                <label for="floatingInputImage"
+                       th:text="#{lt.codeacademy.blogApplication.article.form.image}"></label>
+                <div class="invalid-feedback"
+                     th:if="${#fields.hasErrors('image')}"
+                     th:errors="*{image}">
+                </div>
+            </div>
+
+
+            <div class="form-floating mb-3">
+                <input type="text"
+                       class="form-control"
+                       id="floatingInputConten"
+                       th:field="*{content}"
+                       th:placeholder="#{lt.codeacademy.blogApplication.article.form.content}"
+                       th:classappend="${#fields.hasErrors('content')} ? 'is-invalid': (${article.content ne null} ? 'is-valid' : '')">
+                <label for="floatingInputContent"
+                       th:text="#{lt.codeacademy.blogApplication.article.form.content}"></label>
+                <div class="invalid-feedback"
+                     th:if="${#fields.hasErrors('content')}"
+                     th:errors="*{content}">
+                </div>
+            </div>
+
+
+antras
+
+
+            <button type="submit" class="btn btn-outline-primary" >Update</button>
+        </form>
+    </div>
+
+
     <div th:if="${message}" th:text="${message}"></div>
 </div>
 

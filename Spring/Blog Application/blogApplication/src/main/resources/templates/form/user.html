@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
     <title th:text="#{lt.codeacademy.blogApplication.user.form.title}"></title>
@@ -9,7 +10,7 @@
 <body>
 <div class="container">
     <h3 th:text="#{lt.codeacademy.blogApplication.user.form.title}"></h3>
-    <form method="post" th:object="${user}" th:action="@{/users/save}">
+    <form method="post" th:object="${user}" th:action="@{/public/users/save}">
         <div class="form-floating mb-3">
             <input type="text"
                    class="form-control"

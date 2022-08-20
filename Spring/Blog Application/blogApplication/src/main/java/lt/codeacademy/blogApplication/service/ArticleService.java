@@ -6,6 +6,7 @@ import lt.codeacademy.blogApplication.entity.ArticleEntity;
 import lt.codeacademy.blogApplication.entity.CommentEntity;
 import lt.codeacademy.blogApplication.exeption.ArticleNotExistExeption;
 import lt.codeacademy.blogApplication.repository.ArticleRepository;
+import lt.codeacademy.blogApplication.repository.CommentRepository;
 import org.springframework.boot.autoconfigure.data.web.SpringDataWebProperties;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -20,9 +21,11 @@ public class ArticleService {
 
 
     private final ArticleRepository articleRepository;
+    private final CommentRepository commentRepository;
 
-    public ArticleService(ArticleRepository articleRepository) {
+    public ArticleService(ArticleRepository articleRepository, CommentRepository commentRepository) {
         this.articleRepository = articleRepository;
+        this.commentRepository = commentRepository;
     }
 
     public void createArticle(Article article) {
@@ -46,6 +49,7 @@ public class ArticleService {
     public void delete(UUID id) {
         articleRepository.deleteById(id);
     }
+
 
     public List<Article> getArticlesByTitle(String title) {
         return articleRepository.findAllByTitle(title).stream()

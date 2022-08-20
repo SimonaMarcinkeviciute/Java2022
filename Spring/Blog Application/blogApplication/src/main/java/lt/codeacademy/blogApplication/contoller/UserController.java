@@ -18,10 +18,8 @@ import javax.validation.Valid;
 
 
 @Controller
-@RequestMapping("/users")
+@RequestMapping("/public/users")
 public class UserController {
-
-    private final Logger log = LoggerFactory.getLogger(UserController.class);
 
     private final UserValidator userValidator;
     private final UserService userService;
@@ -45,7 +43,6 @@ public class UserController {
     public String createUser(@Valid User user, BindingResult bindingResult) {
         userValidator.validate(user, bindingResult);
         if(bindingResult.hasErrors()){
-            log.debug("Cannot create user, has errors: {}", bindingResult.hasErrors());
             return "form/user";
         }
 
@@ -53,7 +50,7 @@ public class UserController {
 
         userService.createUser(user);
 
-        return "redirect:/users/save?message=" + message;
+        return "redirect:/public/articles";
     }
 
 }

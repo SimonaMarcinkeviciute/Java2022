@@ -1,10 +1,24 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
+</head>
 <body style="height: 95vh" class=" flex-column d-flex justify-content-center">
 <div class="container">
     <div class="mx-auto w-50"
          th:with="shouldShow=${param.error ne null}">
-        <div th:replace="fragments/fragments :: notification(${shouldShow}, 'alert-danger', #{lt.codeacademy.blogApplication.login.failed})"></div>
+
+        <div  th:if="${shoudShow}"
+              class="alert"
+              th:classappend="${alert-danger}"
+              role="alert"
+              th:text="${#{lt.codeacademy.blogApplication.login.failed}}">>
+
+        </div>
+
         <form method="post" th:action="@{/login}">
             <h1 th:text="#{lt.codeacademy.blogApplication.login.sing.in}"></h1>
             <div class="form-floating mb-3">
@@ -25,6 +39,10 @@
                 <label for="floatingInputPassword"
                        th:text="#{lt.codeacademy.blogApplication.login.password}"></label>
             </div>
+            <div class="d-flex justify-content-center">
+                <a th:href="@{/public/users/save}"
+                   th:text="#{lt.codeacademy.blogApplication.login.user.registration}"></a>
+            </div>
             <div class="d-flex justify-content-end">
                 <button type="submit"
                         class="btn btn-outline-primary"
@@ -35,3 +53,5 @@
 </div>
 </body>
 </html>
+
+

@@ -1,7 +1,10 @@
 package lt.codeacademy.blogApplication.entity;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lt.codeacademy.blogApplication.dto.Role;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
@@ -11,6 +14,8 @@ import java.util.UUID;
 @Setter
 @Entity
 @Table(name = "Roles")
+@AllArgsConstructor
+@NoArgsConstructor
 public class RoleEntity {
 
     @Id
@@ -19,4 +24,8 @@ public class RoleEntity {
     @Type(type = "uuid-char")
     private UUID id;
     private String name;
+
+    public static RoleEntity convert(Role role) {
+        return new RoleEntity(role.getId(), role.getName());
+    }
 }

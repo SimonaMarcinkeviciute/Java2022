@@ -10,6 +10,7 @@ import lt.codeacademy.blogApplication.service.MessageService;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.SortDefault;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -37,18 +38,19 @@ public class CommentController {
         this.articleService = articleService;
     }
 
-    @GetMapping("/public/comments/{id}/save")
-    public String openCommentForm(Model model, String message) {
+    @GetMapping("/comments/{id}/save")
+    public String openCommentForm(Model model, String message, @PathVariable UUID id) {
 
         model.addAttribute("comment", new Comment());
         model.addAttribute("message", messageService.getMessage(message));
+        model.addAttribute("article", articleService.getArticle(id));
 
         return "form/comment";
     }
 
 
-    @PostMapping("/public/comments/{id}/save")
-    public String createComment(@Valid Comment comment, BindingResult bindingResult,@PathVariable UUID id) {
+    @PostMapping("comments/{id}/save")
+    public String createComment(@Valid Comment comment, BindingResult bindingResult,@PathVariable UUID id, @AuthenticationPrincipal User user) {
         if(bindingResult.hasErrors()){
             return "form/comment";
         }
@@ -56,9 +58,19 @@ public class CommentController {
         Article article = articleService.getArticle(id);
         comment.setArticle(article);
         comment.setDate(LocalDate.now());
+        comment.setUser(user);
         commentService.createComment(comment);
 
-        return "redirect:/articles/{id}?message=" + message;
+        return "redirect:/public/articles/{id}?message=" + message;
     }
+
+
+    @GetMapping("/comments/{id}/{idi}/delete")
+    public String deleteComment(@PathVariable UUID id) {
+        commentService.delete(id);
+
+        return "redirect:/public/articles/{idi}";
+    }
+
 
 }

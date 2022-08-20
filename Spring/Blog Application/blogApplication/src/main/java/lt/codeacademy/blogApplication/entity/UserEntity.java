@@ -17,13 +17,14 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Setter
 @Getter
 @Entity
 @Table(name = "users")
 @NoArgsConstructor
-@AllArgsConstructor
+
 public class UserEntity {
     @Id
     @GeneratedValue
@@ -41,26 +42,30 @@ public class UserEntity {
     @Column(nullable = false)
     private String password;
     @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(joinColumns = @JoinColumn(name="user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
+    @JoinTable(joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<RoleEntity> roles;
 
-    public UserEntity(UUID id, String name, String surname, String username, String email, String password) {
+    public UserEntity(UUID id, String name, String surname, String username, String email, String password, Set<RoleEntity> roles) {
         this.id = id;
         this.name = name;
         this.surname = surname;
         this.username = username;
         this.email = email;
         this.password = password;
+        this.roles = roles;
     }
 
     public static UserEntity convert(User user) {
-        PasswordEncoder encoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
+        Set<RoleEntity> roles = user.getRoles().stream()
+                .map(RoleEntity::convert)
+                .collect(Collectors.toSet());
         return new UserEntity(user.getId(),
                 user.getName(),
                 user.getSurname(),
                 user.getUsername(),
                 user.getEmail(),
-                encoder.encode(user.getPassword()));
+                user.getPassword(),
+                roles);
     }
 
 
