@@ -12,88 +12,113 @@
     <link href="https://fonts.googleapis.com/css2?family=EB+Garamond&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Oswald&display=swap" rel="stylesheet">
     <meta charset="UTF-8">
-    <title th:if="${article ne null}" th:text="${'Article ' + article.title + ' Details'}">Article Details</title>
-
+    <title th:if="${article ne null}" th:text="${'Article ' + article.title + ' Details'}"></title>
 </head>
 <body th:action="@{/public/articles/{id}(id=${article.id})}">
-
-<nav class="navbar navbar-light " style="background-color: #f0faf1;" id="la">
+<nav class="navbar navbar-light "
+     style="background-color: #f0faf1; padding: 30px">
     <div class="container-fluid">
         <a th:href="@{/public/articles}">
-            <img th:src="${url}" class="navImg" th:href="@{/articles}">
-
+            <img th:src="${url}"
+                 style="height: 50px;"
+                 th:href="@{/public/articles}">
         </a>
-
-        <div>
-            <a sec:authorize="hasRole('ADMIN')" th:href="@{/articles/{id}/update(id=${article.id})}">Update Article</a>
+        <div class="d-flex justify-content-end"
+             style="gap: 40px; align-items: center;">
+            <a sec:authorize="hasRole('ADMIN')"
+               th:href="@{/articles/{id}/update(id=${article.id})}"
+               th:text="#{lt.codeacademy.blogApplication.articles.update}"
+               class="text-decoration-none text-dark"
+               style="font-family: 'Oswald', sans-serif; font-size: 20px;"></a>
+            <a sec:authorize="hasRole('ADMIN')"
+               th:href="@{/articles/{id}/delete(id=${article.id})}"
+               th:text="#{lt.codeacademy.blogApplication.articles.delete}"
+               class="text-decoration-none text-dark"
+               style="font-family: 'Oswald', sans-serif; font-size: 20px;"></a>
+            <a sec:authorize="hasRole('ADMIN')"
+               th:href="@{/articles/save}"
+               th:text="#{lt.codeacademy.blogApplication.articles.save}"
+               class="text-decoration-none text-dark"
+               style="font-family: 'Oswald', sans-serif; font-size: 20px;"></a>
+            <div>
+                <a sec:authorize="isAnonymous()"
+                   th:href="@{/login}"
+                   class="text-decoration-none text-dark">
+                    <i class="bi bi-person fs-3"></i>
+                </a>
+                <div sec:authorize="isAuthenticated()"
+                     class="dropdown">
+                    <a class="text-decoration-none text-dark"
+                       href="#"
+                       role="button"
+                       data-bs-toggle="dropdown"
+                       aria-expanded="false">
+                        <i class="bi bi-person fs-3"></i>
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-light"
+                        style="font-family: 'Oswald', sans-serif;">
+                        <li class="d-flex justify-content-start user-name">
+                            <div style="margin-right: 10px;"
+                                 th:text="#{lt.codeacademy.blogApplication.articles.greetings}"></div>
+                            <div sec:authentication="principal.name"></div>
+                        </li>
+                        <li style="font-family: 'EB Garamond', serif; font-size: 14px;">
+                            <a class="dropdown-item d-flex justify-content-end"
+                               th:href="@{/logout}"
+                               th:text="#{lt.codeacademy.blogApplication.menu.logout}"></a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div>
+                <select id="language-switcher"
+                        class="form-select success"
+                        aria-label="Default select example">
+                    <option value='' th:text="#{lt.codeacademy.blogApplication.language.switcher.select}"></option>
+                    <option value="EN" th:text="#{lt.codeacademy.blogApplication.language.switcher.en}"></option>
+                    <option value="LT" th:text="#{lt.codeacademy.blogApplication.language.switcher.lt}"></option>
+                </select>
+            </div>
         </div>
-        <div th:action="@{/articles/{id}/delete(id=${article.id})}">
-            <a sec:authorize="hasRole('ADMIN')" th:href="@{/articles/{id}/delete(id=${article.id})}">Delete Article</a>
-        </div>
-
-
-        <div class="w-15">
-            <select id="language-switcher"
-                    class="form-select"
-                    aria-label="Default select example">
-                <option value="" selected th:text="#{lt.codeacademy.blogApplication.language.switcher.select}"></option>
-                <option value="EN" th:text="#{lt.codeacademy.blogApplication.language.switcher.en}"></option>
-                <option value="LT" th:text="#{lt.codeacademy.blogApplication.language.switcher.lt}"></option>
-                <option value="DE" th:text="#{lt.codeacademy.blogApplication.language.switcher.de}"></option>
-                <option value="FR" th:text="#{lt.codeacademy.blogApplication.language.switcher.fr}"></option>
-            </select>
-        </div>
-
     </div>
 </nav>
-
-
 <div th:if="${article ne null}">
-
     <div class="articles" th:text="${article.title}"></div>
     <div class="total" th:text="${article.date}"></div>
-
     <div class="contentParent">
         <img class="articleImgChild" th:src="${article.image}">
         <div class="content" th:text="${article.content}"></div>
     </div>
     <div id="comment">
-
         <div th:if="${not commentsss.hasContent()}" style="font-family: 'EB Garamond', serif;">
-            <div style="font-size: 15px;">No comments yet</div>
-            <div style="font-size: 18px;">Be the first to comment</div>
+            <div style="font-size: 15px;"
+                 th:text="#{lt.codeacademy.blogApplication.articles.noComment}"></div>
+            <div style="font-size: 18px;"
+                 th:text="#{lt.codeacademy.blogApplication.articles.firstComment}"></div>
         </div>
-
         <div th:if="${commentsss.hasContent()}" class="userComment">
-
             <div>
-                <div style="font-size: 30px; font-family: 'Oswald', sans-serif; margin-bottom: 5px;">Comments:</div>
-                <div  th:text="#{lt.codeacademy.blogApplication.comments.paginator.total.comments(${commentsss.totalElements})}"
-                      style="font-size: 13px; font-family: 'EB Garamond', serif;"></div>
+                <div style="font-size: 30px; font-family: 'Oswald', sans-serif; margin-bottom: 5px;"
+                     th:text="#{lt.codeacademy.blogApplication.articles.comments}"></div>
+                <div th:text="#{lt.codeacademy.blogApplication.comments.paginator.total.comments(${commentsss.totalElements})}"
+                     style="font-family: 'EB Garamond', serif;"></div>
             </div>
-
-
             <div th:each="comment : ${commentsss.content}" class="commentInfo">
 
                 <div class="userInfo">
                     <div th:text="${comment.user.name}"></div>
                     <div th:text="${comment.date}"></div>
                 </div>
-
                 <div th:text="${comment.text}" class="commentText"></div>
                 <div>
-
+                    <a th:href="@{/comments/{id}/{idi}/delete(id=${comment.id}, idi=${article.id})}"
+                       style="text-decoration: none; color: black; font-family: 'Oswald', sans-serif;}"
+                       th:text="#{lt.codeacademy.blogApplication.articleDetails.comment.delete}"
+                       sec:authorize="isAuthenticated()"
+                       ></a>
                 </div>
-                <div>
-                    <a th:href="@{/comments/{id}/{idi}/delete(id=${comment.id}, idi=${article.id})}">Delete Comment</a>
-                </div>
-
-
             </div>
-
-
             <div>
-
                 <div th:if="${commentsss.totalElements > 6}">
                     <nav aria-label="Page navigation example">
                         <ul class="pagination justify-content-center"
@@ -122,39 +147,29 @@
                             </li>
                         </ul>
                     </nav>
-
                 </div>
-
             </div>
-
         </div>
-
         <div class="commentBorder">
-            <a th:href="@{/comments/{id}/save(id=${article.id})}" class="text-decoration-none" id="textComment"> Write a comment</a>
+            <a th:href="@{/comments/{id}/save(id=${article.id})}"
+               class="text-decoration-none"
+               style="font-size: 35px; color: black;"
+               th:text="#{lt.codeacademy.blogApplication.articleDetail.comment.write}"></a>
         </div>
-
-
-
     </div>
-
-
     <nav class="navbar navbar-light">
         <div class="container-fluid">
             <img th:src="${fotter}" style="width: -webkit-fill-available;">
         </div>
     </nav>
-
-
 </div>
-<div th:if="${article eq null}">
-    Article does not exist
-</div>
-
-
+<div th:if="${article eq null}"
+     th:text="#{lt.codeacademy.blogApplication.articleDetail.article.notExist}"></div>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2"
         crossorigin="anonymous"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script th:src="@{/js/language-switcher.js}"></script>
 </body>
 </html>

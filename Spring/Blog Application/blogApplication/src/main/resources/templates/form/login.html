@@ -1,54 +1,61 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
 </head>
-<body style="height: 95vh" class=" flex-column d-flex justify-content-center">
-<div class="container">
-    <div class="mx-auto w-50"
-         th:with="shouldShow=${param.error ne null}">
-
-        <div  th:if="${shoudShow}"
-              class="alert"
-              th:classappend="${alert-danger}"
-              role="alert"
-              th:text="${#{lt.codeacademy.blogApplication.login.failed}}">>
-
+<body>
+<div style="height: 95vh" class=" flex-column d-flex justify-content-center">
+    <div class="container">
+        <div class="mx-auto w-50"
+             th:with="shouldShow=${param.error ne null}">
+            <div th:if="${shoudShow}"
+                 class="alert"
+                 th:classappend="${alert-danger}"
+                 role="alert"
+                 th:text="${#{lt.codeacademy.blogApplication.login.failed}}">>
+            </div>
+            <form method="post"
+                  th:action="@{/login}">
+                <div style="font-family: 'Oswald', sans-serif; font-size: 25px;"
+                     th:text="#{lt.codeacademy.blogApplication.login.sing.in.greeting}"></div>
+                <div style="font-family: 'Oswald', sans-serif; margin-bottom: 15px;"
+                     th:text="#{lt.codeacademy.blogApplication.login.sing.in}"></div>
+                <div style="font-family: 'EB Garamond', serif;">
+                    <div class="form-floating mb-3">
+                        <input type="text"
+                               class="form-control"
+                               id="floatingInputName"
+                               name="customUsername"
+                               th:placeholder="#{lt.codeacademy.blogApplication.login.username}">
+                        <label for="floatingInputName"
+                               th:text="#{lt.codeacademy.blogApplication.login.username}"></label>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <input type="password"
+                               class="form-control"
+                               id="floatingInputPassword"
+                               name="customPassword"
+                               th:placeholder="#{lt.codeacademy.blogApplication.login.password}">
+                        <label for="floatingInputPassword"
+                               th:text="#{lt.codeacademy.blogApplication.login.password}"></label>
+                    </div>
+                    <div class="d-flex justify-content-center">
+                        <a style="text-decoration: none; color: black;}"
+                           th:href="@{/public/users/save}"
+                           th:text="#{lt.codeacademy.blogApplication.login.user.registration}"></a>
+                    </div>
+                </div>
+                <div class="d-flex justify-content-end"
+                     style="font-family: 'Oswald', sans-serif;">
+                    <button type="submit"
+                            class="btn btn-outline-success"
+                            th:text="#{lt.codeacademy.blogApplication.login.button}"></button>
+                </div>
+            </form>
         </div>
-
-        <form method="post" th:action="@{/login}">
-            <h1 th:text="#{lt.codeacademy.blogApplication.login.sing.in}"></h1>
-            <div class="form-floating mb-3">
-                <input type="text"
-                       class="form-control"
-                       id="floatingInputName"
-                       name="customUsername"
-                       th:placeholder="#{lt.codeacademy.blogApplication.login.username}">
-                <label for="floatingInputName"
-                       th:text="#{lt.codeacademy.blogApplication.login.username}"></label>
-            </div>
-            <div class="form-floating mb-3">
-                <input type="password"
-                       class="form-control"
-                       id="floatingInputPassword"
-                       name="customPassword"
-                       th:placeholder="#{lt.codeacademy.blogApplication.login.password}">
-                <label for="floatingInputPassword"
-                       th:text="#{lt.codeacademy.blogApplication.login.password}"></label>
-            </div>
-            <div class="d-flex justify-content-center">
-                <a th:href="@{/public/users/save}"
-                   th:text="#{lt.codeacademy.blogApplication.login.user.registration}"></a>
-            </div>
-            <div class="d-flex justify-content-end">
-                <button type="submit"
-                        class="btn btn-outline-primary"
-                        th:text="#{lt.codeacademy.blogApplication.login.button}"></button>
-            </div>
-        </form>
     </div>
 </div>
 </body>

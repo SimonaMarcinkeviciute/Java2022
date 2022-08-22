@@ -17,6 +17,7 @@ public class MessageService {
         if(messageKey == null) {
             return null;
         }
+
         return messageSource.getMessage(messageKey, null, LocaleContextHolder.getLocale());
     }
 }

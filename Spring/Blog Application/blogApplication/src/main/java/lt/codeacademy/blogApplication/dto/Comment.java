@@ -4,9 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lt.codeacademy.blogApplication.entity.ArticleEntity;
 import lt.codeacademy.blogApplication.entity.CommentEntity;
-
 import javax.validation.constraints.NotBlank;
 import java.time.LocalDate;
 import java.util.UUID;
@@ -23,9 +21,6 @@ public class Comment {
     private LocalDate date;
     Article article;
     User user;
-
-
-
 
     public static Comment convert(CommentEntity entity) {
         return new Comment(entity.getId(),

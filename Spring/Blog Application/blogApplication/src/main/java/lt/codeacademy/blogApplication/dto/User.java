@@ -6,10 +6,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lt.codeacademy.blogApplication.entity.UserEntity;
 import lt.codeacademy.blogApplication.validator.annotation.CompareFields;
-import lt.codeacademy.blogApplication.validator.annotation.Password;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-
 import javax.validation.constraints.NotBlank;
 import java.util.Collection;
 import java.util.Set;
@@ -20,7 +18,6 @@ import java.util.stream.Collectors;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-//@Password
 @CompareFields(first = "password", second = "repeatPassword")
 public class User implements UserDetails {
     private UUID id;

@@ -5,16 +5,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lt.codeacademy.blogApplication.entity.ArticleEntity;
-import lt.codeacademy.blogApplication.entity.CommentEntity;
-
-import javax.validation.constraints.Max;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
-import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 import java.util.UUID;
 
 @Getter
@@ -42,6 +35,4 @@ public class Article {
                 entity.getContent(),
                 entity.getDate());
     }
-
-
 }

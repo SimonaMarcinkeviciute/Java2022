@@ -1,7 +1,6 @@
 package lt.codeacademy.blogApplication.validator;
 
 import lt.codeacademy.blogApplication.validator.annotation.CompareFields;
-
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 import java.lang.reflect.Field;
@@ -18,7 +17,6 @@ public class CompareFieldsValidator implements ConstraintValidator<CompareFields
 
     @Override
     public boolean isValid(Object o, ConstraintValidatorContext constraintValidatorContext) {
-
         Object first = getFieldValue(o, firstFieldName);
         Object second = getFieldValue(o, secondFieldName);
 

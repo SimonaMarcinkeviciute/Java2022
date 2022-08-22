@@ -4,13 +4,10 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lt.codeacademy.blogApplication.dto.Article;
 import lt.codeacademy.blogApplication.dto.Comment;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 import org.hibernate.annotations.Type;
-import org.springframework.web.bind.annotation.Mapping;
-
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.UUID;
@@ -36,7 +33,6 @@ public class CommentEntity {
     @ManyToOne
     @JoinColumn(name="user_id")
     private UserEntity userEntity;
-
 
     public static CommentEntity convert(Comment comment) {
         return new CommentEntity(comment.getId(),

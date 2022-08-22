@@ -1,11 +1,9 @@
 package lt.codeacademy.blogApplication.dto;
 
-
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lt.codeacademy.blogApplication.entity.RoleEntity;
 import org.springframework.security.core.GrantedAuthority;
-
 import java.util.UUID;
 
 @AllArgsConstructor

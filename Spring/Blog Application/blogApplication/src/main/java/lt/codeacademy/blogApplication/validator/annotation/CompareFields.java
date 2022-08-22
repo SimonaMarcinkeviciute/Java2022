@@ -1,7 +1,6 @@
 package lt.codeacademy.blogApplication.validator.annotation;
 
 import lt.codeacademy.blogApplication.validator.CompareFieldsValidator;
-
 import javax.validation.Constraint;
 import javax.validation.Payload;
 import java.lang.annotation.ElementType;

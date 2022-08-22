@@ -6,7 +6,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lt.codeacademy.blogApplication.dto.Role;
 import org.hibernate.annotations.Type;
-
 import javax.persistence.*;
 import java.util.UUID;
 

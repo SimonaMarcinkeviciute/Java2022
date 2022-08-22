@@ -2,131 +2,142 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
-  <link rel="stylesheet" th:href="@{/css/style.css}">
-  <meta charset="UTF-8">
-  <title th:text="#{lt.codeacademy.blogApplication.articles.pageTitle}"></title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=EB+Garamond&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Oswald&display=swap" rel="stylesheet">
+    <meta charset="UTF-8">
+    <title th:text="#{lt.codeacademy.blogApplication.articles.pageTitle}"></title>
 </head>
 <body>
-
-<div class="container">
-  <div class="w-15">
-    <select id="language-switcher"
-            class="form-select"
-            aria-label="Default select example">
-      <option value="" selected th:text="#{lt.codeacademy.blogApplication.language.switcher.select}"></option>
-      <option value="EN" th:text="#{lt.codeacademy.blogApplication.language.switcher.en}"></option>
-      <option value="LT" th:text="#{lt.codeacademy.blogApplication.language.switcher.lt}"></option>
-      <option value="DE" th:text="#{lt.codeacademy.blogApplication.language.switcher.de}"></option>
-      <option value="FR" th:text="#{lt.codeacademy.blogApplication.language.switcher.fr}"></option>
-    </select>
-  </div>
-  <div th:if="${not articlesByPage.hasContent()}"
-       class="alert alert-info"
-       role="alert"
-       th:text="#{lt.codeacademy.blogApplication.articles.message.empty.articles}">
-
-  </div>
-  <div th:if="${articlesByPage.hasContent()}">
-    <table class="table table-striped table-hover">
-      <thead class="table-dark">
-    <tr>
-      <th class="col-2">
-        <a th:with="direction=${articlesByPage.sort.getOrderFor('title')?.direction}"
-           th:href="@{/articles(sort='title,' + ${direction?.name() eq 'ASC' ? 'DESC' : 'ASC'} + ',ignorecase')}">
-          <span th:text="#{lt.codeacademy.blogApplication.articles.title}"></span>
-          <i class="bi"
-             th:classappend="${direction?.name() eq 'ASC' ? 'bi-sort-down-alt' : 'bi-sort-down'}"
-             th:if="${direction ne null}"></i>
+<nav class="navbar navbar-light "
+     style="background-color: #f0faf1; padding: 30px">
+    <div class="container-fluid">
+        <a th:href="@{/public/articles}">
+            <img th:src="${url}"
+                 style="height: 50px;"
+                 th:href="@{/public/articles}">
         </a>
-      </th>
-      <th class="col-7">
-        <a th:with="direction=${articlesByPage.sort.getOrderFor('content')?.direction}"
-           th:href="@{/articles(sort='content,' + ${direction?.name() eq 'ASC' ? 'DESC' : 'ASC'} + ',ignorecase')}">
-          <span th:text="#{lt.codeacademy.blogApplication.articles.content}"></span>
-          <i class="bi"
-             th:classappend="${direction?.name() eq 'ASC' ? 'bi-sort-down-alt' : 'bi-sort-down'}"
-             th:if="${direction ne null}"></i>
-        </a>
-      </th>
-      <th class="col-2">
-        <a th:with="direction=${articlesByPage.sort.getOrderFor('author')?.direction}"
-           th:href="@{/articles(sort='author,' + ${direction?.name() eq 'ASC' ? 'DESC' : 'ASC'} + ',ignorecase')}">
-          <span th:text="#{lt.codeacademy.blogApplication.articles.author}"></span>
-          <i class="bi"
-             th:classappend="${direction?.name() eq 'ASC' ? 'bi-sort-down-alt' : 'bi-sort-down'}"
-             th:if="${direction ne null}"></i>
-        </a>
-      </th>
-      <th class="col-1">
-        <a th:with="direction=${articlesByPage.sort.getOrderFor('date')?.direction}"
-           th:href="@{/articles(sort='date,' + ${direction?.name() eq 'ASC' ? 'DESC' : 'ASC'} + ',ignorecase')}">
-          <span th:text="#{lt.codeacademy.blogApplication.articles.date}"></span>
-          <i class="bi"
-             th:classappend="${direction?.name() eq 'ASC' ? 'bi-sort-numeric-down' : 'bi-sort-numeric-down-alt'}"
-             th:if="${direction ne null}"></i>
-        </a>
-      </th>
-      <th></th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr th:each="article : ${articlesByPage.content}">
-      <td>
-        <a th:href="@{/articles/{id}(id=${article.id})}" th:text="${article.title}"></a>
-      </td>
-      <td th:text="${article.content}"></td>
-      <td th:text="${article.author}"></td>
-      <td th:text="${article.date}"></td>
-      <td>
-        <a th:href="@{/articles/{id}/delete(id=${article.id})}" class="text-danger">
-          <i class="bi bi-trash"></i>
-        </a>
-      </td>
-    </tr>
-    </tbody>
-  </table>
-    <div class="row">
-      <div class="col-2"></div>
-      <div class="col-8">
-        <nav aria-label="Page navigation example">
-          <ul class="pagination justify-content-center"
-
-              th:with="pageSort=${articlesByPage.sort.toList().get(0)},
-							sort=${pageSort.property + ','+ pageSort.direction + ',ignorecase'}">
-
-            <li class="page-item"
-            th:classappend="${articlesByPage.number eq 0 ? 'disabled' : ''}">
-          <a class="page-link"
-             th:href="@{/articles(page=${articlesByPage.number} - 1, sort=${sort})}"
-             th:text="#{lt.codeacademy.blogApplication.articles.paginator.previous}"></a>
-        </li>
-        <li class="page-item"
-            th:each="articlePage: ${#numbers.sequence(0, articlesByPage.totalPages - 1)}"
-            th:classappend="${articlePage eq articlesByPage.number ? 'active': ''}">
-          <a class="page-link"
-             th:href="@{/articles(page=${articlePage},sort=${sort})}"
-             th:text="${articlePage} + 1"></a>
-        </li>
-        <li class="page-item"
-            th:classappend="${articlesByPage.number eq articlesByPage.totalPages - 1 ? 'disabled' : ''}">
-          <a class="page-link"
-             th:href="@{/articles(page=${articlesByPage.number} + 1, sort=${sort})}"
-             th:text="#{lt.codeacademy.blogApplication.articles.paginator.next}"></a>
-        </li>
-      </ul>
-    </nav>
-      </div>
-      <div class="col-2 text-end">
-        <span th:text="#{lt.codeacademy.blogApplication.articles.paginator.total.articles(${articlesByPage.totalElements})}"/>
-      </div>
+        <div class="d-flex justify-content-end"
+             style="gap: 40px; align-items: center;">
+            <a sec:authorize="hasRole('ADMIN')"
+               th:href="@{/articles/save}"
+               th:text="#{lt.codeacademy.blogApplication.articles.save}"
+               class="text-decoration-none text-dark"
+               style="font-family: 'Oswald', sans-serif; font-size: 20px;"></a>
+            <div>
+                <a sec:authorize="isAnonymous()"
+                   th:href="@{/login}"
+                   class="text-decoration-none text-dark">
+                    <i class="bi bi-person fs-3"></i>
+                </a>
+                <div sec:authorize="isAuthenticated()"
+                     class="dropdown">
+                    <a class="text-decoration-none text-dark"
+                       href="#"
+                       role="button"
+                       data-bs-toggle="dropdown"
+                       aria-expanded="false">
+                        <i class="bi bi-person fs-3"></i>
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-light"
+                        style="font-family: 'Oswald', sans-serif;">
+                        <li class="d-flex justify-content-start user-name">
+                            <div style="margin-right: 10px;"
+                                 th:text="#{lt.codeacademy.blogApplication.articles.greetings}"></div>
+                            <div sec:authentication="principal.name"></div>
+                        </li>
+                        <li style="font-family: 'EB Garamond', serif; font-size: 14px;">
+                            <a class="dropdown-item d-flex justify-content-end"
+                               th:href="@{/logout}"
+                               th:text="#{lt.codeacademy.blogApplication.menu.logout}"></a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div>
+                <select id="language-switcher"
+                        class="form-select success"
+                        aria-label="Default select example">
+                    <option value='' th:text="#{lt.codeacademy.blogApplication.language.switcher.select}"></option>
+                    <option value="EN" th:text="#{lt.codeacademy.blogApplication.language.switcher.en}"></option>
+                    <option value="LT" th:text="#{lt.codeacademy.blogApplication.language.switcher.lt}"></option>
+                </select>
+            </div>
+        </div>
     </div>
-  </div>
-  <div th:text="'date: ' + ${myDate}"></div>
-</div>
+</nav>
+<div class="articles"
+     th:text="#{lt.codeacademy.blogApplication.articles.articles}"></div>
+<div class="total"
+     th:text="#{lt.codeacademy.blogApplication.articles.paginator.total.articles(${articlesByPage.totalElements})}"></div>
+<div class="container">
+    <div th:if="${not articlesByPage.hasContent()}"
+         class="alert alert-info"
+         role="alert"
+         th:text="#{lt.codeacademy.blogApplication.articles.message.empty.articles}">
+    </div>
+    <div th:if="${articlesByPage.hasContent()}"
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2" crossorigin="anonymous"></script>
+         class="flex-container">
+        <div th:each="article : ${articlesByPage.content}" class="divo">
+            <a th:href="@{/public/articles/{id}(id=${article.id})}"
+               class="text-decoration-none">
+                <img th:src="@{${article.image}}"
+                     class="child"/>
+                <div th:text="${article.title}"
+                     class="text"></div>
+                <div class="date">
+                    <div th:text="${article.date}"></div>
+                </div>
+            </a>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-2"></div>
+    <div class="col-8">
+        <nav aria-label="Page navigation example">
+            <ul class="pagination justify-content-center"
+                th:with="pageSort=${articlesByPage.sort.toList().get(0)},
+							sort=${pageSort.property + ','+ pageSort.direction + ',ignorecase'}">
+                <li class="page-item"
+                    th:classappend="${articlesByPage.number eq 0 ? 'disabled' : ''}">
+                    <a class="page-link "
+                       th:href="@{/public/articles(page=${articlesByPage.number} - 1, sort=${sort})}"
+                       th:text="#{lt.codeacademy.blogApplication.articles.paginator.previous}"></a>
+                </li>
+                <li class="page-item"
+                    th:each="articlePage: ${#numbers.sequence(0, articlesByPage.totalPages - 1)}"
+                    th:classappend="${articlePage eq articlesByPage.number ? 'active': ''}">
+                    <a class="page-link"
+                       th:href="@{/public/articles(page=${articlePage},sort=${sort})}"
+                       th:text="${articlePage} + 1"></a>
+                </li>
+                <li class="page-item"
+                    th:classappend="${articlesByPage.number eq articlesByPage.totalPages - 1 ? 'disabled' : ''}">
+                    <a class="page-link"
+                       th:href="@{/public/articles(page=${articlesByPage.number} + 1, sort=${sort})}"
+                       th:text="#{lt.codeacademy.blogApplication.articles.paginator.next}"></a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</div>
+</div>
+</div>
+<nav class="navbar navbar-light">
+    <div class="container-fluid">
+        <img th:src="${fotter}" style="width: -webkit-fill-available;">
+    </div>
+</nav>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2"
+        crossorigin="anonymous"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script th:src="@{/js/language-switcher.js}"></script>
 </body>

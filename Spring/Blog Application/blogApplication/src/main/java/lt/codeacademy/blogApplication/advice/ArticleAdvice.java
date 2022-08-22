@@ -22,7 +22,6 @@ public class ArticleAdvice {
         return "articleNotFound";
     }
 
-    //tuscius stringus vercia i null
     @InitBinder
     public void initStringBinder(WebDataBinder webDataBinder) {
         PropertyEditor editor = new StringTrimmerEditor(true);

@@ -5,7 +5,6 @@ import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StopWatch;
-
 import javax.servlet.*;
 import java.io.IOException;
 
@@ -22,7 +21,5 @@ public class RequestTimer implements Filter {
         watch.stop();
         log.debug("Request took: {}", watch.getLastTaskTimeMillis());
         log.debug("*********************************************************************");
-
-
     }
 }

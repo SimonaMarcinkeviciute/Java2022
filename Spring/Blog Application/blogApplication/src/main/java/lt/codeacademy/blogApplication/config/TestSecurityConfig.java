@@ -6,10 +6,10 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 
 @Configuration
-@Profile("dev")
-public class DevSecurityConfig {
+@Profile("test")
+public class TestSecurityConfig {
 
-    public DevSecurityConfig() {
+    public TestSecurityConfig() {
         System.out.println("aaa");
     }
 
