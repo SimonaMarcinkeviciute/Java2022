@@ -1,0 +1,12 @@
+{
+  "translation": {
+    "key": "Welcome, this key is translated!",
+    "keyWithParams": "Hello {{name}} {{surname}}"
+  },
+  "product" : {
+    "name": "Product name"
+  },
+  "cart" : {
+    "total" : "Total cost: {{total}}"
+  }
+}
