@@ -1,5 +1,9 @@
 package lt.codeacademy.libraryapi.controller;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import lt.codeacademy.libraryapi.dto.Book;
 import lt.codeacademy.libraryapi.service.BookService;
 import org.springframework.http.HttpStatus;
@@ -15,6 +19,7 @@ import static lt.codeacademy.libraryapi.ApplicationPath.*;
 
 @RestController
 @RequestMapping(BOOKS)
+@Api(tags = "Library book controller")// anotacija ideti kontroleri i swagger, tagas prie ko bus pridetas musu kontroleris
 public class BookController {
 
     private final BookService bookService;
@@ -28,6 +33,14 @@ public class BookController {
         return bookService.getBooks();
     }
 
+    //apsirasom savo statusus
+    @ApiOperation(value = "Get all library books", tags = "getBooks", httpMethod = "GET")
+    //surasom visus responce kurie gali buti sitame rezultate
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "All books returned successfully"),
+            @ApiResponse(code = 401, message = "User not authorized"),
+            @ApiResponse(code = 404, message = "Request not found")
+    })
     @GetMapping(value = BOOK, produces = MediaType.APPLICATION_JSON_VALUE)
     public Book getBook(@PathVariable(bookId) UUID id) {
         return bookService.getBook(id);
