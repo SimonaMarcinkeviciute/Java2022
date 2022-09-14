@@ -7,13 +7,16 @@ import lt.codeacademy.blogApplication.service.MessageService;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.SortDefault;
+import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+
 import javax.validation.Valid;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.UUID;
 
 @Controller
@@ -44,7 +47,7 @@ public class ArticleController {
     @PostMapping("/articles/save")
     public String createArticle(@Valid Article article, BindingResult bindingResult) {
 
-        if(bindingResult.hasErrors()) {
+        if (bindingResult.hasErrors()) {
             return "form/article";
         }
 
@@ -84,10 +87,11 @@ public class ArticleController {
         model.addAttribute("fotter", "https://plnts.com/_next/image?url=https%3A%2F%2Fwebshop.plnts.com%2Fmedia%2Fwysiwyg%2Fbanners%2FHomepage_banner_PLNTS_SS22.jpg&w=1920&q=75");
         return "form/article";
     }
+
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/articles/{id}/update")
     public String updateArticle(@Valid Article article, BindingResult bindingResult) {
-        if(bindingResult.hasErrors()) {
+        if (bindingResult.hasErrors()) {
             return "form/article";
         }
         String message = "lt.codeacademy.blogApplication.update.message.success";
@@ -96,6 +100,7 @@ public class ArticleController {
 
         return "redirect:/public/articles";
     }
+
     @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/articles/{id}/delete")
     public String deleteArticle(@PathVariable UUID id) {
@@ -103,6 +108,18 @@ public class ArticleController {
         articleService.delete(id);
 
         return "redirect:/public/articles";
+    }
+
+    @GetMapping(value = "/public/articles/json", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public List<Article> getJsonProducts() {
+        return articleService.getArticles();
+    }
+
+    @GetMapping(value = "/public/articles/xml", produces = MediaType.APPLICATION_XML_VALUE)
+    @ResponseBody
+    public List<Article> getXMLproducts() {
+        return articleService.getArticles();
     }
 }
 

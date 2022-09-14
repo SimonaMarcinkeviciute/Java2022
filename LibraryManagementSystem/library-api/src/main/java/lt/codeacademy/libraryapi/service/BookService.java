@@ -51,4 +51,14 @@ public class BookService
         bookRepository.deleteById(id);
     }
 
+    public List<Book> search(String query) {
+
+        query = "%" + query + "%";
+
+        return bookRepository.findByTitleLikeOrDescriptionLike(query, query)
+                .stream()
+                .map(Book::convert)
+                .toList();
+    }
+
 }

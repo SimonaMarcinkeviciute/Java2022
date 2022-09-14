@@ -9,9 +9,6 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 @Profile("test")
 public class TestSecurityConfig {
 
-    public TestSecurityConfig() {
-        System.out.println("aaa");
-    }
 
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {

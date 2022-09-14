@@ -8,6 +8,8 @@ import lt.codeacademy.blogApplication.repository.CommentRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -28,6 +30,11 @@ public class ArticleService {
     public Page<Article> getArticles(Pageable pageable) {
 
         return articleRepository.findAll(pageable).map(Article::convert);
+    }
+
+    public List<Article> getArticles() {
+
+        return articleRepository.findAll().stream().map(Article::convert).toList();
     }
 
     public Article getArticle(UUID id) {
