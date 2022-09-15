@@ -1,0 +1,14 @@
+{
+  "products" : {
+    "name": "Pavadinimas",
+    "category": "Kategorija",
+    "description": "Aprasymas",
+    "quantity": "Kiekis",
+    "price": "Kaina"
+  },
+  "header" :{
+    "createProduct": "Sukurti produkta",
+    "userRegistration": "Vartotojo registracija",
+    "login": "Prisijungti"
+  }
+}

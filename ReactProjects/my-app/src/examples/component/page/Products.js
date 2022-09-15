@@ -6,20 +6,19 @@ import Loading from "../utils/Loading";
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 import {useDispatch} from "react-redux";
 import {addToCart} from "../../store/slices/cart/cartSlice";
-import {withTranslation} from "react-i18next";
+import {useTranslation} from "react-i18next";
 
 
 //hooks lifecycle
 //komponento ciklai mounting, update, unmounting
-const Products = ({t}) => {
+export default () => {
 
     const [loading, setLoading] = useState(true);
     //cia sudeti visi produktai, tai yra hooks
     const [products, setProducts] = useState([]);
     const dispatcher = useDispatch();
     const addProduct = (product) => dispatcher(addToCart(product));
-    //hooksas
-    //const {t} = useTranslation();
+    const {t} = useTranslation('products');
 
 
 
@@ -33,10 +32,7 @@ const Products = ({t}) => {
 
     return (
         <>
-            <div>{t('key')}</div>
-            <div>{t('keyWithParams', {name: 'Andrius', surname: 'Baltrunas'})}</div>
-            <div>{t('product:name')}</div>
-            <div>{t('cart:total', {total: 500})}</div>
+
             {
                 // reikalingas kad nerodytu tuscio puslapio, informacija vartotojui
                 loading ? <Loading size={80}/> :
@@ -44,11 +40,11 @@ const Products = ({t}) => {
                         <Table sx={{minWidth: 700}} aria-label="customized table">
                             <TableHead>
                                 <TableRow>
-                                    <TableCell>Name</TableCell>
-                                    <TableCell>Category</TableCell>
-                                    <TableCell>Description</TableCell>
-                                    <TableCell align="right">Quantity</TableCell>
-                                    <TableCell align="right">Price</TableCell>
+                                    <TableCell>{t('name')}</TableCell>
+                                    <TableCell>{t('category')}</TableCell>
+                                    <TableCell>{t('description')}</TableCell>
+                                    <TableCell align="right">{t('quantity')}</TableCell>
+                                    <TableCell align="right">{t('price')}</TableCell>
                                     <TableCell></TableCell>
                                 </TableRow>
                             </TableHead>
@@ -78,5 +74,4 @@ const Products = ({t}) => {
         </>
     );
 }
-//nebenaudojam hooksu, naudojam withTransaltion, pats issitraukia tuos vertimus
-export default withTranslation('product')(Products)
+

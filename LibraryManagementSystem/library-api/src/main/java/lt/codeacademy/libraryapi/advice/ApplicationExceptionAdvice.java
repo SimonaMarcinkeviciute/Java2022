@@ -1,6 +1,7 @@
 package lt.codeacademy.libraryapi.advice;
 
 import lt.codeacademy.libraryapi.exception.BookNotExistException;
+import lt.codeacademy.libraryapi.exception.FileException;
 import lt.codeacademy.libraryapi.exception.data.ExceptionResponse;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
@@ -40,6 +41,12 @@ public class ApplicationExceptionAdvice {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ExceptionResponse handleMissingServletRequestParameterException(MissingServletRequestParameterException exception) {
         return new ExceptionResponse(exception.getMessage(), HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(FileException.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)//500
+    public ExceptionResponse handleFileException(FileException e) {
+        return new ExceptionResponse(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     //handlinam visus exception, jei nebutu specifinio handlerio

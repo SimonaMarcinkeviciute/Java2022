@@ -6,9 +6,11 @@ import Typography from "@mui/material/Typography";
 import Link from "@mui/material/Link";
 import Button from "@mui/material/Button";
 import {NavLink} from "react-router-dom";
-import {Badge} from "@mui/material";
+import {Badge, Stack} from "@mui/material";
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import {useSelector} from "react-redux";
+import LanguageSwitcher from "../language/LanguageSwitcher";
+import {useTranslation} from "react-i18next";
 
 export default () => {
     //taip paimamas objektas-hooksas is konteksto
@@ -16,6 +18,7 @@ export default () => {
     //dar viena konstatnta-funkcija tam ,akd suskaiciuotu kiek yra cart elementu
     //eian per elemntus ir sumuoja visus is eiles
     const totalItems = cart.reduce((sum, {quantity}) => sum + quantity, 0);
+    const {t} = useTranslation('header');
 
 
 
@@ -29,52 +32,53 @@ export default () => {
                 elevation={0}
                 sx={{borderBottom: (theme) => `1px solid ${theme.palette.divider}`}}
             >
-                <Toolbar sx={{flexWrap: 'wrap'}}>
+                <Toolbar>
                     <Typography variant="h6"
                                 color="inherit"
                                 noWrap
-                                sx={{flexGrow: 1, textDecoration: 'unset'}}
+                                sx={{width: '160px', textDecoration: 'unset', minWidth: '160px'}}
                                 to="/"
                                 component={NavLink}>
                         Company name
                     </Typography>
-                <div>
-                    <nav>
-                        <Link
-                            variant="button"
-                            color="text.primary"
-                            to="/products/create"
-                            // atsakingas uz routo pakeitima
-                            component={NavLink}
-                            sx={{my: 1, mx: 1.5}}>
-                            Create product
-                        </Link>
-                        <Link
-                            variant="button"
-                            color="text.primary"
-                            to="/users/registration"
-                            component={NavLink}
-                            sx={{my: 1, mx: 1.5}}>
-                            User registration
-                        </Link>
-                        <Link
-                            variant="button"
-                            color="text.primary"
-                            //naviguojam i path
-                            to="/cart"
-                            //paduodam komponenta NavLink, kad galetume nunaviguoti
-                            component={NavLink}
-                            sx={{my: 1, mx: 1.5}}>
-                            {/*panaudojam ta konstanta, kad rodytu teisinga item skaiciu*/}
-                            <Badge badgeContent={totalItems} color="primary">
-                                <ShoppingCartIcon />
-                            </Badge>
-                        </Link>
-                    </nav>
-                    </div>
-                    <Button href="#" variant="outlined" sx={{my: 1, mx: 1.5}}>
-                        Login
-                    </Button>
+                    <Stack direction="row"
+                           justifyContent="flex-end"
+                           alignItems="center"
+                           spacing={2}
+                           sx={{width: '100%'}}>
+                        <nav>
+                            <Link
+                                variant="button"
+                                color="text.primary"
+                                to="/products/create"
+                                component={NavLink}
+                                sx={{my: 1, mx: 1.5}}>
+                                {t('createProduct')}
+                            </Link>
+                            <Link
+                                variant="button"
+                                color="text.primary"
+                                to="/users/registration"
+                                component={NavLink}
+                                sx={{my: 1, mx: 1.5}}>
+                                {t('userRegistration')}
+                            </Link>
+                            <Link
+                                variant="button"
+                                color="text.primary"
+                                to="/cart"
+                                component={NavLink}
+                                sx={{my: 1, mx: 1.5}}>
+                                <Badge badgeContent={totalItems} color="primary">
+                                    <ShoppingCartIcon/>
+                                </Badge>
+                            </Link>
+                        </nav>
+                        <Button href="#" variant="outlined" sx={{my: 1, mx: 1.5}}>
+                            {t('login')}
+                        </Button>
+                        <LanguageSwitcher/>
+                    </Stack>
                 </Toolbar>
             </AppBar>
         </>

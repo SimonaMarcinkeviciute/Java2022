@@ -8,5 +8,17 @@
   },
   "cart" : {
     "total" : "Total cost: {{total}}"
+  },
+  "products" : {
+    "name": "Name",
+    "category": "Category",
+    "description": "Description",
+    "quantity": "Quantity",
+    "price": "Price"
+  },
+  "header" :{
+    "createProduct": "Create product",
+    "userRegistration": "User registration",
+    "login": "Login"
   }
 }

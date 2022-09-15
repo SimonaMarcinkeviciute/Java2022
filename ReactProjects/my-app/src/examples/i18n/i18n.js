@@ -1,16 +1,20 @@
 import i18n from "i18next";
 import {initReactI18next} from "react-i18next";
-import en from './translations/en.json'
+import en from "./translations/en.json"
+import lt from './translations/lt.json';
+import languageDetector from 'i18next-browser-languagedetector'
 //pirmine translate konfiguracija
 //suteikia galimybe panaudoti hooks initReacti18Next
 //po init visa cofiguracija su vertimais
 i18n
     .use(initReactI18next)
+    .use(languageDetector)
     .init(
         {
             resources: {
-                en
+                en, lt
             },
+            whiteList: ['en', 'lt'],
             lang: "en",
             fallbackLng: "en",
             interpolation: {
