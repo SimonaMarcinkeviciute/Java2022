@@ -1,12 +1,20 @@
-
-
 //aplicacija pasistartuoja by id=root
 
-function App() {
-  return (
+import Content from "./conponents/content/Content";
+import Footer from "./conponents/footer/Footer";
+import Header from "./conponents/header/Header";
+import {BrowserRouter} from "react-router-dom";
 
-      <div>Hello world</div>
-  );
+
+
+function App() {
+    return (
+        <BrowserRouter>
+            <Header/>
+            <Content/>
+            <Footer/>
+        </BrowserRouter>
+    );
 }
 
 export default App;
