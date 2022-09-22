@@ -13,4 +13,11 @@ public interface ApplicationPath {
     String FILES = ROOT + "/files";
     String METADATA = "/metadata";
     String FILE_METADATA = METADATA + "/{" + ID + "}";
+    String FILE = "/{" + FILE_NAME + "}";
+    String FILE_OBJECT = "/object" + "/{" + ID + "}";
+    String COMMENT = "/{" + bookId + "}";
+    String COMMENTS = ROOT + "/comments";
+    String USERS = ROOT + "/users";
+    String USERSREGISTRATION = "/registration";
+
 }

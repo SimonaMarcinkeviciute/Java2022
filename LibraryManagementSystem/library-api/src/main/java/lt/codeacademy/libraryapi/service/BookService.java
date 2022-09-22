@@ -1,6 +1,7 @@
 package lt.codeacademy.libraryapi.service;
 
 import lt.codeacademy.libraryapi.dto.Book;
+import lt.codeacademy.libraryapi.dto.File;
 import lt.codeacademy.libraryapi.entity.BookEntity;
 import lt.codeacademy.libraryapi.exception.BookNotExistException;
 import lt.codeacademy.libraryapi.repository.BookRepository;
@@ -8,6 +9,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.io.FileNotFoundException;
 import java.util.List;
 import java.util.UUID;
 
@@ -16,13 +18,18 @@ public class BookService
 {
 
     private final BookRepository bookRepository;
+    private final FileService fileService;
 
-    public BookService(BookRepository bookRepository) {
+    public BookService(BookRepository bookRepository, FileService fileService) {
         this.bookRepository = bookRepository;
+        this.fileService = fileService;
     }
 
-    public void createBook(Book book) {
-        bookRepository.save(BookEntity.convert(book));
+    public Book createBook(Book book) {
+        BookEntity bookEntity = bookRepository.save(BookEntity.convert(book));
+        return Book.convert(bookEntity);
+
+
     }
 
     public Page<Book> getBooks(Pageable pageable) {
@@ -30,11 +37,12 @@ public class BookService
                 .map(Book::convert);
     }
 
-    public List<Book> getBooks() {
+    public List<Book> getBooks() throws FileNotFoundException {
         return bookRepository.findAll()
                 .stream()
                 .map(Book::convert)
                 .toList();
+
     }
 
     public Book getBook(UUID id) {

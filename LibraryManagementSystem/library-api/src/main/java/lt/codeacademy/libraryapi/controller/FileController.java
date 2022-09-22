@@ -40,24 +40,37 @@ public class FileController {
             @ApiResponse(code = 404, message = "Request not found")
     })
     @PostMapping(METADATA)
-    public void saveFileMetadataInDb(@RequestParam MultipartFile multipartFile) {
-        fileService.saveFileInFileSystemAndMetadataInDb(multipartFile);
+    public String saveFileMetadataInDb(@RequestParam MultipartFile multipartFile) {
+        return  fileService.saveFileInFileSystemAndMetadataInDb(multipartFile).toString();
+
     }
 
-    @GetMapping(FILE_METADATA)
-    //
-    public ResponseEntity<Resource> downloadFileMetadataFromDB(@PathVariable(ID) UUID id) throws FileNotFoundException {
-        File file = fileService.downloadFileFromFileSystemAndMetadataInDb(id);
+//    @GetMapping(FILE_METADATA)
+//    //
+//    public ResponseEntity<Resource> downloadFileMetadataFromDB(@PathVariable(ID) UUID id) throws FileNotFoundException {
+//        File file = fileService.downloadFileFromFileSystemAndMetadataInDb(id);
+//
+//        //pasieme file is servise galim ir jo pasiimti inputstream
+//        Resource resource = new InputStreamResource(file.getInputStream());
+//
+//        HttpHeaders headers = new HttpHeaders();
+//        headers.set("Content-Disposition", "attachment; filename=\"" + file.getName() + "\"");
+//
+//        return ResponseEntity.ok()
+//                .contentType(MediaType.valueOf(file.getMediaType()))
+//                .headers(headers)
+//                .body(resource);
+//    }
 
-        //pasieme file is servise galim ir jo pasiimti inputstream
-        Resource resource = new InputStreamResource(file.getInputStream());
 
-        HttpHeaders headers = new HttpHeaders();
-        headers.set("Content-Disposition", "attachment; filename=\"" + file.getName() + "\"");
+//
+//    @GetMapping(FILE_OBJECT)
+////    public File getFileObjectById(@PathVariable(ID) UUID id) throws FileNotFoundException {
+////        File file = fileService.getFileObjectById(id);
+////        return fileService.getFileObjectById(id);
+////    }
 
-        return ResponseEntity.ok()
-                .contentType(MediaType.valueOf(file.getMediaType()))
-                .headers(headers)
-                .body(resource);
-    }
+
+
+
 }

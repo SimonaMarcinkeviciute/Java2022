@@ -28,6 +28,16 @@ export default () => {
                         Company name
                     </Typography>
                     <nav>
+
+                        <Link
+                            variant="button"
+                            color="text.primary"
+                            to="/files/metadata"
+                            component={NavLink}
+                            sx={{my: 1, mx: 1.5}}>
+                            Add file
+                        </Link>
+
                         <Link
                             variant="button"
                             color="text.primary"
@@ -55,7 +65,7 @@ export default () => {
                         <Link
                             variant="button"
                             color="text.primary"
-                            href="#"
+                            href="../header/Header#"
                             sx={{my: 1, mx: 1.5}}
                         >
                             Support

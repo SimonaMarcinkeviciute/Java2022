@@ -5,13 +5,10 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lt.codeacademy.libraryapi.dto.Book;
+import lt.codeacademy.libraryapi.dto.File;
 import org.hibernate.annotations.Type;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.UUID;
 
@@ -28,7 +25,6 @@ public class BookEntity
     @Column(columnDefinition = "VARCHAR(36)", updatable = false)
     @Type(type = "uuid-char")
     private UUID id;
-    private String img;
     private String title;
     private String author;
     @Column(columnDefinition = "VARCHAR(5000)")
@@ -39,12 +35,18 @@ public class BookEntity
     private LocalDate firstPublication;
     private LocalDate publication;
     private String publisher;
-    private String ISBN;
+    private String isbn;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "file_id")
+    private FileEntity fileEntity;
+
 
     public static BookEntity convert(Book b) {
+        File file = b.getFile();
+        FileEntity fileEntity1 = FileEntity.convert(file);
+
         return new BookEntity(
                 b.getId(),
-                b.getImg(),
                 b.getTitle(),
                 b.getAuthor(),
                 b.getDescription(),
@@ -54,7 +56,11 @@ public class BookEntity
                 b.getFirstPublication(),
                 b.getPublication(),
                 b.getPublisher(),
-                b.getISBN()
+                b.getIsbn(),
+                fileEntity1
+
         );
     }
+
+
 }
