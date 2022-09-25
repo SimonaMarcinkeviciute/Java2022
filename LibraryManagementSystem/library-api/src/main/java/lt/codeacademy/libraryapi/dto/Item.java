@@ -35,4 +35,10 @@ public class Item {
         this.book = book;
         this.date = date;
     }
+
+    public Item(UUID id, Status status, LocalDateTime date) {
+        this.id = id;
+        this.status = status;
+        this.date = date;
+    }
 }

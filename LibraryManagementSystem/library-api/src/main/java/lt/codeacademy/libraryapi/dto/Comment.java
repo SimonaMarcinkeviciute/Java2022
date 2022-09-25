@@ -28,4 +28,9 @@ public class Comment {
                 entity.getDate(),
                 Book.convert(entity.getBookEntity()));
     }
+
+    public Comment(UUID id, String text) {
+        this.id = id;
+        this.text = text;
+    }
 }

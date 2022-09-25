@@ -23,4 +23,11 @@ public class CommentService {
 
         return commentRepository.findByBookEntity(bookEntity).stream().map(Comment::convert).toList();
     }
+
+    public void createComment(Comment comment) {
+        commentRepository.save(CommentEntity.convert(comment));
+
+
+
+    }
 }

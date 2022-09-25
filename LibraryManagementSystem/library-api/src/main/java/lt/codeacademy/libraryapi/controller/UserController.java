@@ -13,8 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.io.FileNotFoundException;
 import java.util.UUID;
 
-import static lt.codeacademy.libraryapi.ApplicationPath.USERS;
-import static lt.codeacademy.libraryapi.ApplicationPath.USERSREGISTRATION;
+import static lt.codeacademy.libraryapi.ApplicationPath.*;
 
 @RestController
 @RequestMapping(USERS)
@@ -28,7 +27,7 @@ public class UserController {
     }
 
 
-    @PostMapping(value = USERSREGISTRATION, consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = USERS_REGISTRATION, consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)//201
     //requestBody, kad galetume paduoti book, sumapintu paduotum duomenis su siuo objektu
     public void saveBooks(@RequestBody User user){

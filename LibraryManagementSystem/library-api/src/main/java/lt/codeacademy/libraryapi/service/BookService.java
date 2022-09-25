@@ -69,4 +69,9 @@ public class BookService
                 .toList();
     }
 
+    public Book findById (UUID id) {
+        return bookRepository.findById(id).map(Book::convert).orElseThrow();
+
+    }
+
 }

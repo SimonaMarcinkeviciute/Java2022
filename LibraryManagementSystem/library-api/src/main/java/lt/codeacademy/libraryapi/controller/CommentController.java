@@ -3,15 +3,15 @@ package lt.codeacademy.libraryapi.controller;
 import io.swagger.annotations.Api;
 import lt.codeacademy.libraryapi.dto.Book;
 import lt.codeacademy.libraryapi.dto.Comment;
+import lt.codeacademy.libraryapi.dto.File;
 import lt.codeacademy.libraryapi.service.BookService;
 import lt.codeacademy.libraryapi.service.CommentService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.io.FileNotFoundException;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
@@ -19,7 +19,7 @@ import static lt.codeacademy.libraryapi.ApplicationPath.*;
 import static lt.codeacademy.libraryapi.ApplicationPath.bookId;
 
 @RestController
-@RequestMapping(COMMENTS)
+@RequestMapping(ROOT)
 @Api(tags = "Library comment controller")
 public class CommentController {
 
@@ -34,6 +34,19 @@ public class CommentController {
     @GetMapping(value = COMMENT, produces = MediaType.APPLICATION_JSON_VALUE)
     public List<Comment> getComments(@PathVariable(bookId) UUID id) {
         Book book = bookService.getBook(id);
+        return commentService.findCommentsByBook(book);
+    }
+
+    @PostMapping(value = CREATE_COMMENT, consumes = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.CREATED)//201
+    //requestBody, kad galetume paduoti book, sumapintu paduotum duomenis su siuo objektu
+    public List<Comment> createComment(@RequestBody Comment comment, @PathVariable(bookId) UUID id) {
+        Book book = bookService.findById(id);
+        comment.setBook(book);
+        comment.setDate(LocalDate.now());
+        commentService.createComment(comment);
         return  commentService.findCommentsByBook(book);
+
+
     }
 }
