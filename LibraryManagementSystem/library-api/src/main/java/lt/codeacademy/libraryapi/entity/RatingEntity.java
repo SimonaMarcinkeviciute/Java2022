@@ -4,6 +4,9 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lt.codeacademy.libraryapi.dto.Book;
+import lt.codeacademy.libraryapi.dto.File;
+import lt.codeacademy.libraryapi.dto.Rating;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
@@ -26,4 +29,11 @@ public class RatingEntity {
     @ManyToOne
     @JoinColumn(name = "book_id")
     private BookEntity bookEntity;
+
+    public static RatingEntity convert(Rating rating)  {
+
+        return new RatingEntity(rating.getId(),
+                rating.getRate(),
+                BookEntity.convert(rating.getBook()));
+    }
 }

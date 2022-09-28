@@ -13,6 +13,6 @@ import java.util.UUID;
 public interface BookRepository extends JpaRepository<BookEntity, UUID> {
 
     //naudojam jpa grazinti rezultatui
-    List<BookEntity> findByTitleLikeOrDescriptionLike(String name, String description);
+    List<BookEntity> findByTitleLikeIgnoreCaseOrAuthorLikeIgnoreCase(String title, String author);
 
 }

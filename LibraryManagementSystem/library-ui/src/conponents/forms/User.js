@@ -1,61 +1,78 @@
 import {Form, Formik} from "formik";
 import {Alert, Button, CircularProgress, Stack, Typography} from "@mui/material";
-import * as Yup from 'yup';
 import FormTextInput from "./FormTextInput";
-import {getBooks, saveBooks} from "../api/bookApi";
-import {useEffect, useRef, useState} from "react";
-import {uploadFile} from "../api/fileApi";
-import {createUser} from "../api/userApi";
+import { useState} from "react";
+import {createUser, isAvailable} from "../api/userApi";
+import * as yup from "yup";
+import { useNavigate } from "react-router-dom";
 
-const productValidationSchema = Yup.object().shape(
+
+const productValidationSchema = yup.object().shape(
     {
-        name: Yup.string()
-            .required('Title is required'),
-        surname: Yup.string()
-            .required('Author required'),
-        username: Yup.string()
-            .max(5000, 'Description must be less then 150 symbols')
-            .required('Description required'),
-        email: Yup.string()
-            .required('Genre required'),
-        country: Yup.string()
-            .required('Quantity required'),
-        city: Yup.string()
-            .required('Language required'),
-        street: Yup.string()
-            .required('Date required'),
-        postCode: Yup.string()
-            .required('Date required'),
-        phone: Yup.string()
-            .required('Publisher required'),
-        password: Yup.string()
-            .required('Publisher required'),
-        repeatPassword: Yup.string()
-            .required('Quantity required')
-
+        name: yup.string()
+            .required('Name is required'),
+        surname: yup.string()
+            .required('Surname is required'),
+        username: yup.string()
+            .required('Username is required')
+            .test('Unique username', 'Username has already taken',function (value) {
+                return new Promise((resolve, reject) => {
+                    isAvailable(value)
+                        .then((res) => {
+                            resolve(false)
+                            reject(true)
+                        })
+                        .catch((error) => {
+                                resolve(true);
+                                reject(false)
+                        })
+                })
+            }),
+        email: yup.string().email()
+            .required('Email is required'),
+        phone: yup.string()
+            .required('Phone is required')
+            .matches(/(86|\+3706)(\d){7}\b/, 'Enter a valid phone number'),
+        password: yup.string()
+            .required('Password required'),
+        repeatPassword: yup.string()
+            .oneOf([yup.ref('password'), null], 'Passwords must match')
     });
+
+
+
+
+
 
 export default () => {
     const [notification, setNotification] = useState({isVisible: false});
+    const navigate = useNavigate();
 
 
-    const onCreateBook = (values, helpers) => {
+    const onCreateUser = (values, helpers) => {
         helpers.setSubmitting(true);
+
 
         console.log(values)
 
         createUser(values)
             .then((response) => {
-                console.log('success book', response);
                 helpers.resetForm();
-                setNotification({isVisible: true, message: 'Book created successfully', severity: 'success'});
+                setNotification({isVisible: true, message: 'Your registration has been successfully completed', severity: 'success'});
+                setTimeout(() => navigate("/login"), 5000);
+
             })
+
             .catch((error) => setNotification({
                 isVisible: true,
                 message: 'Oops something goes wrong',
                 severity: 'error'
             }))
             .finally(() => helpers.setSubmitting(false));
+
+
+
+
 
 
     }
@@ -66,24 +83,18 @@ export default () => {
             surname: '',
             username: '',
             email: '',
-            country: '',
-            city: '',
-            street: '',
-            postCode: '',
             phone: '',
             password: '',
             repeatPassword: ''
         }}
-                onSubmit={onCreateBook}
+                onSubmit={onCreateUser}
                 validationSchema={productValidationSchema}
         >
             {props => (
                 <Form>
-                    {
-                        notification.isVisible && <Alert severity={notification.severity}>{notification.message}</Alert>
-                    }
+
                     <Stack spacing={1}>
-                        <Typography variant="h5">Add book:</Typography>
+                        <Typography variant="h5">User Registration:</Typography>
                         <FormTextInput name="name"
                                        label="Name"
                                        placeholder="Name...."
@@ -95,43 +106,28 @@ export default () => {
                         <FormTextInput name="username"
                                        label="Username"
                                        placeholder="Username...."
-                                       error={props.touched.username && !!props.errors.username}
-                                       rows={3}
-                                       multiline/>
+                                       error={props.touched.username && !!props.errors.username}/>
                         <FormTextInput name="email"
                                        label="Email"
                                        placeholder="Email...."
                                        error={props.touched.email && !!props.errors.email}/>
-                        <FormTextInput name="city"
-                                       label="city"
-                                       placeholder="city...."
-                                       error={props.touched.city && !!props.errors.city}/>
-                        <FormTextInput name="street"
-                                       label="street"
-                                       placeholder="street...."
-                                       error={props.touched.street && !!props.errors.street}/>
-                        <FormTextInput name="postCode"
-                                       label="postCode"
-                                       placeholder="postCode...."
-                                       error={props.touched.postCode && !!props.errors.postCode}/>
                         <FormTextInput name="phone"
-                                       label="phone"
+                                       label="Phone number...."
                                        placeholder="phone...."
                                        error={props.touched.phone && !!props.errors.phone}/>
                         <FormTextInput name="password"
-                                       label="password"
+                                       label="Password"
                                        placeholder="password...."
                                        error={props.touched.password && !!props.errors.password}/>
                         <FormTextInput name="repeatPassword"
-                                       label="repeatPassword"
+                                       label="Repeat password"
                                        placeholder="repeatPassword...."
                                        error={props.touched.repeatPassword && !!props.errors.repeatPassword}/>
-                        <FormTextInput name="country"
-                                       label="country"
-                                       placeholder="country...."
-                                       error={props.touched.country && !!props.errors.country}/>
 
                     </Stack>
+                    {
+                        notification.isVisible && <Alert style={{marginTop: '10px'}} severity={notification.severity}>{notification.message}</Alert>
+                    }
                     <Typography sx={{textAlign: 'right', mt: 2}}>
                         {
                             props.isSubmitting ? <CircularProgress size={40}/> : <Button variant="outlined"
@@ -139,6 +135,7 @@ export default () => {
                                                                                          color="primary">Submit</Button>
                         }
                     </Typography>
+
                 </Form>
             )}
         </Formik>

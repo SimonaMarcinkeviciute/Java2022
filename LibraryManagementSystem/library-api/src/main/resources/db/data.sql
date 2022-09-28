@@ -25,14 +25,22 @@ VALUES ('0d4666ea-659f-431c-bdc7-b16e71f01e26', 0, '48a95af7-8b83-4a08-8001-0f86
        ('d11651e9-06fa-493b-9ce6-77f0558b12fe', 0, '48a95af7-8b83-4a08-8001-0f865db8ea21',
         '2022-09-22 15:05:46.354893');
 
-INSERT INTO USERS(id, name, surname, username, email, country, city, street, post_code, phone, password)
-VALUES ('97591abe-5108-4bc2-afaa-6bc6a339619c', 'test_user', 'test_user', 'user', 'user@gmail.com', 'Lithuania',
-        'Vilnius', 'Street', '23169', '860125697',
-        '{bcrypt}$2a$10$AsRCsrfh4423vjPr0xKpZeNpYixVcNtDpiGdM5xcIejUXOttH2jcu'), /*USER*/
-       ('1c6eb4cd-b644-4932-8d88-ec97b3ba0b7b', 'test_admin', 'test_admin', 'admin', 'admin@gmail.com', 'Lithuania',
-        'Kaunas', 'Street', '21579', '864963258',
-        '{bcrypt}$2a$10$9Ox9WgR8X5SD04lLSdCwJ.AITH/cAZmcZ9tMkqJUFYSc0krItXT9W'); /*admin*/
 
+INSERT INTO RATINGS(id, rate, book_id)
+VALUES ('ec3cec92-b682-4823-9474-cae10bb17bff', 2, '48a95af7-8b83-4a08-8001-0f865db8ea26');
+
+INSERT INTO USERS(id, name, surname, username, email, phone, password)
+VALUES ('97591abe-5108-4bc2-afaa-6bc6a339619c', 'test_user', 'test_user', 'Simona', 'user@gmail.com', '+37065285774', '{bcrypt}$2a$10$AsRCsrfh4423vjPr0xKpZeNpYixVcNtDpiGdM5xcIejUXOttH2jcu'), /*USER*/
+       ('1c6eb4cd-b644-4932-8d88-ec97b3ba0b7b', 'test_admin', 'test_admin', 'admin', 'admin@gmail.com', '+37065285666', '{bcrypt}$2a$10$9Ox9WgR8X5SD04lLSdCwJ.AITH/cAZmcZ9tMkqJUFYSc0krItXT9W'); /*admin*/
+
+INSERT INTO ROLES(id, name)
+VALUES ('7f74bb02-9f14-43ce-8b28-8c0c889d1558', 'USER'),
+       ('25dde1c9-f740-46a7-a598-d62f37126950', 'ADMIN');
+
+INSERT INTO USERS_ROLES(user_id, role_id)
+VALUES ('97591abe-5108-4bc2-afaa-6bc6a339619c', '7f74bb02-9f14-43ce-8b28-8c0c889d1558'),
+       ('1c6eb4cd-b644-4932-8d88-ec97b3ba0b7b', '7f74bb02-9f14-43ce-8b28-8c0c889d1558'),
+       ('1c6eb4cd-b644-4932-8d88-ec97b3ba0b7b', '25dde1c9-f740-46a7-a598-d62f37126950');
 
 
 

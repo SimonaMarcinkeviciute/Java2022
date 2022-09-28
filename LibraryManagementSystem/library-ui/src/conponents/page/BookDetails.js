@@ -10,7 +10,8 @@ import * as Yup from "yup";
 import {createUser} from "../api/userApi";
 import {getAvailableItems, getItems} from "../api/itemApi";
 import {transaction} from "../api/transactionApi";
-import BasicRating from "../utils/BasicRating";
+import UserRating from "../utils/UserRating";
+import {useSelector} from "react-redux";
 
 const productValidationSchema = Yup.object().shape(
     {
@@ -27,6 +28,7 @@ export default () => {
     const [loading, setLoading] = useState(true);
     const [comments, setComments] = useState([]);
     const [items, setItems] = useState([]);
+    const user = useSelector(state => state.user.user);
 
 
 
@@ -189,7 +191,7 @@ export default () => {
                            <Button variant="outlined" onClick={() => orderBook()}>ORDER</Button>
                        }
 
-                       <BasicRating/>
+                       <UserRating id={book.id}/>
 
 
 

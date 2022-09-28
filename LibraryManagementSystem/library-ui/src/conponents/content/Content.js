@@ -7,17 +7,25 @@ import Book from "../forms/Book";
 import UpdateBooks from "../forms/UpdateBooks";
 import File from "../forms/File";
 import BookDetails from "../page/BookDetails";
+import FilteredBooks from "../page/FilteredBooks";
+import Login from "../forms/Login";
+import SecuredRoute from "../security/SecuredRoute";
 
 export default () => {
     return (
         <Container maxWidth="md" component="main" sx={{mt: 8}}>
             <Routes>
                 <Route path="/" element={<Books/>}/>
-                <Route path="/books/create" element={<Book/>}/>
+                <Route path="/books/create" element={<SecuredRoute/>}>
+                    <Route path="/books/create" element={<Book/>}/>
+                </Route>
+
                 <Route path="/users/registration" element={<User/>}/>
                 <Route path="/books/:bookId/update" element={<UpdateBooks/>}/>
                 <Route path="/files/metadata" element={<File/>}/>
                 <Route path="/books/:bookId/details" element={<BookDetails/>}/>
+                <Route path="/books/search/:text" element={<FilteredBooks/>}/>
+                <Route path="/login" element={<Login/>}/>
             </Routes>
         </Container>
     );

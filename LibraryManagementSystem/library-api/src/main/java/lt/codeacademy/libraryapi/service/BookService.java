@@ -63,7 +63,7 @@ public class BookService
 
         query = "%" + query + "%";
 
-        return bookRepository.findByTitleLikeOrDescriptionLike(query, query)
+        return bookRepository.findByTitleLikeIgnoreCaseOrAuthorLikeIgnoreCase(query, query)
                 .stream()
                 .map(Book::convert)
                 .toList();

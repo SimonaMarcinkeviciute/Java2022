@@ -97,7 +97,7 @@ public class BookController {
     //produce grazina
     @GetMapping(value = SEARCH, produces = MediaType.APPLICATION_JSON_VALUE)
     //request param -
-    public List<Book> search(@RequestParam String query) {
-        return bookService.search(query);
+    public List<Book> search(@PathVariable(input) String text) {
+        return bookService.search(text);
     }
 }

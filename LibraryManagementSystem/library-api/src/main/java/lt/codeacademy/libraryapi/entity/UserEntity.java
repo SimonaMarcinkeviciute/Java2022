@@ -31,47 +31,38 @@ public class UserEntity {
     @Column(columnDefinition = "VARCHAR(36)", updatable = false)
     @Type(type = "uuid-char")
     private UUID id;
-
     private String name;
 
     private String surname;
 
+    @Column(unique=true)
     private String username;
 
     private String email;
 
-    private String country;
-
-    private String city;
-
-    private String street;
-
-    private String postCode;
-
     private String phone;
 
     private String password;
-//    @ManyToMany(fetch = FetchType.EAGER)
-//    @JoinTable(joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
-//    private Set<RoleEntity> roles;
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
+    private Set<RoleEntity> roles;
 
-    public UserEntity(UUID id, String name, String surname, String username, String email, String country, String city, String street, String postCode, String phone,
-                      String password) {
+    public UserEntity(UUID id, String name, String surname, String username, String email,String phone,
+                      String password, Set<RoleEntity> roles) {
         this.id = id;
         this.name = name;
         this.surname = surname;
         this.username = username;
         this.email = email;
-        this.country = country;
-        this.city = city;
-        this.street = street;
-        this.postCode = postCode;
         this.phone = phone;
         this.password = password;
-       // this.roles = roles;
+       this.roles = roles;
     }
 
     public static UserEntity convert(User user) {
+        Set<RoleEntity> roles = user.getRoles().stream()
+                .map(RoleEntity::convert)
+                .collect(Collectors.toSet());
 
 
         return new UserEntity(user.getId(),
@@ -79,11 +70,8 @@ public class UserEntity {
                 user.getSurname(),
                 user.getUsername(),
                 user.getEmail(),
-                user.getCountry(),
-                user.getCity(),
-                user.getStreet(),
-                user.getPostCode(),
                 user.getPhone(),
-                user.getPassword());
+                user.getPassword(),
+                roles);
     }
 }
