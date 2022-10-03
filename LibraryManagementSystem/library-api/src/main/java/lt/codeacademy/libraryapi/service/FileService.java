@@ -166,4 +166,7 @@ public class FileService {
             throw new FileException(String.format("FileEntity type %s not allowed", multipartFile.getContentType()));
         }
     }
+
+
+
 }

@@ -1,15 +1,21 @@
 package lt.codeacademy.libraryapi.service;
 
+import lt.codeacademy.libraryapi.data.TransactionStatus;
 import lt.codeacademy.libraryapi.dto.Book;
 import lt.codeacademy.libraryapi.dto.File;
+import lt.codeacademy.libraryapi.dto.Transaction;
+import lt.codeacademy.libraryapi.dto.User;
 import lt.codeacademy.libraryapi.entity.BookEntity;
+import lt.codeacademy.libraryapi.entity.UserEntity;
 import lt.codeacademy.libraryapi.exception.BookNotExistException;
 import lt.codeacademy.libraryapi.repository.BookRepository;
+import lt.codeacademy.libraryapi.repository.TransactionRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.io.FileNotFoundException;
+import java.security.Principal;
 import java.util.List;
 import java.util.UUID;
 
@@ -18,11 +24,11 @@ public class BookService
 {
 
     private final BookRepository bookRepository;
-    private final FileService fileService;
 
-    public BookService(BookRepository bookRepository, FileService fileService) {
+
+    public BookService(BookRepository bookRepository) {
         this.bookRepository = bookRepository;
-        this.fileService = fileService;
+
     }
 
     public Book createBook(Book book) {
@@ -73,5 +79,6 @@ public class BookService
         return bookRepository.findById(id).map(Book::convert).orElseThrow();
 
     }
+
 
 }

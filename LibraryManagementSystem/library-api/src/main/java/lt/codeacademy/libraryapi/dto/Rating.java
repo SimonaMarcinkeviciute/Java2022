@@ -19,12 +19,14 @@ public class Rating {
     private UUID id;
     private int rate;
     private Book book;
+    private User user;
 
     public static Rating convert(RatingEntity ratingEntity)  {
 
         return new Rating(ratingEntity.getId(),
                 ratingEntity.getRate(),
-                Book.convert(ratingEntity.getBookEntity()));
+                Book.convert(ratingEntity.getBookEntity()),
+                User.convert(ratingEntity.getUserEntity()));
     }
 
 

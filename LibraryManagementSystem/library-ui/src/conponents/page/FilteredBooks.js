@@ -30,27 +30,27 @@ export default () => {
         <>
 
             {
-                text === '' ? <div>Value must be not empty</div> :
+                books.length < 1 ? <div style={{minHeight: '350px', textAlign: 'center', fontSize: '35px', marginTop: '160px'}}>Nothing found for: "{text}"</div> :
                     loading ? <Loading size={80}/> :
-                        <Grid container rowSpacing={1} columnSpacing={{xs: 1, sm: 2, md: 3}}>
+                        <div style={{
+                            display: 'flex',
+                            flexDirection: 'row',
+                            flexWrap: 'wrap',
+                            justifyContent: 'center',
+                            gap: '50px'
+                        }}>
                             {books.map((book) => (
-                                <Grid item xs={2} key={book.id}>
-                                    <div>
-                                        <div>
-                                            <NavLink to={`/books/${book.id}/details`}>{book.title}</NavLink>
-                                        </div>
-
-                                        <img src={"data:image/png;base64," + book.file.bytes}/>
-
-                                    </div>
-
-                                </Grid>
+                                <div key={book.id}>
+                                    <NavLink to={`/books/${book.id}/details`}>
+                                        <img style={{width: '220px', height: '360px', objectFit: 'cover'}}
+                                             src={"data:image/png;base64," + book.file.bytes}/>
+                                    </NavLink>
+                                </div>
                             ))}
-                        </Grid>
+
+
+                        </div>
             }
-
-            <SearchInput/>
-
         </>
 
     );

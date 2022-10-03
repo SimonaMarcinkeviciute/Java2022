@@ -12,4 +12,6 @@ import java.util.UUID;
 public interface ItemRepository extends JpaRepository<ItemEntity, UUID> {
 
     List<ItemEntity> findByStatusAndBookEntity(Status status, BookEntity book);
+
+    List<ItemEntity> findByBookEntity(BookEntity book);
 }

@@ -31,11 +31,6 @@ public class UserService implements UserDetailsService {
         user.setPassword(encoder.encode(user.getPassword()));
         user.setRoles(Set.of(new Role(UUID.fromString("7f74bb02-9f14-43ce-8b28-8c0c889d1558"), "USER")));
         userRepository.save(UserEntity.convert(user));
-
-
-
-
-
     }
 
     @Override
@@ -45,5 +40,9 @@ public class UserService implements UserDetailsService {
                 .orElseThrow(() -> new UsernameNotFoundException(String.format("User by username: %s does not exist", username)));
 
         return User.convert(user);
+    }
+
+    public void updateUser(User user) {
+        userRepository.save(UserEntity.convert(user));
     }
 }

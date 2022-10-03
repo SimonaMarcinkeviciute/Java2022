@@ -30,13 +30,17 @@ public class CommentEntity {
     @ManyToOne
     @JoinColumn(name = "book_id")
     private BookEntity bookEntity;
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private UserEntity userEntity;
 
     public static CommentEntity convert(Comment comment) {
         return new CommentEntity(
                 comment.getId(),
                 comment.getText(),
                 comment.getDate(),
-                BookEntity.convert(comment.getBook())
+                BookEntity.convert(comment.getBook()),
+                UserEntity.convert(comment.getUser())
         );
     }
 }

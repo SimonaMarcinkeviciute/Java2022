@@ -2,5 +2,6 @@ package lt.codeacademy.libraryapi.data;
 
 public enum Status {
     AVAILABLE,
-    UNAVAILABLE
+    UNAVAILABLE,
+    WRITTEN_OF
 }

@@ -21,12 +21,20 @@ public class Transaction {
     private TransactionStatus transactionStatus;
     private Item item;
     private LocalDate localDate;
+    private User user;
 
     public static Transaction convert(TransactionEntity entity)  {
 
         return new Transaction(entity.getId(),
                 entity.getTransactionStatus(),
                 Item.convert(entity.getItemEntity()),
-                entity.getLocalDate());
+                entity.getLocalDate(),
+                User.convert(entity.getUserEntity()));
+    }
+
+    public Transaction(TransactionStatus transactionStatus, LocalDate localDate, User user) {
+        this.transactionStatus = transactionStatus;
+        this.localDate = localDate;
+        this.user = user;
     }
 }

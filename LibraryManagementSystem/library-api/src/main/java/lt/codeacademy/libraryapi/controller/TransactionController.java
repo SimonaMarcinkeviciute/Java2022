@@ -12,6 +12,7 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.FileNotFoundException;
+import java.security.Principal;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
@@ -24,22 +25,37 @@ import static lt.codeacademy.libraryapi.ApplicationPath.*;
 public class TransactionController {
 
     private final TransactionService transactionService;
-    private final ItemService itemService;
 
-    public TransactionController(TransactionService transactionService, ItemService itemService) {
+    public TransactionController(TransactionService transactionService) {
         this.transactionService = transactionService;
-        this.itemService = itemService;
     }
 
     @GetMapping(value = TRANSACTION,produces = MediaType.APPLICATION_JSON_VALUE)
-    public void transaction(@PathVariable(itemId) UUID id) {
-        Item item = itemService.getItemById(id);
-        item.setStatus(Status.UNAVAILABLE);
-        itemService.updateItemStatus(item);
+    public void transaction(@PathVariable(itemId) UUID id, Principal principal) {
 
-        Transaction transaction = new Transaction(null, TransactionStatus.BORROWED, item, LocalDate.now() );
-        transactionService.createTransaction(transaction);
+        transactionService.createTransaction(id, principal);
     }
 
+
+    @GetMapping(value = TRANSACTION_BY_USER,produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<Transaction> transaction(Principal principal) {
+
+        return transactionService.getTransactionsByUser(principal);
+
+    }
+
+    @GetMapping(value = RETURN_TRANSACTION,produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<Transaction> returnTransaction(@PathVariable(transactionId) UUID id, Principal principal) {
+
+        transactionService.updateTransaction(id);
+        return transactionService.getTransactionsByUser(principal);
+
+    }
+
+    @GetMapping(value = ISAVAILABLE,produces = MediaType.APPLICATION_JSON_VALUE)
+    public boolean isAvailable(@PathVariable(bookId) UUID id, Principal principal) {
+
+        return transactionService.isAvailableByUser(id, principal);
+    }
 
 }

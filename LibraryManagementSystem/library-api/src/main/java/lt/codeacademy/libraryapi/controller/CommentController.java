@@ -47,12 +47,12 @@ public class CommentController {
     //requestBody, kad galetume paduoti book, sumapintu paduotum duomenis su siuo objektu
     public List<Comment> createComment(@RequestBody Comment comment, @PathVariable(bookId) UUID id, Principal principal) {
 
-        Book book = bookService.findById(id);
-        comment.setBook(book);
-        comment.setDate(LocalDate.now());
-        commentService.createComment(comment);
-        return  commentService.findCommentsByBook(book);
+       return commentService.createComment(id, comment, principal);
+    }
 
-
+    @DeleteMapping(value = DELETE_COMMENTS)
+    @ResponseStatus(HttpStatus.NO_CONTENT)//204
+    public void deleteComment(@PathVariable(commentId) UUID id) {
+        commentService.deleteComment(id);
     }
 }

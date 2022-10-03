@@ -29,16 +29,26 @@ public class TransactionEntity {
     @Type(type = "uuid-char")
     private UUID id;
     private TransactionStatus transactionStatus;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "item_id")
     private ItemEntity itemEntity;
     private LocalDate localDate;
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private UserEntity userEntity;
 
     public static TransactionEntity convert(Transaction transaction)  {
 
         return new TransactionEntity(transaction.getId(),
                 transaction.getTransactionStatus(),
                 ItemEntity.convert(transaction.getItem()),
-                transaction.getLocalDate());
+                transaction.getLocalDate(),
+                UserEntity.convert(transaction.getUser()));
+    }
+
+    public TransactionEntity(TransactionStatus transactionStatus, LocalDate localDate, UserEntity userEntity) {
+        this.transactionStatus = transactionStatus;
+        this.localDate = localDate;
+        this.userEntity = userEntity;
     }
 }

@@ -8,6 +8,7 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.FileNotFoundException;
+import java.security.Principal;
 import java.util.List;
 import java.util.UUID;
 
@@ -27,16 +28,24 @@ public class RatingController {
     }
 
    @GetMapping(value = RATING, produces = MediaType.APPLICATION_JSON_VALUE)
-    public long rating (@PathVariable(bookId) UUID id, @PathVariable(rate) int number){
+    public List<Long> rating (@PathVariable(bookId) UUID id, @PathVariable(rate) int number, Principal principal){
 
-        return ratingService.addRating(number, id);
+        return ratingService.addRating(number, id, principal);
     }
 
     @GetMapping(value = BOOK, produces = MediaType.APPLICATION_JSON_VALUE)
-    public long getRating (@PathVariable(bookId) UUID id){
+    public List<Long> getRating (@PathVariable(bookId) UUID id){
         Book book = bookService.getBook(id);
-        long i =ratingService.countRatingByBook(book);
 
-        return i;
+        return ratingService.countRatingByBook(book);
     }
+
+    @GetMapping(value = USER_RATING, produces = MediaType.APPLICATION_JSON_VALUE)
+    public long getUserRating (@PathVariable(bookId) UUID id, @PathVariable(userId) UUID user){
+
+        return ratingService.getUserRating(id,user);
+
+    }
+
+
 }

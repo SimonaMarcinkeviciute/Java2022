@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.util.UUID;
 
 @RestController
@@ -69,6 +70,8 @@ public class FileController {
 ////        File file = fileService.getFileObjectById(id);
 ////        return fileService.getFileObjectById(id);
 ////    }
+
+
 
 
 

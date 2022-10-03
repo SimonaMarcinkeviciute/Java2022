@@ -10,10 +10,11 @@ import BookDetails from "../page/BookDetails";
 import FilteredBooks from "../page/FilteredBooks";
 import Login from "../forms/Login";
 import SecuredRoute from "../security/SecuredRoute";
+import UserInfo from "../page/UserInfo";
 
 export default () => {
     return (
-        <Container maxWidth="md" component="main" sx={{mt: 8}}>
+        <Container maxWidth="md" component="main" sx={{mt: 12}}>
             <Routes>
                 <Route path="/" element={<Books/>}/>
                 <Route path="/books/create" element={<SecuredRoute/>}>
@@ -26,6 +27,7 @@ export default () => {
                 <Route path="/books/:bookId/details" element={<BookDetails/>}/>
                 <Route path="/books/search/:text" element={<FilteredBooks/>}/>
                 <Route path="/login" element={<Login/>}/>
+                <Route path="/userInfo" element={<UserInfo/>}/>
             </Routes>
         </Container>
     );

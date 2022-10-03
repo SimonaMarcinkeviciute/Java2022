@@ -54,7 +54,15 @@ public class SecurityConfig {
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
-                .antMatchers("/books", "/users/registration", "/users/registration/{userName}")
+                .antMatchers("/books",
+                        "/users/registration",
+                        "/users/registration/{userName}",
+                        "/ratings/{bookId}",
+                        "/books/{bookId}",
+                        "/comments/{bookId}",
+                        "/items/available/{bookId}",
+                        "/books/search/{text}",
+                        "/ratings/userRatings/{bookId}/{userId}")
                 .permitAll()
                 .anyRequest()
                 .authenticated()

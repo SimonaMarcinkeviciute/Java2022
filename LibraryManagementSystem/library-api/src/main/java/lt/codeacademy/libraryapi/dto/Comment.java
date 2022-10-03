@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lt.codeacademy.libraryapi.entity.BookEntity;
 import lt.codeacademy.libraryapi.entity.CommentEntity;
+import lt.codeacademy.libraryapi.entity.UserEntity;
 
 import java.time.LocalDate;
 import java.util.UUID;
@@ -20,13 +21,15 @@ public class Comment {
     private String text;
     private LocalDate date;
     private Book book;
+    private User user;
 
     public static Comment convert(CommentEntity entity) {
 
         return new Comment(entity.getId(),
                 entity.getText(),
                 entity.getDate(),
-                Book.convert(entity.getBookEntity()));
+                Book.convert(entity.getBookEntity()),
+                User.convert(entity.getUserEntity()));
     }
 
     public Comment(UUID id, String text) {

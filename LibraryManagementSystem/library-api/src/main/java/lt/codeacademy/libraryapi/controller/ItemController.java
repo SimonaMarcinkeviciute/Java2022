@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.io.FileNotFoundException;
+import java.security.Principal;
 import java.util.List;
 import java.util.UUID;
 
@@ -32,10 +33,27 @@ public class ItemController {
     }
 
     @GetMapping(value = (AVAILABLE_ITEMS), produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<Item> getAvailableItems(@PathVariable(bookId) UUID id)  {
-        Book book = bookService.getBook(id);
-        List<Item> itemList = itemService.getAvailableItemsByBook(book);
+    public List<Item> getAvailableItemsByBook(@PathVariable(bookId) UUID id, Principal principal)  {
+
+
+        List<Item> itemList = itemService.getAvailableItemsByBook(id, principal);
         return itemList;
+    }
+
+    @GetMapping(value = (ITEMS_BY_BOOK), produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<Item> getItemsByBook(@PathVariable(bookId) UUID id)  {
+
+
+        List<Item> itemList = itemService.getItemsByBook(id);
+        return itemList;
+    }
+
+    @GetMapping(value = (CHANGE_ITEM_STATUS), produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<Item> changeStatus(@PathVariable(itemId) UUID id, @PathVariable(bookId) UUID book)  {
+        itemService.changeItemStatus(id);
+         return itemService.getItemsByBook(book);
+
+
     }
 
 }
