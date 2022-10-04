@@ -1,21 +1,15 @@
 import Typography from "@mui/material/Typography";
-import Link from "@mui/material/Link";
 
 export default () => {
     return (
-        <Typography variant="body2" color="text.secondary" align="center"
-                    sx={{
-                        mt: 5,
-                        borderTop: (theme) => `1px solid ${theme.palette.divider}`,
-                        py: [3, 6]
-                    }}>
+        <Typography variant="body2" color="text.secondary" align="center">
 
+            <img style={{marginTop: '200px', marginBottom:'10px', maxWidth: '-webkit-fill-available'}} src={'https://kybookfestival.org/wp-content/uploads/2020/08/KY-Book-Festival-Books-footer-01.png'}/>
             {'Copyright © '}
-            <Link color="inherit" href="https://mui.com/">
-                Your Website
-            </Link>{' '}
+
             {new Date().getFullYear()}
             {'.'}
         </Typography>
     );
+
 }

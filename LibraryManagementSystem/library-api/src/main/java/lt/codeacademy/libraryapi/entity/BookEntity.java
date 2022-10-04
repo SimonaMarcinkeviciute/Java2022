@@ -18,8 +18,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @Entity
 @Table(name = "books")
-public class BookEntity
-{
+public class BookEntity {
     @Id
     @GeneratedValue
     @Column(columnDefinition = "VARCHAR(36)", updatable = false)
@@ -39,7 +38,6 @@ public class BookEntity
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "file_id")
     private FileEntity fileEntity;
-
 
     public static BookEntity convert(Book b) {
         File file = b.getFile();
@@ -61,6 +59,4 @@ public class BookEntity
 
         );
     }
-
-
 }

@@ -3,21 +3,13 @@ package lt.codeacademy.libraryapi.service;
 import lt.codeacademy.libraryapi.data.Status;
 import lt.codeacademy.libraryapi.dto.Book;
 import lt.codeacademy.libraryapi.dto.Item;
-import lt.codeacademy.libraryapi.dto.Transaction;
-import lt.codeacademy.libraryapi.dto.User;
 import lt.codeacademy.libraryapi.entity.BookEntity;
 import lt.codeacademy.libraryapi.entity.ItemEntity;
-import lt.codeacademy.libraryapi.entity.TransactionEntity;
-import lt.codeacademy.libraryapi.entity.UserEntity;
 import lt.codeacademy.libraryapi.repository.ItemRepository;
 import org.springframework.stereotype.Service;
 
-import java.io.FileNotFoundException;
 import java.security.Principal;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.UUID;
 
@@ -35,14 +27,14 @@ public class ItemService {
     }
 
     public void createItem(Book book, int itemQuantity) {
-        Item item = new Item( null, Status.AVAILABLE, book, LocalDateTime.now());
+        Item item = new Item(null, Status.AVAILABLE, book, LocalDateTime.now());
 
-        for (int i = 0; i<itemQuantity; i++) {
-            ItemEntity itemEntity =itemRepository.save(ItemEntity.convert(item));
+        for (int i = 0; i < itemQuantity; i++) {
+            ItemEntity itemEntity = itemRepository.save(ItemEntity.convert(item));
         }
     }
 
-    public List<Item> getAvailableItemsByBook(UUID id, Principal principal){
+    public List<Item> getAvailableItemsByBook(UUID id, Principal principal) {
 
         Book book = bookService.getBook(id);
 
@@ -50,10 +42,6 @@ public class ItemService {
                 .stream()
                 .map(Item::convert
                 ).toList();
-    }
-
-    public List<Item> getItems() {
-        return itemRepository.findAll().stream().map(Item::convert).toList();
     }
 
     public Item getItemById(UUID id) {
@@ -64,8 +52,7 @@ public class ItemService {
         itemRepository.save(ItemEntity.convert(item));
     }
 
-    public List<Item> getItemsByBook(UUID id){
-
+    public List<Item> getItemsByBook(UUID id) {
         Book book = bookService.getBook(id);
 
         return itemRepository.findByBookEntity(BookEntity.convert(book))
@@ -79,8 +66,6 @@ public class ItemService {
         item.setStatus(Status.WRITTEN_OF);
 
         updateItemStatus(item);
-
-        }
-
     }
+}
 

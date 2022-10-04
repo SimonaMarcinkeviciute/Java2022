@@ -1,0 +1,63 @@
+{
+  "book" : {
+    "bookNotAvailable": "Nėra laisvų knygų",
+    "bookAvailable": "Knyga laisva.",
+    "logIn": "Prisijunk!",
+    "noFreeBooks": "Laisvų knygų nėra",
+    "orderBook": "Užsakyti knygą",
+    "genre": "Žanras:",
+    "firstPublication": "Pirmasis leidimas:",
+    "format": "Formatas:",
+    "pages": "Puslapiai",
+    "published": "Leidimo metai:",
+    "by": "",
+    "isbn": "ISBN:",
+    "language": "Kalba:",
+    "comments": "Komentarai:",
+    "noComments": "Komentarų nėra!",
+    "submit": "Patvirtinti",
+    "writeComment": "Parašyk komentarą",
+    "newComment": "Parašyk komentarą"
+  },
+  "header" : {
+    "library": "LIBRARY",
+    "addBook": "Pridėti naują knygą",
+    "myOrders": "mano užsakymai",
+    "logout": "atsijungti",
+    "searchInput": "Įveskite raktinį žodį",
+    "searchInputEmpty": "Įvestis negali būti tuščia"
+  },
+  "logIn": {
+    "hi": "Sveiki!",
+    "logInLibrary": "Prisijunkite",
+    "badCredentials": "Blogi prisijungimo duomenys",
+    "userName": "Prisijungimo vardas",
+    "yourName": "Prisijungimo vardas",
+    "password": "Slaptažodis",
+    "yourPassword": "Slaptažodis",
+    "login": "Prisijungti",
+    "noAccount": "",
+    "registration": "Registracija"
+  },
+  "userInfo": {
+    "bookList": "Knygų sąrašas tuščias",
+    "cover": "Viršelis",
+    "title": "Pavadinimas",
+    "author": "Autorius",
+    "status": "Statusas",
+    "transaction": "Transakcijos data",
+    "returnBook": "Knygos statusas"
+  },
+  "adminInfo": {
+    "totalFund": "Viso fonde",
+    "status:": "statusas: ",
+    "writeOff": "nurašyti"
+  },
+  "addBook": {
+    "addNewBook": "Pridėti naują knygą:",
+    "updateBook": "Atnaujinti knygos informaciją:",
+    "updateFile": "Atnaujinti knygos viršelį:",
+    "addItems": "Kiek naujų egzempliorių norėsite pridėti?"
+
+  }
+}

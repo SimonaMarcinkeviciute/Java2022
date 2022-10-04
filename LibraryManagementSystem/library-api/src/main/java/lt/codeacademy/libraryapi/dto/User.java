@@ -6,12 +6,9 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lt.codeacademy.libraryapi.entity.UserEntity;
 import lt.codeacademy.libraryapi.validator.annotation.CompareFields;
-import org.hibernate.validator.constraints.UniqueElements;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-
-import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import java.util.Collection;
@@ -24,9 +21,9 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 @NoArgsConstructor
 @CompareFields(first = "password", second = "repeatPassword")
-public class User  implements UserDetails {
+public class User implements UserDetails {
     private UUID id;
-@NotBlank
+    @NotBlank
     private String name;
     @NotBlank
     private String surname;
@@ -46,7 +43,7 @@ public class User  implements UserDetails {
 
     private Set<Role> roles;
 
-    public User(UUID id, String name, String surname, String username, String email, String phone,Set<Role> roles, String password) {
+    public User(UUID id, String name, String surname, String username, String email, String phone, Set<Role> roles, String password) {
         this.id = id;
         this.name = name;
         this.surname = surname;
@@ -57,6 +54,15 @@ public class User  implements UserDetails {
         this.password = password;
     }
 
+    public User(String name, String surname, String username, String email, String phone, String password, String repeatPassword) {
+        this.name = name;
+        this.surname = surname;
+        this.username = username;
+        this.email = email;
+        this.phone = phone;
+        this.password = password;
+        this.repeatPassword = repeatPassword;
+    }
 
     public static User convert(UserEntity entity) {
 
@@ -73,17 +79,6 @@ public class User  implements UserDetails {
                 entity.getPhone(),
                 roles,
                 entity.getPassword());
-    }
-
-
-    public User(String name, String surname, String username, String email, String phone, String password, String repeatPassword) {
-        this.name = name;
-        this.surname = surname;
-        this.username = username;
-        this.email = email;
-        this.phone = phone;
-        this.password = password;
-        this.repeatPassword = repeatPassword;
     }
 
     @Override

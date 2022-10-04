@@ -5,7 +5,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lt.codeacademy.libraryapi.data.Status;
-import lt.codeacademy.libraryapi.dto.Book;
 import lt.codeacademy.libraryapi.dto.Item;
 import org.hibernate.annotations.Type;
 

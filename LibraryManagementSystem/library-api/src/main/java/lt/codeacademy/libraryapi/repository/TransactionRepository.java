@@ -14,7 +14,6 @@ public interface TransactionRepository extends JpaRepository<TransactionEntity, 
 
     List<TransactionEntity> findByUserEntity (UserEntity userEntity);
 
-    List<TransactionEntity> findByItemEntity (ItemEntity item);
 
 
 

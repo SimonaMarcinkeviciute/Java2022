@@ -1,21 +1,13 @@
 import {useEffect, useState} from "react";
-import {getBooks, getBooksBySearch} from "../api/bookApi";
-import {Grid} from "@mui/material";
-import {TableCell, InputBase} from "@mui/material";
+import {getBooksBySearch} from "../api/bookApi";
 import {NavLink, useParams} from "react-router-dom";
 import Loading from "../utils/Loading";
-import {Search} from "@mui/icons-material";
-import * as PropTypes from "prop-types";
-import SearchInput from "../utils/SearchInput";
-import loading from "../utils/Loading";
-
 
 export default () => {
 
     const {text} = useParams();
     const [books, setBooks] = useState([]);
     const [loading, setLoading] = useState(true);
-    const [inputText, setInputText] = useState('');
 
     useEffect(() => {
 
@@ -25,33 +17,31 @@ export default () => {
             .finally(() => setLoading(false));
     }, [text]);
 
-
     return (
         <>
-
             {
-                books.length < 1 ? <div style={{minHeight: '350px', textAlign: 'center', fontSize: '35px', marginTop: '160px'}}>Nothing found for: "{text}"</div> :
-                    loading ? <Loading size={80}/> :
-                        <div style={{
-                            display: 'flex',
-                            flexDirection: 'row',
-                            flexWrap: 'wrap',
-                            justifyContent: 'center',
-                            gap: '50px'
-                        }}>
-                            {books.map((book) => (
-                                <div key={book.id}>
-                                    <NavLink to={`/books/${book.id}/details`}>
-                                        <img style={{width: '220px', height: '360px', objectFit: 'cover'}}
-                                             src={"data:image/png;base64," + book.file.bytes}/>
-                                    </NavLink>
-                                </div>
-                            ))}
-
-
-                        </div>
+                loading ? <Loading size={80}/> :
+                    books.length < 1 ? <div
+                            style={{minHeight: '350px', textAlign: 'center', fontSize: '35px', marginTop: '160px'}}>Nothing
+                            found for: "{text}"</div> :
+                        loading ? <Loading size={80}/> :
+                            <div style={{
+                                display: 'flex',
+                                flexDirection: 'row',
+                                flexWrap: 'wrap',
+                                justifyContent: 'center',
+                                gap: '50px'
+                            }}>
+                                {books.map((book) => (
+                                    <div key={book.id}>
+                                        <NavLink to={`/books/${book.id}/details`}>
+                                            <img style={{width: '220px', height: '360px', objectFit: 'cover'}}
+                                                 src={"data:image/png;base64," + book.file.bytes}/>
+                                        </NavLink>
+                                    </div>
+                                ))}
+                            </div>
             }
         </>
-
     );
 }

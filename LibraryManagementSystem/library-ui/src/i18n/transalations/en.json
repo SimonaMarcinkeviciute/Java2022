@@ -1,0 +1,68 @@
+{
+  "translation": {
+    "key": "Welcome, this key is translated!",
+    "keyWithParams": "Hello {{name}} {{surname}}"
+  },
+  "book" : {
+    "bookNotAvailable": "Book not available!!",
+    "bookAvailable": "Book available.",
+    "logIn": "Log in!",
+    "noFreeBooks" : "No free books :(",
+    "orderBook": "ORDER BOOK",
+    "genre": "Genre:",
+    "firstPublication": "First published:",
+    "format": "Format:",
+    "pages": "pages",
+    "published": "Published:",
+    "by": "by",
+    "isbn": "ISBN:",
+    "language": "Language:",
+    "comments": "Comments:",
+    "noComments": "No comments yet!",
+    "submit": "Submit",
+    "writeComment": "Write a comment!",
+    "newComment": "Write a comment ...."
+  },
+  "header" : {
+    "library": "LIBRARY",
+    "addBook": "Add new book",
+    "myOrders": "my orders",
+    "logout": "logout",
+    "searchInput": "Type what you are looking for...",
+    "searchInputEmpty": "Value must be not empty!"
+  },
+  "logIn": {
+    "hi": "Hi there!",
+    "logInLibrary": "Log in to Library",
+    "badCredentials": "Bad credentials",
+    "userName": "User name",
+    "yourName": "Your user name....",
+    "password": "Password",
+    "yourPassword": "Your Password....",
+    "login": "Login",
+    "noAccount": "No account yet?",
+    "registration": "Create one here!"
+  },
+  "userInfo": {
+    "bookList": "Your book list is empty!",
+    "cover": "Cover",
+    "title": "Title",
+    "author": "Author",
+    "status": "Status",
+    "transaction": "Transaction date",
+    "returnBook": "Return book"
+  },
+  "adminInfo": {
+    "totalFund": "Total in fund: ",
+    "status": "status: ",
+    "writeOff": "Write off"
+  },
+  "addBook": {
+    "addNewBook" : "Add book:",
+    "submit": "Submit",
+    "updateBook": "Update book info:",
+    "updateFile": "Update book cover:",
+    "addItems": "How many items do you want to add?"
+
+  }
+}

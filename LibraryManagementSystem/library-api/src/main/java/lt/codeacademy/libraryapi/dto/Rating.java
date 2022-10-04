@@ -4,7 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lt.codeacademy.libraryapi.entity.BookEntity;
 import lt.codeacademy.libraryapi.entity.RatingEntity;
 
 
@@ -28,6 +27,4 @@ public class Rating {
                 Book.convert(ratingEntity.getBookEntity()),
                 User.convert(ratingEntity.getUserEntity()));
     }
-
-
 }

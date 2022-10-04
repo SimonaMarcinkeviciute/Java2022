@@ -41,8 +41,4 @@ public class UserService implements UserDetailsService {
 
         return User.convert(user);
     }
-
-    public void updateUser(User user) {
-        userRepository.save(UserEntity.convert(user));
-    }
 }

@@ -1,6 +1,5 @@
 package lt.codeacademy.libraryapi.service;
 
-import lombok.extern.slf4j.Slf4j;
 import lt.codeacademy.libraryapi.dto.File;
 import lt.codeacademy.libraryapi.entity.FileEntity;
 import lt.codeacademy.libraryapi.exception.FileException;
@@ -11,7 +10,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -19,11 +17,9 @@ import java.nio.file.StandardCopyOption;
 import java.util.Set;
 import java.util.UUID;
 
-@Slf4j
 @Service
 public class FileService {
 
-    //path kur bus saugomas tas failas
     private final Path location;
     private final long MAX_FILE_SIZE = 10000000; //10MB
     private final Set<String> ALLOWED_CONTENT_TYPES = Set.of(MediaType.IMAGE_JPEG_VALUE, MediaType.IMAGE_PNG_VALUE, MediaType.IMAGE_GIF_VALUE);
@@ -47,6 +43,17 @@ public class FileService {
         return file.getId();
     }
 
+    public UUID updateFileInFileSystemAndMetadataInDb(MultipartFile multipartFile, UUID id) {
+        validateFile(multipartFile);
+
+        FileEntity file = new FileEntity( id ,multipartFile.getOriginalFilename(), multipartFile.getContentType(), multipartFile.getSize());
+        //save grazina ta pati objekta, tik updatinta ir grazina id
+        file = fileRepository.save(file);
+
+        saveFileInFileSystem(file.getId().toString(), multipartFile);
+        return file.getId();
+    }
+
     private void saveFileInFileSystem(String fileName, MultipartFile multipartFile) {
         try {
             //resolvina path is paduoto stringo, ir tenais suraso baitus
@@ -54,73 +61,7 @@ public class FileService {
             //nurodom ka ir kur norim nukopijuoti
             Files.copy(multipartFile.getInputStream(), fileLocation, StandardCopyOption.REPLACE_EXISTING);
         } catch(IOException e) {
-            log.error(e.getMessage());
             throw new FileException("Cannot save file");
-        }
-    }
-
-//    public File downloadFileFromFileSystemAndMetadataInDb(UUID id) throws FileNotFoundException {
-//        //pasiemam fileEntity pagal id
-//        //issitraukiam metadata
-//        FileEntity entity = fileRepository.findById(id)
-//                .orElseThrow(() -> new FileNotFoundException(String.format("File %s not exist ", id)));
-//
-//        try {
-//            //nusiskaitom faila, kur tas failas yra, issiresolvinti path
-//            Path filePath = location.resolve(entity.getId().toString());
-//            //turint path gaunam inputStream
-//            InputStream inputStream = Files.newInputStream(filePath);
-//
-//            //grazinam faila
-//            return File.convert(entity);
-//        }catch(IOException e) {
-//            log.error(e.getMessage());
-//            throw new FileNotFoundException(String.format("FileEntity %s does not exist", id));
-//        }
-//    }
-
-//    public File downloadFileFromFileSystemAndMetadataInDbByName(String fileName) throws FileNotFoundException {
-//        FileEntity entity = fileRepository.findByName(fileName);
-//        UUID id = entity.getId();
-//
-//        try{
-//            Path filePath = location.resolve(entity.getId().toString());
-//            InputStream inputStream = Files.newInputStream(filePath);
-//
-//            return File.convert(entity, inputStream);
-//        }catch(IOException e) {
-//            log.error(e.getMessage());
-//            throw new FileNotFoundException(String.format("FileEntity %s does not exist", id));
-//        }
-//    }
-
-
-//    public File getFileObjectById(UUID id) throws FileNotFoundException {
-//        FileEntity entity = fileRepository.findById(id)
-//                .orElseThrow(() -> new FileNotFoundException(String.format("File %s not exist ", id)));
-//
-//        try{
-//            Path path = location.resolve(entity.getId().toString());
-//            byte[] bytes = Files.readAllBytes(path);
-//            entity.setBytes(bytes);
-//
-//            return File.convert(entity, null);
-//        }catch(IOException e) {
-//            throw new FileNotFoundException(String.format("File %s not exist ", id));
-//        }
-//    }
-
-    public byte[] getFileObjectBytesById(UUID id) throws FileNotFoundException {
-        FileEntity entity = fileRepository.findById(id)
-                .orElseThrow(() -> new FileNotFoundException(String.format("File %s not exist ", id)));
-
-        try{
-            Path path = location.resolve(entity.getId().toString());
-            byte[] bytes = Files.readAllBytes(path);
-
-            return bytes;
-        }catch(IOException e) {
-            throw new FileNotFoundException(String.format("File %s not exist ", id));
         }
     }
 
@@ -140,19 +81,12 @@ public class FileService {
         }
     }
 
-
-
-
-
-
-
     private void createDirectory() {
         try {
             if(!Files.exists(location)) {
                 Files.createDirectory(location);
             }
         } catch(IOException e) {
-            log.error(e.getMessage());
             throw new FileException("Cannot create directory");
         }
     }
@@ -166,7 +100,4 @@ public class FileService {
             throw new FileException(String.format("FileEntity type %s not allowed", multipartFile.getContentType()));
         }
     }
-
-
-
 }

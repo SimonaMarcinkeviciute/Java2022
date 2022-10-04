@@ -5,16 +5,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lt.codeacademy.libraryapi.entity.BookEntity;
-import lt.codeacademy.libraryapi.entity.FileEntity;
-import org.hibernate.boot.Metadata;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.constraints.NotBlank;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.time.LocalDate;
 import java.util.UUID;
 
@@ -22,42 +14,34 @@ import java.util.UUID;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class Book
-{
+public class Book {
     private UUID id;
     private String fileId;
-
+    @NotBlank
     private String title;
-
+    @NotBlank
     private String author;
-
+    @NotBlank
     private String description;
-
+    @NotBlank
     private String genre;
-
+    @NotBlank
     private int pages;
-
+    @NotBlank
     private String language;
-
+    @NotBlank
     private LocalDate firstPublication;
-
+    @NotBlank
     private LocalDate publication;
-
+    @NotBlank
     private String publisher;
-
+    @NotBlank
     private String isbn;
     private int quantity;
+    @NotBlank
     private File file;
 
-
-
-
-    //komentaras
-    //ivertinimas
-
-
-
-    public static Book convert(BookEntity entity)  {
+    public static Book convert(BookEntity entity) {
 
         return new Book(entity.getId(),
                 entity.getTitle(),

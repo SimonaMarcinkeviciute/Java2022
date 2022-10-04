@@ -4,10 +4,9 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lt.codeacademy.libraryapi.entity.BookEntity;
 import lt.codeacademy.libraryapi.entity.CommentEntity;
-import lt.codeacademy.libraryapi.entity.UserEntity;
 
+import javax.validation.constraints.NotBlank;
 import java.time.LocalDate;
 import java.util.UUID;
 
@@ -18,6 +17,7 @@ import java.util.UUID;
 public class Comment {
 
     private UUID id;
+    @NotBlank
     private String text;
     private LocalDate date;
     private Book book;

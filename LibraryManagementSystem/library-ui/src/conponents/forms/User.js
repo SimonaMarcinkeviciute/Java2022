@@ -1,11 +1,10 @@
 import {Form, Formik} from "formik";
 import {Alert, Button, CircularProgress, Stack, Typography} from "@mui/material";
 import FormTextInput from "./FormTextInput";
-import { useState} from "react";
+import {useState} from "react";
 import {createUser, isAvailable} from "../api/userApi";
 import * as yup from "yup";
-import { useNavigate } from "react-router-dom";
-
+import {useNavigate} from "react-router-dom";
 
 const productValidationSchema = yup.object().shape(
     {
@@ -15,7 +14,7 @@ const productValidationSchema = yup.object().shape(
             .required('Surname is required'),
         username: yup.string()
             .required('Username is required')
-            .test('Unique username', 'Username has already taken',function (value) {
+            .test('Unique username', 'Username has already taken', function (value) {
                 return new Promise((resolve, reject) => {
                     isAvailable(value)
                         .then((res) => {
@@ -23,8 +22,8 @@ const productValidationSchema = yup.object().shape(
                             reject(true)
                         })
                         .catch((error) => {
-                                resolve(true);
-                                reject(false)
+                            resolve(true);
+                            reject(false)
                         })
                 })
             }),
@@ -39,28 +38,22 @@ const productValidationSchema = yup.object().shape(
             .oneOf([yup.ref('password'), null], 'Passwords must match')
     });
 
-
-
-
-
-
 export default () => {
     const [notification, setNotification] = useState({isVisible: false});
     const navigate = useNavigate();
 
-
     const onCreateUser = (values, helpers) => {
         helpers.setSubmitting(true);
-
-
-        console.log(values)
 
         createUser(values)
             .then((response) => {
                 helpers.resetForm();
-                setNotification({isVisible: true, message: 'Your registration has been successfully completed', severity: 'success'});
+                setNotification({
+                    isVisible: true,
+                    message: 'Your registration has been successfully completed',
+                    severity: 'success'
+                });
                 setTimeout(() => navigate("/login"), 5000);
-
             })
 
             .catch((error) => setNotification({
@@ -69,12 +62,6 @@ export default () => {
                 severity: 'error'
             }))
             .finally(() => helpers.setSubmitting(false));
-
-
-
-
-
-
     }
 
     return (
@@ -126,7 +113,8 @@ export default () => {
 
                     </Stack>
                     {
-                        notification.isVisible && <Alert style={{marginTop: '10px'}} severity={notification.severity}>{notification.message}</Alert>
+                        notification.isVisible && <Alert style={{marginTop: '10px'}}
+                                                         severity={notification.severity}>{notification.message}</Alert>
                     }
                     <Typography sx={{textAlign: 'right', mt: 2}}>
                         {

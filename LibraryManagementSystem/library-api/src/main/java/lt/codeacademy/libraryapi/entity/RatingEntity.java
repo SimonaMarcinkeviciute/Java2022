@@ -4,10 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lt.codeacademy.libraryapi.dto.Book;
-import lt.codeacademy.libraryapi.dto.File;
 import lt.codeacademy.libraryapi.dto.Rating;
-import lt.codeacademy.libraryapi.dto.User;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;

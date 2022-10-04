@@ -33,29 +33,21 @@ public class TransactionService {
     }
 
     public void createTransaction(UUID itemId, Principal principal) {
-
         Item item = itemService.getItemById(itemId);
         item.setStatus(Status.UNAVAILABLE);
         itemService.updateItemStatus(item);
         User user = (User) userService.loadUserByUsername(principal.getName());
 
-
-        Transaction transaction = new Transaction(null, TransactionStatus.BORROWED,item, LocalDate.now(), user );
-
+        Transaction transaction = new Transaction(null, TransactionStatus.BORROWED, item, LocalDate.now(), user);
         transactionRepository.save(TransactionEntity.convert(transaction));
-
-
     }
 
     public List<Transaction> getTransactionsByUser(Principal principal) {
-
         User user = (User) userService.loadUserByUsername(principal.getName());
 
-        List<Transaction> t = transactionRepository.findByUserEntity(UserEntity.convert(user)).stream()
+        return transactionRepository.findByUserEntity(UserEntity.convert(user)).stream()
                 .map(Transaction::convert)
                 .toList();
-
-        return t;
     }
 
     public void updateTransaction(UUID transactionId) {
@@ -70,25 +62,22 @@ public class TransactionService {
     }
 
     public boolean isAvailableByUser(UUID bookId, Principal principal) {
-
         Book book = bookService.findById(bookId);
+        List<Transaction> t = getTransactionsByUser(principal);
 
-        List<Transaction> t =  getTransactionsByUser(principal);
-
-        if(t.size() < 1) {
+        if (t.size() < 1) {
             return true;
-        }else {
-            for(Transaction tr : t) {
+        } else {
+            for (Transaction tr : t) {
 
-                String title= tr.getItem().getBook().getTitle();
+                String title = tr.getItem().getBook().getTitle();
                 if (tr.getItem().getBook().getTitle().equals(book.getTitle())) {
-                    if(tr.getTransactionStatus().equals(TransactionStatus.BORROWED))
-                    return false;
+                    if (tr.getTransactionStatus().equals(TransactionStatus.BORROWED))
+                        return false;
                 }
             }
         }
 
         return true;
     }
-
 }

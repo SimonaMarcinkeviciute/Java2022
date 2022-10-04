@@ -1,22 +1,17 @@
 import * as React from 'react';
 import Paper from '@mui/material/Paper';
 import InputBase from '@mui/material/InputBase';
-import Divider from '@mui/material/Divider';
-import IconButton from '@mui/material/IconButton';
-import MenuIcon from '@mui/icons-material/Menu';
 import SearchIcon from '@mui/icons-material/Search';
-import DirectionsIcon from '@mui/icons-material/Directions';
 import {useState} from "react";
-import {getBooks, getBooksBySearch} from "../api/bookApi";
-import Link from "@mui/material/Link";
-import {NavLink, useNavigate} from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 import {Button} from "@mui/material";
+import {useTranslation} from "react-i18next";
 
 export default function SearchInput() {
+    const {t} = useTranslation('header');
 
     const [text, setText] = useState('');
-    const [placeholder, setPlaceholder] = useState('Type what you are looking for...');
-
+    const [placeholder, setPlaceholder] = useState(t('searchInput'));
 
     const navigate = useNavigate();
 
@@ -24,24 +19,21 @@ export default function SearchInput() {
         const newText = text;
         setText('')
 
-        if(newText !== '') {
+        if (newText !== '') {
             navigate(`/books/search/${newText}`)
         } else {
-            setPlaceholder('Value must be not empty!')
-            setTimeout(() => setPlaceholder('Type what you are looking for...'), 2000);
+            setPlaceholder(t('searchInputEmpty'))
+            setTimeout(() => setPlaceholder(t('searchInput')), 2000);
         }
     }
-
-
 
     return (
         <Paper
             component="form"
-            sx={{ p: '2px 4px', display: 'flex', alignItems: 'center', width: 400 }}
+            sx={{p: '2px 4px', display: 'flex', alignItems: 'center', width: 400}}
         >
-
             <InputBase
-                sx={{ ml: 1, flex: 1 }}
+                sx={{ml: 1, flex: 1}}
                 placeholder={placeholder}
                 type="text"
                 value={text}
@@ -49,13 +41,11 @@ export default function SearchInput() {
 
             />
 
-            <Button  sx={{ p: '10px' }} aria-label="search"
-                       onClick={onSubmit}
-                        >
+            <Button sx={{p: '10px'}} aria-label="search"
+                    onClick={onSubmit}
+            >
                 <SearchIcon style={{color: '#383f4a'}}/>
             </Button>
-
-
         </Paper>
     );
 }

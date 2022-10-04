@@ -70,17 +70,4 @@ public class RatingService {
 
         return ratingInfo;
     }
-
-    public long getUserRating(UUID id, UUID userId) {
-        Book book = bookService.getBook(id);
-        User user = userRepository.findById(userId).map(User::convert).orElseThrow();
-
-        RatingEntity rating = ratingRepository.findByBookEntityAndAndUserEntity(BookEntity.convert(book), UserEntity.convert(user));
-
-        if(rating == null) {
-            return 0;
-        }
-        return rating.getRate();
-
-    }
 }

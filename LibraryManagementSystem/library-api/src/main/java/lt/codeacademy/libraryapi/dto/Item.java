@@ -29,16 +29,4 @@ public class Item {
                 entity.getDate()
                 );
     }
-
-    public Item(Status status, Book book, LocalDateTime date) {
-        this.status = status;
-        this.book = book;
-        this.date = date;
-    }
-
-    public Item(UUID id, Status status, LocalDateTime date) {
-        this.id = id;
-        this.status = status;
-        this.date = date;
-    }
 }

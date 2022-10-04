@@ -4,7 +4,6 @@ import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import Link from "@mui/material/Link";
-import Button from "@mui/material/Button";
 import {NavLink, useNavigate} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import {useState} from "react";
@@ -16,8 +15,8 @@ import {removeUser} from "../../store/slices/user/userSlice";
 import SearchInput from "../utils/SearchInput";
 import LocalLibraryIcon from '@mui/icons-material/LocalLibrary';
 import AutoStoriesSharpIcon from '@mui/icons-material/AutoStoriesSharp';
-import PersonSharpIcon from '@mui/icons-material/PersonSharp';
-
+import {useTranslation} from "react-i18next";
+import LanguageSwitcher from "../language/LanguageSwitcher";
 
 export default () => {
     const user = useSelector(state => state.user.user);
@@ -26,6 +25,8 @@ export default () => {
     const [anchorEl, setAnchorEl] = useState(null);
     const open = Boolean(anchorEl);
     const navigate = useNavigate();
+
+    const {t} = useTranslation('header');
 
     const handleClick = (event) => {
         setAnchorEl(event.currentTarget);
@@ -42,7 +43,6 @@ export default () => {
     const onUserInfo = () => {
         navigate("/userInfo")
     }
-
 
     return (
         <>
@@ -74,7 +74,7 @@ export default () => {
                             color: '#383f4a'
                         }}>
                             <AutoStoriesSharpIcon fontSize={"large"}/>
-                            <div style={{fontSize: '30px'}}>LIBRARY</div>
+                            <div style={{fontSize: '30px'}}>{t('library')}</div>
                         </div>
 
                     </Typography>
@@ -88,22 +88,10 @@ export default () => {
                                     color="text.primary"
                                     to="/books/create"
                                     component={NavLink}
-                                    sx={{my: 1, mx: 1.5}}>
-                                    Add book
+                                    sx={{my: 1, mx: 1.5, textDecoration: 'none', color: '#383f4a'}}>
+                                    {t('addBook')}
                                 </Link>
                             }
-                            {
-                                user?.roles.includes('ADMIN') &&
-                                <Link
-                                    variant="button"
-                                    color="text.primary"
-                                    to="/books/:bookId/update"
-                                    component={NavLink}
-                                    sx={{my: 1, mx: 1.5}}>
-                                    Update book
-                                </Link>
-                            }
-
 
                         </nav>
 
@@ -166,28 +154,25 @@ export default () => {
                                                 <ListItemIcon>
                                                     <LocalLibraryIcon fontSize="small"/>
                                                 </ListItemIcon>
-                                                my orders
+                                                {t('myOrders')}
                                             </MenuItem>
                                         }
                                         <MenuItem onClick={onLogout}>
                                             <ListItemIcon>
                                                 <Logout fontSize="small"/>
                                             </ListItemIcon>
-                                            logout
+                                            {t('logout')}
                                         </MenuItem>
                                     </Menu>
                                 </>
                                 :
-
-
                                 <Avatar
                                     variant="outlined"
                                     sx={{my: 1, mx: 1.5}}
                                     to="/login"
                                     component={NavLink}/>
-
-
                         }
+                        <LanguageSwitcher/>
                     </div>
                 </Toolbar>
             </AppBar>

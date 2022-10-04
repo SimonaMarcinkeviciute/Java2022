@@ -7,8 +7,8 @@ const changeStatus = (itemId, bookId) => HTTP.get(`/items/status/${itemId}/${boo
 export {
     getAvailableItems,
     getItemsByBook,
-    changeStatus
+    changeStatus,
+
 
 };
 
-//api/items/available/bookid

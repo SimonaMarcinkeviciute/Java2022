@@ -4,7 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lt.codeacademy.libraryapi.dto.Book;
 import lt.codeacademy.libraryapi.dto.Comment;
 import org.hibernate.annotations.Type;
 

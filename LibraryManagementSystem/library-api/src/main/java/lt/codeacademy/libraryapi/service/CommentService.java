@@ -6,7 +6,6 @@ import lt.codeacademy.libraryapi.dto.User;
 import lt.codeacademy.libraryapi.entity.BookEntity;
 import lt.codeacademy.libraryapi.entity.CommentEntity;
 import lt.codeacademy.libraryapi.repository.CommentRepository;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import java.security.Principal;
@@ -34,7 +33,6 @@ public class CommentService {
     }
 
     public List<Comment> createComment(UUID bookId, Comment comment, Principal principal) {
-
         Book book = bookService.findById(bookId);
         comment.setBook(book);
         comment.setDate(LocalDate.now());
@@ -42,7 +40,6 @@ public class CommentService {
         User user = (User) userService.loadUserByUsername(principal.getName());
         comment.setUser(user);
 
-        CommentEntity comment1 = commentRepository.save(CommentEntity.convert(comment));
         return  findCommentsByBook(book);
     }
 

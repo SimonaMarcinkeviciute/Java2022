@@ -6,19 +6,15 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import lt.codeacademy.libraryapi.dto.Book;
 import lt.codeacademy.libraryapi.dto.File;
-import lt.codeacademy.libraryapi.dto.Item;
 import lt.codeacademy.libraryapi.service.BookService;
 import lt.codeacademy.libraryapi.service.FileService;
 import lt.codeacademy.libraryapi.service.ItemService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 
 import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.security.Principal;
 import java.util.List;
 import java.util.UUID;
 
@@ -41,16 +37,21 @@ public class BookController {
         this.itemService = itemService;
     }
 
-    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<Book> getBooks() throws FileNotFoundException {
-        return bookService.getBooks();
-    }
-
-    //apsirasom savo statusus
     @ApiOperation(value = "Get all library books", tags = "getBooks", httpMethod = "GET")
     //surasom visus responce kurie gali buti sitame rezultate
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "All books returned successfully"),
+            @ApiResponse(code = 401, message = "User not authorized"),
+            @ApiResponse(code = 404, message = "Request not found")
+    })
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<Book> getBooks() {
+        return bookService.getBooks();
+    }
+
+    @ApiOperation(value = "Get  books", tags = "getBook", httpMethod = "GET")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Books returned successfully"),
             @ApiResponse(code = 401, message = "User not authorized"),
             @ApiResponse(code = 404, message = "Request not found")
     })
@@ -63,9 +64,14 @@ public class BookController {
     //turim nurodyti koki duomenu tipa priimam
     //consume - priima
     //by defoult siuncia narsykle GET
+    @ApiOperation(value = "Create book", tags = "saveBook", httpMethod = "POST")
+    @ApiResponses(value = {
+            @ApiResponse(code = 201, message = "Book created successfully"),
+            @ApiResponse(code = 401, message = "User not authorized"),
+            @ApiResponse(code = 404, message = "Request not found")
+    })
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    @ResponseStatus(HttpStatus.CREATED)//201
-    //requestBody, kad galetume paduoti book, sumapintu paduotum duomenis su siuo objektu
+    @ResponseStatus(HttpStatus.CREATED)
     public void saveBooks(@RequestBody Book book) throws FileNotFoundException {
         int itemQuantity = book.getQuantity();
         UUID fileId = UUID.fromString(book.getFileId());
@@ -78,26 +84,30 @@ public class BookController {
 
     }
 
-    //PutMapping produkto updatinimui
-    //
-    @PutMapping(value = BOOK, consumes = MediaType.APPLICATION_JSON_VALUE)
-    @ResponseStatus(HttpStatus.ACCEPTED)//202
-    //PathVariable, kad pasiimti book Id is path
-    public void updateBook(@RequestBody Book book, @PathVariable(bookId) UUID id) {
+    @ApiOperation(value = "Update book", tags = "updateBook", httpMethod = "PUT")
+    @ApiResponses(value = {
+            @ApiResponse(code = 202, message = "Books updated successfully"),
+            @ApiResponse(code = 401, message = "User not authorized"),
+            @ApiResponse(code = 404, message = "Request not found")
+    })
+    @PutMapping(value = UPDATE_BOOK, consumes = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    public void updateBook(@RequestBody Book book, @PathVariable(bookId) UUID id, @PathVariable(fileId) UUID idFile) throws FileNotFoundException {
         book.setId(id);
-        bookService.updateBook(book);
+        book.setFile(fileService.getFileObjectById(idFile));
+        Book newBook = bookService.updateBook(book);
+        itemService.createItem(newBook, book.getQuantity());
     }
 
-    //nereikalinga nei produce nei consume, nes nieko negrazinsim ir nieko nepriimsim
-    @DeleteMapping(value = BOOK)
-    @ResponseStatus(HttpStatus.NO_CONTENT)//204
-    public void deleteBook(@PathVariable(bookId) UUID id) {
-        bookService.delete(id);
-    }
 
     //produce grazina
+    @ApiOperation(value = "Get all library books by search", tags = "getBooksBySearch", httpMethod = "GET")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "All books returned successfully"),
+            @ApiResponse(code = 401, message = "User not authorized"),
+            @ApiResponse(code = 404, message = "Request not found")
+    })
     @GetMapping(value = SEARCH, produces = MediaType.APPLICATION_JSON_VALUE)
-    //request param -
     public List<Book> search(@PathVariable(input) String text) {
         return bookService.search(text);
     }

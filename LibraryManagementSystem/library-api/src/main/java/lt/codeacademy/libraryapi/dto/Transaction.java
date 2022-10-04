@@ -5,7 +5,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lt.codeacademy.libraryapi.data.TransactionStatus;
-import lt.codeacademy.libraryapi.entity.BookEntity;
 import lt.codeacademy.libraryapi.entity.TransactionEntity;
 
 import java.time.LocalDate;
@@ -30,11 +29,5 @@ public class Transaction {
                 Item.convert(entity.getItemEntity()),
                 entity.getLocalDate(),
                 User.convert(entity.getUserEntity()));
-    }
-
-    public Transaction(TransactionStatus transactionStatus, LocalDate localDate, User user) {
-        this.transactionStatus = transactionStatus;
-        this.localDate = localDate;
-        this.user = user;
     }
 }

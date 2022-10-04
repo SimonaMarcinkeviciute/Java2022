@@ -1,22 +1,18 @@
 package lt.codeacademy.libraryapi.controller;
 
 import io.swagger.annotations.Api;
-import io.swagger.annotations.AuthorizationScope;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import lt.codeacademy.libraryapi.dto.Book;
 import lt.codeacademy.libraryapi.dto.Comment;
-import lt.codeacademy.libraryapi.dto.File;
-import lt.codeacademy.libraryapi.dto.User;
 import lt.codeacademy.libraryapi.service.BookService;
 import lt.codeacademy.libraryapi.service.CommentService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
-import java.io.FileNotFoundException;
 import java.security.Principal;
-import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
@@ -36,12 +32,23 @@ public class CommentController {
         this.bookService = bookService;
     }
 
+    @ApiOperation(value = "Get all comments by book", tags = "getComments", httpMethod = "GET")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "All comments returned successfully"),
+            @ApiResponse(code = 404, message = "Request not found")
+    })
     @GetMapping(value = COMMENT, produces = MediaType.APPLICATION_JSON_VALUE)
     public List<Comment> getComments(@PathVariable(bookId) UUID id) {
         Book book = bookService.getBook(id);
         return commentService.findCommentsByBook(book);
     }
 
+    @ApiOperation(value = "Create comment", tags = "createComment", httpMethod = "POST")
+    @ApiResponses(value = {
+            @ApiResponse(code = 201, message = "Comment created successfully"),
+            @ApiResponse(code = 401, message = "User not authorized"),
+            @ApiResponse(code = 404, message = "Request not found")
+    })
     @PostMapping(value = CREATE_COMMENT, consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)//201
     //requestBody, kad galetume paduoti book, sumapintu paduotum duomenis su siuo objektu
@@ -50,6 +57,13 @@ public class CommentController {
        return commentService.createComment(id, comment, principal);
     }
 
+    @ApiOperation(value = "Delete comment", tags = "deleteComment", httpMethod = "DELETE")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Comment deleted successfully"),
+            @ApiResponse(code = 401, message = "User not authorized"),
+            @ApiResponse(code = 204, message = "No content"),
+            @ApiResponse(code = 404, message = "Request not found")
+    })
     @DeleteMapping(value = DELETE_COMMENTS)
     @ResponseStatus(HttpStatus.NO_CONTENT)//204
     public void deleteComment(@PathVariable(commentId) UUID id) {

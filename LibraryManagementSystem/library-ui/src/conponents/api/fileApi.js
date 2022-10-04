@@ -6,13 +6,13 @@ const uploadFile = (data) => HTTP.post('/files/metadata', data, {
     }
 });
 
-const getFile = (fileName) => HTTP.get(`/files/${fileName}`, {
-    headers:{
-        'Content-type': ''
+const updateFile = (data, fileId) => HTTP.put(`/files/metadata/${fileId}`, data, {
+    headers: {
+        'Content-type': 'multipart/form-data'
     }
 });
 
 export {
     uploadFile,
-    getFile
+    updateFile
 }

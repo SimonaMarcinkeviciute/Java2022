@@ -2,11 +2,10 @@ import {Form, Formik} from "formik";
 import {Alert, Button, CircularProgress, Stack, Typography} from "@mui/material";
 import * as Yup from 'yup';
 import FormTextInput from "./FormTextInput";
-import {getBooks, saveBooks} from "../api/bookApi";
-import {useEffect, useRef, useState} from "react";
+import {saveBooks} from "../api/bookApi";
+import {useRef, useState} from "react";
 import {uploadFile} from "../api/fileApi";
-import {useSelector} from "react-redux";
-import {useNavigate} from "react-router-dom";
+import {useTranslation} from "react-i18next";
 
 const productValidationSchema = Yup.object().shape(
     {
@@ -36,7 +35,7 @@ const productValidationSchema = Yup.object().shape(
         multipartFile: Yup.string().required(),
         quantity: Yup.number()
             .typeError('Must be a number')
-            .positive('Pages must be bigger than 0')
+            .positive('Quantity must be bigger than 0')
             .required('Quantity required')
 
     });
@@ -45,14 +44,14 @@ export default () => {
     const [notification, setNotification] = useState({isVisible: false});
     const [fileName, setFileName] = useState('');
     const fileRef = useRef();
-
-
+    const {t} = useTranslation('addBook');
 
     const onChangeFle = (event, props) => {
         const file = event.target.files[0];
         props.setFieldValue('multipartFile', file);
         setFileName(file.name);
     }
+
 
     const onCreateBook = (values, helpers) => {
         helpers.setSubmitting(true);
@@ -100,8 +99,6 @@ export default () => {
             .finally(() => helpers.setSubmitting(false));
     }
 
-
-
     return (
 
         <Formik initialValues={{
@@ -127,7 +124,7 @@ export default () => {
                         notification.isVisible && <Alert severity={notification.severity}>{notification.message}</Alert>
                     }
                     <Stack spacing={1}>
-                        <Typography variant="h5">Add book:</Typography>
+                        <Typography variant="h5">{t('addNewBook')}</Typography>
                         <FormTextInput name="title"
                                        label="Title"
                                        placeholder="Book title...."
@@ -174,7 +171,8 @@ export default () => {
                                        label="Quantity"
                                        placeholder="Quantity...."
                                        error={props.touched.quantity && !!props.errors.quantity}/>
-                        <Button variant="contained" component="label">
+                        <Button variant="contained" component="label"
+                                style={{width: '150px', display: 'flex', flexDirection: 'row'}}>
                             Select file
                             <input hidden accept="image/*" multiple
                                    type="file"
@@ -185,15 +183,16 @@ export default () => {
 
                     </Stack>
                     <Typography sx={{textAlign: 'right', mt: 2}}>
+
                         {
                             props.isSubmitting ? <CircularProgress size={40}/> : <Button variant="outlined"
                                                                                          type="submit"
-                                                                                         color="primary">Submit</Button>
+                                                                                         color="primary">{t('submit')}</Button>
                         }
+
                     </Typography>
                 </Form>
             )}
         </Formik>
-
     );
 }

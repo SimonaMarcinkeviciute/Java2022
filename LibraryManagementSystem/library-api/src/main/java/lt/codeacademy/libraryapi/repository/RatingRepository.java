@@ -10,8 +10,6 @@ import java.util.UUID;
 
 public interface RatingRepository extends JpaRepository<RatingEntity, UUID> {
 
-    long countRateByBookEntity(BookEntity book);
-
     List<RatingEntity> findByBookEntity (BookEntity book);
     RatingEntity findByBookEntityAndAndUserEntity(BookEntity book, UserEntity user);
 }

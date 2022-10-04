@@ -5,9 +5,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lt.codeacademy.libraryapi.data.TransactionStatus;
-import lt.codeacademy.libraryapi.dto.Book;
-import lt.codeacademy.libraryapi.dto.File;
-import lt.codeacademy.libraryapi.dto.Item;
 import lt.codeacademy.libraryapi.dto.Transaction;
 import org.hibernate.annotations.Type;
 
@@ -46,9 +43,4 @@ public class TransactionEntity {
                 UserEntity.convert(transaction.getUser()));
     }
 
-    public TransactionEntity(TransactionStatus transactionStatus, LocalDate localDate, UserEntity userEntity) {
-        this.transactionStatus = transactionStatus;
-        this.localDate = localDate;
-        this.userEntity = userEntity;
-    }
 }

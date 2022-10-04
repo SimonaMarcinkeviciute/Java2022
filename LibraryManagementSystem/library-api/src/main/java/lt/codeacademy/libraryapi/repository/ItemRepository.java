@@ -2,7 +2,6 @@ package lt.codeacademy.libraryapi.repository;
 
 import lt.codeacademy.libraryapi.data.Status;
 import lt.codeacademy.libraryapi.entity.BookEntity;
-import lt.codeacademy.libraryapi.entity.FileEntity;
 import lt.codeacademy.libraryapi.entity.ItemEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 
