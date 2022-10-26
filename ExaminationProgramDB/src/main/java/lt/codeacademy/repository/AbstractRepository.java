@@ -28,7 +28,7 @@ abstract class AbstractRepository {
             if(transaction != null) {
                 transaction.rollback();
             }
-            System.out.println("Cannot modify entity");
+            System.out.println("Can not modify entity");
         }
     }
 
